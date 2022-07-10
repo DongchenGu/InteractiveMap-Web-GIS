@@ -2,22 +2,31 @@ import logo from './logo.svg';
 import './App.css';
 import Navigation from "./Navigation";
 import {render} from "react-dom";
+import Map from "./MyMap"
+import React from "react";
+import MyMap from "./MyMap";
 
-var toolBarTag = false;
+
+
 function App() {
 
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <Navigation />
 
-      </header>
-      <body>
+      <div id="App">
+          <div id="Describe">
+             <Navigation />
+          </div>
+          <div id="canvas">
 
-      </body>
-    </div>
+          </div>
+        <MyMap/>
+
+
+      </div>
   );
+
+
 }
 
 export default App;

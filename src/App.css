@@ -1,6 +1,26 @@
-.App {
-  text-align: center;
+#App {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-top: 1px;
 }
+
+#Describe {
+  min-height: 80vh;
+  width: 100%;
+  background: url(./TitleBackground3.jpg) center / cover transparent;
+
+  overflow: hidden;
+
+}
+
+#canvas {
+  width: 100%;
+  height: 100px;
+  background-color: black;
+}
+
+
 
 .App-logo {
   height: 40vmin;
@@ -14,15 +34,24 @@
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  background-color: #313131;
+  height: 60px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
+
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
+.App-body{
+  background-color: aquamarine;
+  display: block;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
 
 .App-link {
   color: #61dafb;

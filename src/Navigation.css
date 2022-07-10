@@ -1,5 +1,35 @@
 #navigation {
+    background-color: #def8f8;
+    height: 40px;
+    width: 85%;
+    position: center;
+    display: flex;
+    flex-direction: row;
+    font-size: calc(10px + 2vmin);
+    color: white;
+    margin-top: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    border: 2px solid #def8f8;
+    border-radius: 20pt/20pt;
+    box-shadow:5px 5px 2px rgba(100, 100, 100, 0.6);
+}
+#Nbutton {
+    padding: 5px;
+    height: auto;
+    width: 50px;
+
+}
+
+#Nimage {
+    height: auto;
     width: auto;
-    height: 60px;
-    background-color: black;
+    align-items: flex-start;
+    margin: 5px;
+}
+
+#Ntext {
+
+    position: center;
 }
