@@ -1,10 +1,10 @@
 import './Navigation.css'
 import React from 'react';
-import ReactDOM from 'react-dom/client';
 import logo from "./logo.svg"
 import Button from '@mui/material/Button';
 import {SvgIcon, TextField} from "@mui/material";
 import Icon from '@mui/material/Icon';
+import ReactDOM from 'react-dom';
 
 class Navigation extends React.Component{
     logo ="./Logo1.png";

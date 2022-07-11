@@ -5,6 +5,7 @@ import {render} from "react-dom";
 import Map from "./MyMap"
 import React from "react";
 import MyMap from "./MyMap";
+import ReactDOM from 'react-dom';
 
 
 
@@ -16,11 +17,15 @@ function App() {
       <div id="App">
           <div id="Describe">
              <Navigation />
+              <div id="title">
+                  Interactive Map that you can mark as you want
+              </div>
           </div>
           <div id="canvas">
 
+              <MyMap/>
           </div>
-        <MyMap/>
+
 
 
       </div>
