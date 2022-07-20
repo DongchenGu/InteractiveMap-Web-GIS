@@ -25,7 +25,7 @@ class Navigation extends React.Component{
                     <IconButton>
                         <PersonIcon/>
                     </IconButton>
-                    <IconButton>
+                    <IconButton >
                         <DeleteTwoToneIcon/>
                     </IconButton>
                     <FormControlLabel control={<Switch defaultChecked />} label="Full Screen"   />
