@@ -1,7 +1,7 @@
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import React from "react";
-import ReactDOM from 'react-dom';
+
 
 const position = [51.505, -0.09]
 

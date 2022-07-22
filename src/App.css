@@ -22,9 +22,15 @@
   margin-right: auto;
 
   border: 2px solid #def8f8;
-  border-radius: 20pt/20pt;
 }
 
+#endMenu{
+  margin-top: -200px;
+  width: 100%;
+  height: 400px;
+  background-color: #313131;
+  opacity: 80%;
+}
 
 
 

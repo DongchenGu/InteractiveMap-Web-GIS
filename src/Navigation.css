@@ -1,18 +1,20 @@
 #navigation {
     background-color: #def8f8;
     height: 50px;
-    width: 85%;
-    position: center;
+    width: 84%;
+    position: absolute;
+    z-index: 999;
     flex-direction: row;
     font-size: calc(10px + 2vmin);
     color: #3580ee;
     margin-top: 40px;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 8%;
+    margin-right: 8%;
     padding: 5px;
     border: 2px solid #def8f8;
     border-radius: 10pt/10pt;
     opacity: 90%;
+
 }
 #Nbutton {
     padding: 5px;

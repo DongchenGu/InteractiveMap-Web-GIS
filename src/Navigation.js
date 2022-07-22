@@ -14,6 +14,8 @@ import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 class Navigation extends React.Component{
     logo ="./Logo1.png";
 
+
+
     render() {
         return(
             <div id="navigation">
@@ -28,7 +30,7 @@ class Navigation extends React.Component{
                     <IconButton >
                         <DeleteTwoToneIcon/>
                     </IconButton>
-                    <FormControlLabel control={<Switch defaultChecked />} label="Full Screen"   />
+                    <FormControlLabel control={<Switch checked={this.props.isFull} onChange={this.props.checkFull} name="isFull"/>} label="Full Screen"   />
                 </div>
             </div>
         )

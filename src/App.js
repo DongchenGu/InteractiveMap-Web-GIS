@@ -9,27 +9,51 @@ import ReactDOM from 'react-dom';
 
 import Title from "./Title"
 
-function App() {
+class App extends React.Component{
+    state={
+        isFull: false,
+    }
 
+    fullScreenSwitch= ()=>{
+        //console.log("切换全屏")
+        var temp = this.state.isFull;
+        //console.log(this.state.isFull);
+        this.setState({isFull : !temp});
+        //console.log(this.state.isFull);
+    }
 
-  return (
+    render() {
+        if(this.state.isFull== false){
+            return (
+                <div id="App">
+                    <div id="Describe">
+                        <Navigation  checkFull={this.fullScreenSwitch} isFull={this.state.isFull} />
+                        <Title/>
+                    </div>
+                    <div id="canvas">
+                        <MyMap/>
+                    </div>
 
-      <div id="App">
-          <div id="Describe">
-             <Navigation />
-              <Title/>
-          </div>
-          <div id="canvas">
+                    <div id="endMenu">
 
-              <MyMap/>
-          </div>
+                    </div>
+                </div>
+            );
+        }else{
+            return (
+                <div id="App">
+                    <Navigation  checkFull={this.fullScreenSwitch} isFull={this.state.isFull} />
 
+                    <MyMap/>
 
+                    <div id="endMenu">
 
-      </div>
-  );
+                    </div>
+                </div>
+            );
+        }
 
-
+    }
 }
 
 export default App;
