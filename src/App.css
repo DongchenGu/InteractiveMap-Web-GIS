@@ -15,21 +15,20 @@
 }
 
 #canvas {
-  margin-top: -20px;
-  width: 90%;
-  height: 500px;
+  margin-top: 0px;
+  width: 100%;
+  height: 600px;
   margin-left: auto;
   margin-right: auto;
+  background: url("./backGround2.jpg") center/cover;
 
-  border: 2px solid #def8f8;
 }
 
 #endMenu{
-  margin-top: -200px;
+  margin-top: 0px;
   width: 100%;
-  height: 400px;
-  background-color: #313131;
-  opacity: 80%;
+  height: 500px;
+  background: url("./backGround2.jpg") center/cover;
 }
 
 

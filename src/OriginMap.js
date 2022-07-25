@@ -1,14 +1,14 @@
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import React from "react";
-
+import './OriginMap.css'
 
 const position = [51.505, -0.09]
 
-class  MyMap  extends React.Component{
+class  OriginMap  extends React.Component{
 
     componentDidMount() {
-        const mymap = L.map("mapid").setView([25.03418, 121.564517], 17);
+        const mymap = L.map("originMap").setView([25.03418, 121.564517], 17);
 
         const OSMUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 
@@ -43,11 +43,11 @@ class  MyMap  extends React.Component{
     render() {
 
         return(
-            <div id="mapid" style={{width:"100%", height: "600px"}}></div>
+            <div  id="originMap"></div>
         );
     }
 
 
 }
 
-export default MyMap;
+export default OriginMap;

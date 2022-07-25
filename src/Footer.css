@@ -1,0 +1,113 @@
+
+.footerTable{
+    color: azure;
+    font-size: 20px;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+}
+
+#share{
+    width: 98%;
+    height: 150px;
+    opacity: 40%;
+    background-color: 	#F8F8FF;
+    border-radius: 5px 5px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+}
+
+#shareOnFacebook{
+    width: 30px;
+    height: 30px;
+    display:block;
+    background: url("./facebook.png") center/cover;
+}
+#shareOnTwitter{
+    width: 30px;
+    height: 30px;
+    display:block;
+    background: url("./Twitter.png") center/cover;
+}
+
+
+
+#footerLogo{
+    width: 20px;
+    height: 20px;
+}
+
+
+
+
+
+.table{
+    display: table;
+    border-collapse: collapse;
+    width: 98%;
+    height: 200px;
+    margin-top: 40px;
+    margin-right: auto;
+    margin-left: auto;
+
+}
+.tr{
+    display: table-row;
+    height: 160px;
+}
+.td{
+    display: table-cell;
+    width: 200px;
+    text-align: left;
+    vertical-align: bottom;
+    border: solid 1px red;
+    table-layout: fixed;
+    color: azure;
+    font-size: 20px;
+}
+.table .td img {
+    width: 160px;
+    height: 135px;
+}
+.tdIcon{
+    display: table-cell;
+    width: 35px;
+    text-align: left;
+    vertical-align: bottom;
+    border: solid 1px red;
+    table-layout: fixed;
+    color: azure;
+    font-size: 20px;
+}
+
+
+.table2{
+    display: table;
+    border-collapse: collapse;
+    width: 98%;
+    height: 400px;
+    margin-top: 40px;
+    margin-right: auto;
+    margin-left: auto;
+
+}
+.th{
+    display: table-row;
+    height: 30px;
+}
+.td2{
+    display: table-cell;
+    width: 400px;
+    text-align: left;
+    vertical-align: top;
+    border: solid 1px red;
+    table-layout: fixed;
+    color: azure;
+    font-size: 20px;
+}
+.tr2{
+    display: table-row;
+    height: 10px;
+}

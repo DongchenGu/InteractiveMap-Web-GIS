@@ -2,10 +2,12 @@ import logo from './logo.svg';
 import './App.css';
 import Navigation from "./Navigation";
 import {render} from "react-dom";
-import Map from "./MyMap"
+import Map from "./OriginMap"
 import React from "react";
-import MyMap from "./MyMap";
+import OriginMap from "./OriginMap";
 import ReactDOM from 'react-dom';
+import Footer from './Footer'
+
 
 import Title from "./Title"
 
@@ -22,6 +24,7 @@ class App extends React.Component{
         //console.log(this.state.isFull);
     }
 
+
     render() {
         if(this.state.isFull== false){
             return (
@@ -31,11 +34,11 @@ class App extends React.Component{
                         <Title/>
                     </div>
                     <div id="canvas">
-                        <MyMap/>
+                        <OriginMap/>
                     </div>
 
                     <div id="endMenu">
-
+                        <Footer/>
                     </div>
                 </div>
             );
@@ -44,7 +47,7 @@ class App extends React.Component{
                 <div id="App">
                     <Navigation  checkFull={this.fullScreenSwitch} isFull={this.state.isFull} />
 
-                    <MyMap/>
+                    <OriginMap/>
 
                     <div id="endMenu">
 
