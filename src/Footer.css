@@ -48,7 +48,7 @@
     border-collapse: collapse;
     width: 98%;
     height: 200px;
-    margin-top: 40px;
+    margin-top: 5px;
     margin-right: auto;
     margin-left: auto;
 
@@ -62,7 +62,7 @@
     width: 200px;
     text-align: left;
     vertical-align: bottom;
-    border: solid 1px red;
+    /*border: solid 1px red; */
     table-layout: fixed;
     color: azure;
     font-size: 20px;
@@ -76,7 +76,7 @@
     width: 35px;
     text-align: left;
     vertical-align: bottom;
-    border: solid 1px red;
+    /*border: solid 1px red;*/
     table-layout: fixed;
     color: azure;
     font-size: 20px;
@@ -87,27 +87,43 @@
     display: table;
     border-collapse: collapse;
     width: 98%;
-    height: 400px;
+    height: 150px;
     margin-top: 40px;
     margin-right: auto;
     margin-left: auto;
+    font-size: 10px;
 
 }
-.th{
-    display: table-row;
-    height: 30px;
+.th2{
+    display: table-row-group;
+    height: 20px;
+    font-size: 15px;
+}
+.tr2{
+    display: table-row-group;
 }
 .td2{
     display: table-cell;
-    width: 400px;
+    width: 200px;
     text-align: left;
     vertical-align: top;
-    border: solid 1px red;
+    /*border: solid 1px red;*/
     table-layout: fixed;
     color: azure;
-    font-size: 20px;
 }
-.tr2{
-    display: table-row;
-    height: 10px;
+.link{
+    color: azure;
+}
+
+
+#endBar{
+    width: 100%;
+    text-align:-moz-left;
+    color: white;
+    margin-top: 20px;
+    margin-left:30px;
+    margin-right: 30px;
+    margin-bottom: -10px;
+    font-size: 10px;
+
 }

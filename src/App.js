@@ -34,7 +34,9 @@ class App extends React.Component{
                         <Title/>
                     </div>
                     <div id="canvas">
-                        <OriginMap/>
+                        <div id="indexMap">
+                            <OriginMap/>
+                        </div>
                     </div>
 
                     <div id="endMenu">
@@ -46,11 +48,12 @@ class App extends React.Component{
             return (
                 <div id="App">
                     <Navigation  checkFull={this.fullScreenSwitch} isFull={this.state.isFull} />
-
-                    <OriginMap/>
+                    <div id="fullScreenMap">
+                        <OriginMap/>
+                    </div>
 
                     <div id="endMenu">
-
+                        <Footer/>
                     </div>
                 </div>
             );

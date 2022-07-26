@@ -8,6 +8,9 @@ export  default  class Footer extends  React.Component{
     shareOnFacebook= ()=>{
         window.open(`http://www.facebook.com/sharer.php?kid_directed_site=0&u=${this.url}`, `_blank`, `width=600, height=450, toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, top=100,left=350`)
     }
+    shareOnTwitter= ()=>{
+        window.open(`https://twitter.com/share?url=${this.url}`, `_blank`, `width=600, height=450, toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, top=100,left=350`)
+    }
 
     render() {
         return (
@@ -25,30 +28,68 @@ export  default  class Footer extends  React.Component{
                                 <button onClick={this.shareOnFacebook} id="shareOnFacebook"></button>
                             </div>
                             <div className='tdIcon'>
-                                <button onClick={this.shareOnFacebook} id="shareOnTwitter"></button>
+                                <button onClick={this.shareOnTwitter} id="shareOnTwitter"></button>
                             </div>
                             <div className='tdIcon'>
-                                <button onClick={this.shareOnFacebook} id="shareOnTwitter"></button>
+                                <button onClick={this.shareOnTwitter} id="shareOnTwitter"></button>
                             </div>
                         </div>
                 </div>
-                <hr style={ {align:"center", width:"100%", color: "azure", SIZE:2, opacity:"60%"}} />
+                <hr style={ {align:"center", width:"95%", color: "azure", SIZE:2, opacity:"60%"}} />
                 <div className="table2">
-                    <div className='th'>
+                    <div className='th2'>
                         <div className='td2'></div>
                         <div className='td2'>Open Source Map Marker </div>
+                        <div className='td2'>Links</div>
+                        <div className='td2'>API Reference</div>
                         <div className='td2'></div>
-                        <div className='td2'></div>
-                        <div className='td2'></div>
+                        <div className='tdIcon'></div>
+                        <div className='tdIcon'></div>
+                        <div className='tdIcon'></div>
                     </div>
-                    <div className='tr2'>
+                    <div className="tr2">
                         <div className='td2'></div>
                         <div className='td2'></div>
                         <div className='td2'></div>
+                        <div className='td2'><a href="https://github.com/Leaflet/Leaflet" className="link">leafLet</a></div>
+                        <div className='td2'></div>
+                        <div className='tdIcon'></div>
+                        <div className='tdIcon'></div>
+                        <div className='tdIcon'></div>
+                    </div>
+                    <div className="tr2">
                         <div className='td2'></div>
                         <div className='td2'></div>
+                        <div className='td2'></div>
+                        <div className='td2'><a href="https://github.com/Leaflet/Leaflet" className="link">W3cSchool</a></div>
+                        <div className='td2'></div>
+                        <div className='tdIcon'></div>
+                        <div className='tdIcon'></div>
+                        <div className='tdIcon'></div>
+                    </div>
+                    <div className="tr2">
+                        <div className='td2'></div>
+                        <div className='td2'></div>
+                        <div className='td2'></div>
+                        <div className='td2'><a href="https://github.com/Leaflet/Leaflet" className="link">W3cSchool</a></div>
+                        <div className='td2'></div>
+                        <div className='tdIcon'></div>
+                        <div className='tdIcon'></div>
+                        <div className='tdIcon'></div>
+                    </div>
+                    <div className="tr2">
+                        <div className='td2'></div>
+                        <div className='td2'></div>
+                        <div className='td2'></div>
+                        <div className='td2'><a href="https://github.com/Leaflet/Leaflet" className="link">W3cSchool</a></div>
+                        <div className='td2'></div>
+                        <div className='tdIcon'></div>
+                        <div className='tdIcon'></div>
+                        <div className='tdIcon'></div>
                     </div>
                 </div>
+
+                <div id="endBar"> TERMS AND CONDITIONS   PRIVACY POLICY &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ＠2022</div>
             </div>
         );
     }

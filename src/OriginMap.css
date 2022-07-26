@@ -1,6 +1,6 @@
 #originMap{
-    height: 600px;
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
+    height: inherit;
+    width: inherit;
+    margin-left: inherit;
+    margin-right: inherit;
 }
