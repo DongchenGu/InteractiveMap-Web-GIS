@@ -35,22 +35,22 @@ class App extends React.Component{
         if(this.state.isFull== false){
             return (
                 <div id="App">
-                    <div id="Describe">
-                        <Navigation  checkFull={this.fullScreenSwitch}
-                                     isFull={this.state.isFull}
-                                     changeProvider={this.changeProvider}
-                        />
-                        <Title/>
-                    </div>
-                    <div id="canvas">
-                        <div id="indexMap">
-                            <OriginMap OSMUrl={this.state.OSMUrl}/>
+                        <div id="Describe">
+                            <Navigation  checkFull={this.fullScreenSwitch}
+                                         isFull={this.state.isFull}
+                                         changeProvider={this.changeProvider}
+                            />
+                            <Title/>
                         </div>
-                    </div>
+                        <div id="canvas">
+                            <div id="indexMap">
+                                <OriginMap OSMUrl={this.state.OSMUrl}/>
+                            </div>
+                        </div>
 
-                    <div id="endMenu">
-                        <Footer/>
-                    </div>
+                        <div id="endMenu">
+                            <Footer/>
+                        </div>
                 </div>
             );
         }else{

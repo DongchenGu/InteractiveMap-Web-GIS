@@ -2,9 +2,10 @@
   display: flex;
   width: 100%;
   flex-direction: column;
-  overflow-x: hidden;
-  overflow-y: auto;
   margin:0 auto;
+}
+::-webkit-scrollbar {
+  display: none;
 }
 
 #Describe {

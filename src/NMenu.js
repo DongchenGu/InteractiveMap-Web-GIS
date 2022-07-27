@@ -34,7 +34,7 @@ export default function NMenu() {
                 }}
             >
                 <MenuItem onClick={handleClose}>ChangeMapProviders</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={handleClose}>Tool Bar</MenuItem>
                 <MenuItem onClick={handleClose}>Logout</MenuItem>
             </Menu>
         </div>

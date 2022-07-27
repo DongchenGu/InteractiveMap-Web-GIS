@@ -13,6 +13,8 @@ import PersonIcon from '@mui/icons-material/Person';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import NMenu from "./NMenu";
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
+import AccountMenu from "./AccountMenu";
+
 
 
 class Navigation extends React.Component{
@@ -37,6 +39,8 @@ class Navigation extends React.Component{
                     <div id="fullScreenSwitchIcon">
                         <FullscreenIcon/>
                     </div>
+
+                    <AccountMenu/>
                     <div id="menu">
                         <NMenu/>
                     </div>
