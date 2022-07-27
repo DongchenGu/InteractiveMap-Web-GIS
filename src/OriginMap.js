@@ -8,11 +8,14 @@ const position = [51.505, -0.09]
 class  OriginMap  extends React.Component{
 
     componentDidMount() {
-        const mymap = L.map("originMap").setView([25.03418, 121.564517], 17);
+        const mymap = L.map("originMap").setView([45.4131, -75.7026], 12);
 
-        const OSMUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+        const OSMUrl = "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png";
+
 
         L.tileLayer(OSMUrl).addTo(mymap);
+
+        /**
 
         // 使用 leaflet-color-markers ( https://github.com/pointhi/leaflet-color-markers ) 當作 marker
         const greenIcon = new L.Icon({
@@ -37,17 +40,14 @@ class  OriginMap  extends React.Component{
             fillColor: "#f03",
             fillOpacity: 0.5,
             radius: 10
-        }).addTo(mymap);
+        }).addTo(mymap);*/
     }
 
     render() {
-
         return(
             <div  id="originMap"></div>
         );
     }
-
-
 }
 
 export default OriginMap;

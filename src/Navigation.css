@@ -1,27 +1,25 @@
 #navigation {
     background-color: #def8f8;
-    height: 50px;
+    height: 6vh;
     width: 84%;
     position: absolute;
     z-index: 999;
-    flex-direction: row;
-    font-size: calc(10px + 2vmin);
+    font-size: calc(5px + 2vmin);
     color: #3580ee;
-    margin-top: 40px;
+    margin-top: 5vh;
     margin-left: 8%;
     margin-right: 8%;
-    padding: 5px;
+    padding-top: 0.5vh;
+    padding-bottom: 0.5vh;
     border: 2px solid #def8f8;
     border-radius: 10pt/10pt;
     opacity: 90%;
 
 }
-#Nbutton {
-    padding: 5px;
-    height: auto;
-    width: 50px;
-
+#Nbutton1{
+    height: 5vh;
 }
+
 
 #Nimage {
     height: auto;
@@ -31,18 +29,30 @@
 }
 
 #Ntext {
-
     position: center;
 }
 
 #rightBar{
+    display: flex;
+    flex-direction: row;
     float: right;
-    margin-top: 5px;
-    margin-bottom: 5px;
+    margin-top: 0.5vh;
+    margin-bottom: 0.5vh;
 }
 #leftBar{
-    margin-top: 5px;
-    margin-bottom: 5px;
+    display: flex;
+    flex-direction: row;
+    margin-top: 0.5vh;
+    margin-bottom: 0.5vh;
     float: left;
-    position: center;
+}
+#menu{
+    margin-top: auto;
+    margin-bottom: auto;
+}
+#fullScreenSwitchIcon{
+    margin-left: -3vh;
+    margin-top: auto;
+    margin-bottom: auto;
+    height: 3vh;
 }

@@ -10,10 +10,12 @@ import Footer from './Footer'
 
 
 import Title from "./Title"
+import NMenu from "./NMenu";
 
 class App extends React.Component{
     state={
         isFull: false,
+        OSMUrl: "https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
     }
 
     fullScreenSwitch= ()=>{
@@ -23,19 +25,26 @@ class App extends React.Component{
         this.setState({isFull : !temp});
         //console.log(this.state.isFull);
     }
+    changeProvider=()=>{
 
-
+    }
+     /*
+     *
+     * */
     render() {
         if(this.state.isFull== false){
             return (
                 <div id="App">
                     <div id="Describe">
-                        <Navigation  checkFull={this.fullScreenSwitch} isFull={this.state.isFull} />
+                        <Navigation  checkFull={this.fullScreenSwitch}
+                                     isFull={this.state.isFull}
+                                     changeProvider={this.changeProvider}
+                        />
                         <Title/>
                     </div>
                     <div id="canvas">
                         <div id="indexMap">
-                            <OriginMap/>
+                            <OriginMap OSMUrl={this.state.OSMUrl}/>
                         </div>
                     </div>
 
