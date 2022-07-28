@@ -1,0 +1,17 @@
+#MapProviderMenu{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 20vh;
+    margin-left: 85%;
+    height: fit-content;
+    width: fit-content;
+    position: absolute;
+    z-index: 990;
+    border-radius: 10px 10px;
+    color: #01194b;
+    text-shadow: black 0.1em 0.1em 0.2em;
+    background-color: #faf8f8;
+    opacity: 50%;
+
+}

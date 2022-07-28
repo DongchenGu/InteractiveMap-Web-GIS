@@ -14,6 +14,7 @@ import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import NMenu from "./NMenu";
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import AccountMenu from "./AccountMenu";
+import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 
 
 
@@ -23,6 +24,7 @@ class Navigation extends React.Component{
 
 
     render() {
+        const {isFull,checkFull,openProviderMenu} = this.props;
         return(
             <div id="navigation">
                 <div id="leftBar">
@@ -35,14 +37,15 @@ class Navigation extends React.Component{
                     <IconButton >
                         <DeleteTwoToneIcon/>
                     </IconButton>
-                    <FormControlLabel control={<Switch checked={this.props.isFull} onChange={this.props.checkFull} name="isFull"/>}   />
+                    <FormControlLabel control={<Switch checked={isFull} onChange={checkFull} name="isFull"/>}   />
                     <div id="fullScreenSwitchIcon">
-                        <FullscreenIcon/>
+                        <OpenInFullIcon style={{fontSize:"x-large"}}/>
                     </div>
-
-                    <AccountMenu/>
+                    <div id="AccountMenu">
+                        <AccountMenu/>
+                    </div>
                     <div id="menu">
-                        <NMenu/>
+                        <NMenu openProviderMenu={openProviderMenu}/>
                     </div>
 
 

@@ -3,18 +3,17 @@
     height: 6vh;
     width: 84%;
     position: absolute;
-    z-index: 999;
+    z-index: 990;
     font-size: calc(5px + 2vmin);
     color: #3580ee;
     margin-top: 5vh;
     margin-left: 8%;
     margin-right: 8%;
-    padding-top: 0.5vh;
-    padding-bottom: 0.5vh;
+    padding-top: 0.4vh;
+    padding-bottom: 0.4vh;
     border: 2px solid #def8f8;
     border-radius: 10pt/10pt;
     opacity: 90%;
-
 }
 #Nbutton1{
     height: 5vh;
@@ -33,6 +32,7 @@
 }
 
 #rightBar{
+    height: 5vh;
     display: flex;
     flex-direction: row;
     float: right;
@@ -47,12 +47,19 @@
     float: left;
 }
 #menu{
-    margin-top: auto;
-    margin-bottom: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
+
 #fullScreenSwitchIcon{
     margin-left: -3vh;
-    margin-top: auto;
-    margin-bottom: auto;
-    height: 3vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+#AccountMenu{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }

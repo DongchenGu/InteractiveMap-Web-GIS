@@ -7,13 +7,12 @@ const position = [51.505, -0.09]
 
 class  OriginMap  extends React.Component{
 
+    mymap = null;
+
     componentDidMount() {
-        const mymap = L.map("originMap").setView([45.4131, -75.7026], 12);
-
-        const OSMUrl = "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png";
-
-
-        L.tileLayer(OSMUrl).addTo(mymap);
+        const {OSMUrl} =this.props;
+        this.mymap = L.map("originMap").setView([45.4131, -75.7026], 12);
+        L.tileLayer(OSMUrl).addTo(this.mymap);
 
         /**
 
@@ -41,6 +40,11 @@ class  OriginMap  extends React.Component{
             fillOpacity: 0.5,
             radius: 10
         }).addTo(mymap);*/
+    }
+
+    componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
+        const {OSMUrl} =this.props;
+        L.tileLayer(OSMUrl).addTo(this.mymap);
     }
 
     render() {

@@ -7,7 +7,7 @@ import React from "react";
 import OriginMap from "./OriginMap";
 import ReactDOM from 'react-dom';
 import Footer from './Footer'
-
+import MapProviderMenu from './MapProviderMenu'
 
 import Title from "./Title"
 import NMenu from "./NMenu";
@@ -15,7 +15,8 @@ import NMenu from "./NMenu";
 class App extends React.Component{
     state={
         isFull: false,
-        OSMUrl: "https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
+        OSMUrl: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
+        MapMenu: false,
     }
 
     fullScreenSwitch= ()=>{
@@ -25,20 +26,26 @@ class App extends React.Component{
         this.setState({isFull : !temp});
         //console.log(this.state.isFull);
     }
-    changeProvider=()=>{
-
+    changeProvider=(OSMUrlValue)=>{
+       // this.setState({OSMUrl : OSMUrlValue});
+            this.setState({OSMUrl : OSMUrlValue});
+            console.log(OSMUrlValue);
     }
+    openProviderMenu=()=>{
+          this.setState({MapMenu: true});
+    }
+
      /*
-     *
-     * */
-    render() {
-        if(this.state.isFull== false){
+     *  if(this.state.isFull=== false){
             return (
                 <div id="App">
+                    <MapProviderMenu changeProvider={this.changeProvider}/>
+
+
                         <div id="Describe">
                             <Navigation  checkFull={this.fullScreenSwitch}
                                          isFull={this.state.isFull}
-                                         changeProvider={this.changeProvider}
+                                         changeMapMenu={this.state.changeMapMenu}
                             />
                             <Title/>
                         </div>
@@ -58,7 +65,8 @@ class App extends React.Component{
                 <div id="App">
                     <Navigation  checkFull={this.fullScreenSwitch} isFull={this.state.isFull} />
                     <div id="fullScreenMap">
-                        <OriginMap/>
+                        <MapProviderMenu changeProvider={this.changeProvider}/>
+                        <OriginMap OSMUrl={this.state.OSMUrl}/>
                     </div>
 
                     <div id="endMenu">
@@ -67,6 +75,56 @@ class App extends React.Component{
                 </div>
             );
         }
+     * */
+    render() {
+        let Index=null;
+        let MapMenu =null;
+        if(this.state.MapMenu===true){
+            MapMenu=<MapProviderMenu changeProvider={this.changeProvider}/>
+        }
+
+
+
+        if(this.state.isFull===false){
+            Index = <div>
+                            {MapMenu}
+                            <div id="Describe">
+                                <Navigation  checkFull={this.fullScreenSwitch}
+                                             isFull={this.state.isFull}
+                                             changeMapMenu={this.state.changeMapMenu}
+                                             openProviderMenu={this.openProviderMenu}
+                                />
+                                <Title/>
+                            </div>
+                            <div id="canvas">
+                                <div id="indexMap">
+                                    <OriginMap OSMUrl={this.state.OSMUrl}/>
+                                </div>
+                            </div>
+                    </div>
+        }else{
+            Index= <div>
+                        <Navigation  checkFull={this.fullScreenSwitch}
+                                     isFull={this.state.isFull}
+                                     changeMapMenu={this.state.changeMapMenu}
+                                     openProviderMenu={this.openProviderMenu}
+                        />
+                        <div id="fullScreenMap">
+                            {MapMenu}
+                            <OriginMap OSMUrl={this.state.OSMUrl}/>
+                        </div>
+                    </div>
+        }
+
+        return(
+            <div id="App">
+                {Index}
+                <div id="endMenu">
+                    <Footer/>
+                </div>
+            </div>
+        )
+
 
     }
 }

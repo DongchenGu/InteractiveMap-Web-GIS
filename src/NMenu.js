@@ -3,7 +3,8 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
-export default function NMenu() {
+export default function NMenu(props) {
+    const {openProviderMenu} = props;
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -11,6 +12,9 @@ export default function NMenu() {
     };
     const handleClose = () => {
         setAnchorEl(null);
+    };
+    const handleChangeMap=()=>{
+       openProviderMenu();
     };
 
     return (
@@ -33,9 +37,8 @@ export default function NMenu() {
                     'aria-labelledby': 'basic-button',
                 }}
             >
-                <MenuItem onClick={handleClose}>ChangeMapProviders</MenuItem>
+                <MenuItem onClick={handleChangeMap}>ChangeMapProviders</MenuItem>
                 <MenuItem onClick={handleClose}>Tool Bar</MenuItem>
-                <MenuItem onClick={handleClose}>Logout</MenuItem>
             </Menu>
         </div>
     );
