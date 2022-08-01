@@ -5,6 +5,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import "./MapProviderMenu.css"
+import ClearIcon from '@mui/icons-material/Clear';
+import IconButton from '@mui/material/IconButton';
 
 export  default class MapProviderMenu extends  React.Component{
 
@@ -14,12 +16,23 @@ export  default class MapProviderMenu extends  React.Component{
         this.props.changeProvider(e.target.value);
         console.log("already-handleClick");
     };
+    handleClearMenu = ()=>{
+        this.props.closeProviderMenu();
+    };
 
     render() {
         return(
+            <div id="largeMapProviderMenu">
+                <div id="div1">
+                    <div id="div2">MapProviders</div>
+                    <IconButton onClick={this.handleClearMenu}  >
+                        <ClearIcon fontSize="medium" style={{marginLeft:"3vw",marginTop:"auto"}}/>
+                    </IconButton>
+
+                </div>
             <div id="MapProviderMenu">
                 <FormControl>
-                    <FormLabel id="demo-radio-buttons-group-label">MapProviders</FormLabel>
+                    {/*<FormLabel id="demo-radio-buttons-group-label">MapProviders</FormLabel>*/}
                     <RadioGroup
                         aria-labelledby="demo-radio-buttons-group-label"
                         defaultValue="female"
@@ -49,6 +62,7 @@ export  default class MapProviderMenu extends  React.Component{
 
                     </RadioGroup>
                 </FormControl>
+            </div>
             </div>
         )
     }

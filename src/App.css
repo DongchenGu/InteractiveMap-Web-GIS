@@ -4,6 +4,7 @@
   margin:0 auto;
   flex-direction: column;
   position: relative;
+  overflow-x: hidden;
 }
 ::-webkit-scrollbar {
   display: none;

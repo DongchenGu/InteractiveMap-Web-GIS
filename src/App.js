@@ -8,6 +8,9 @@ import OriginMap from "./OriginMap";
 import ReactDOM from 'react-dom';
 import Footer from './Footer'
 import MapProviderMenu from './MapProviderMenu'
+import ToolMenu from "./ToolMenu";
+
+
 
 import Title from "./Title"
 import NMenu from "./NMenu";
@@ -17,6 +20,7 @@ class App extends React.Component{
         isFull: false,
         OSMUrl: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
         MapMenu: false,
+        ToolMenu: false,
     }
 
     fullScreenSwitch= ()=>{
@@ -34,65 +38,40 @@ class App extends React.Component{
     openProviderMenu=()=>{
           this.setState({MapMenu: true});
     }
+    closeProviderMenu=()=>{
+        this.setState({MapMenu: false});
+    }
+    openToolMenu=()=>{
+        console.log("hello");
+        this.setState({ToolMenu: true});
+    }
+    closeToolMenu=()=>{
+        this.setState({ToolMenu:false});
+    }
 
-     /*
-     *  if(this.state.isFull=== false){
-            return (
-                <div id="App">
-                    <MapProviderMenu changeProvider={this.changeProvider}/>
-
-
-                        <div id="Describe">
-                            <Navigation  checkFull={this.fullScreenSwitch}
-                                         isFull={this.state.isFull}
-                                         changeMapMenu={this.state.changeMapMenu}
-                            />
-                            <Title/>
-                        </div>
-                        <div id="canvas">
-                            <div id="indexMap">
-                                <OriginMap OSMUrl={this.state.OSMUrl}/>
-                            </div>
-                        </div>
-
-                        <div id="endMenu">
-                            <Footer/>
-                        </div>
-                </div>
-            );
-        }else{
-            return (
-                <div id="App">
-                    <Navigation  checkFull={this.fullScreenSwitch} isFull={this.state.isFull} />
-                    <div id="fullScreenMap">
-                        <MapProviderMenu changeProvider={this.changeProvider}/>
-                        <OriginMap OSMUrl={this.state.OSMUrl}/>
-                    </div>
-
-                    <div id="endMenu">
-                        <Footer/>
-                    </div>
-                </div>
-            );
-        }
-     * */
     render() {
         let Index=null;
-        let MapMenu =null;
+        let MapProvider =null;
+        let Tool= null;
         if(this.state.MapMenu===true){
-            MapMenu=<MapProviderMenu changeProvider={this.changeProvider}/>
+            MapProvider=<MapProviderMenu changeProvider={this.changeProvider} closeProviderMenu={this.closeProviderMenu}/>
+        }
+        if(this.state.ToolMenu===true){
+            Tool=<ToolMenu  closeToolMenu={this.closeToolMenu}/>
         }
 
 
 
         if(this.state.isFull===false){
             Index = <div>
-                            {MapMenu}
+                            {Tool}
+                            {MapProvider}
                             <div id="Describe">
                                 <Navigation  checkFull={this.fullScreenSwitch}
                                              isFull={this.state.isFull}
                                              changeMapMenu={this.state.changeMapMenu}
                                              openProviderMenu={this.openProviderMenu}
+                                             openToolMenu={this.openToolMenu}
                                 />
                                 <Title/>
                             </div>
@@ -108,9 +87,11 @@ class App extends React.Component{
                                      isFull={this.state.isFull}
                                      changeMapMenu={this.state.changeMapMenu}
                                      openProviderMenu={this.openProviderMenu}
+                                     openToolMenu={this.openToolMenu}
                         />
                         <div id="fullScreenMap">
-                            {MapMenu}
+                            {Tool}
+                            {MapProvider}
                             <OriginMap OSMUrl={this.state.OSMUrl}/>
                         </div>
                     </div>

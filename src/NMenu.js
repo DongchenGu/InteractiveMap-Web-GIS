@@ -4,7 +4,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
 export default function NMenu(props) {
-    const {openProviderMenu} = props;
+    const {openProviderMenu,openToolMenu} = props;
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -15,6 +15,9 @@ export default function NMenu(props) {
     };
     const handleChangeMap=()=>{
        openProviderMenu();
+    };
+    const handleToolMenu=()=>{
+        openToolMenu();
     };
 
     return (
@@ -38,7 +41,7 @@ export default function NMenu(props) {
                 }}
             >
                 <MenuItem onClick={handleChangeMap}>ChangeMapProviders</MenuItem>
-                <MenuItem onClick={handleClose}>Tool Bar</MenuItem>
+                <MenuItem onClick={handleToolMenu}>OpenToolMenu</MenuItem>
             </Menu>
         </div>
     );
