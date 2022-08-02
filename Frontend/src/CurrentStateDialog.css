@@ -1,0 +1,28 @@
+.largeCurrentStateDialog {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 4vh;
+    margin-left: 79vw;
+    margin-right: 0.5vw;
+    margin-top: 86vh;
+
+    height: 10vh;
+    width: 20vw;
+    position: absolute;
+    z-index: 990;
+    color: #01194b;
+    background-color: #faf8f8;
+    opacity: 70%;
+    font:bold 20px/24px Verdana, Geneva, sans-serif;
+
+
+
+}
+
+.dialog_visible {
+    transform: translateX(0);
+}
+#close{
+
+}

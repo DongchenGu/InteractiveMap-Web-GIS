@@ -9,11 +9,12 @@ import ReactDOM from 'react-dom';
 import Footer from './Footer'
 import MapProviderMenu from './MapProviderMenu'
 import ToolMenu from "./ToolMenu";
-
+import CurrentStateDialog from './CurrentStateDialog'
 
 
 import Title from "./Title"
 import NMenu from "./NMenu";
+
 
 class App extends React.Component{
     state={
@@ -64,6 +65,7 @@ class App extends React.Component{
 
         if(this.state.isFull===false){
             Index = <div>
+                            <CurrentStateDialog/>
                             {Tool}
                             {MapProvider}
                             <div id="Describe">

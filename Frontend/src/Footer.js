@@ -18,7 +18,7 @@ export  default  class Footer extends  React.Component{
 
                 <div className="table">
                         <div className='tr'>
-                            <div className='td'><img src="./logo1.png" alt=""/></div>
+                            <div className='td'><img src="./Logo1.png" alt=""/></div>
                             <div className='td'>Share us on the Social Media!</div>
                             <div className='td'></div>
                             <div className='td'></div>
