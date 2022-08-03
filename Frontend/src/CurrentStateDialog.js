@@ -17,11 +17,14 @@ export default class CurrentStateDialog extends React.Component{
     handleLeftClick=()=>{
         console.log("click has been handled");
     };
-
+    componentDidMount() {
+        setTimeout(()=>{this.props.closeStateDialog();
+            console.log("StateDialog has been removed")},"6000");
+    }
 
     componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
         setTimeout(()=>{this.props.closeStateDialog();
-                               console.log("StateDialog has been removed")},"2000");
+                               console.log("StateDialog has been removed")},"6000");
     }
 
     render() {
