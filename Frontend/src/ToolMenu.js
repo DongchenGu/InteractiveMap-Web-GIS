@@ -16,10 +16,15 @@ export default class ToolMenu extends React.Component{
 
     constructor(props) {
         super(props);
-        const {closeToolMenu} = props;
+        const {closeToolMenu,changeCurrentState} = props;
         this.handleCloseToolMenu=()=>{
             closeToolMenu();
-        }
+        };
+        this.handleStateChanged=(value)=>{
+            return (value)=> {
+                changeCurrentState(value);
+            }
+        };
     }
 
 
@@ -37,7 +42,7 @@ export default class ToolMenu extends React.Component{
                         <tr id="TableRow">
                             <td id="TableData">
                                 <IconButton>
-                                    <PlaceTwoToneIcon fontSize="medium"></PlaceTwoToneIcon>
+                                    <PlaceTwoToneIcon onClick={this.handleStateChanged("point")} fontSize="medium"></PlaceTwoToneIcon>
                                 </IconButton>
                             </td>
                             <td>

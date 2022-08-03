@@ -22,6 +22,8 @@ class App extends React.Component{
         OSMUrl: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
         MapMenu: false,
         ToolMenu: false,
+        StateDialog: false,
+        CurrentState: null,
     }
 
     fullScreenSwitch= ()=>{
@@ -29,7 +31,9 @@ class App extends React.Component{
         var temp = this.state.isFull;
         //console.log(this.state.isFull);
         this.setState({isFull : !temp});
-        //console.log(this.state.isFull);
+        if(!temp===true){
+            this.setState({StateDialog: true});
+        };
     }
     changeProvider=(OSMUrlValue)=>{
        // this.setState({OSMUrl : OSMUrlValue});
@@ -49,23 +53,33 @@ class App extends React.Component{
     closeToolMenu=()=>{
         this.setState({ToolMenu:false});
     }
+    changeCurrentState=(stateValue)=>{
+        this.setState({CurrentState :stateValue});
+    };
+
+
+
 
     render() {
         let Index=null;
         let MapProvider =null;
         let Tool= null;
+        let StateDialog = null;
         if(this.state.MapMenu===true){
             MapProvider=<MapProviderMenu changeProvider={this.changeProvider} closeProviderMenu={this.closeProviderMenu}/>
         }
         if(this.state.ToolMenu===true){
-            Tool=<ToolMenu  closeToolMenu={this.closeToolMenu}/>
+            Tool=<ToolMenu  closeToolMenu={this.closeToolMenu} changeCurrentState={this.changeCurrentState}/>
+        }
+        if(this.state.StateDialog===true){
+            StateDialog=<CurrentStateDialog CurrentState={this.state.CurrentState}/>
         }
 
 
 
         if(this.state.isFull===false){
             Index = <div>
-                            <CurrentStateDialog/>
+                            {StateDialog}
                             {Tool}
                             {MapProvider}
                             <div id="Describe">
