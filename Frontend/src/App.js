@@ -31,9 +31,13 @@ class App extends React.Component{
         var temp = this.state.isFull;
         //console.log(this.state.isFull);
         this.setState({isFull : !temp});
-        if(!temp===true){
-            this.setState({StateDialog: true});
-        };
+        if(temp===false){
+            this.setState({StateDialog:!temp,CurrentState: "intoFullScreen" });
+        }
+        if(temp ===true){
+            this.setState({StateDialog:!temp,CurrentState: "outFullScreen" });
+        }
+
     }
     changeProvider=(OSMUrlValue)=>{
        // this.setState({OSMUrl : OSMUrlValue});
@@ -54,9 +58,11 @@ class App extends React.Component{
         this.setState({ToolMenu:false});
     }
     changeCurrentState=(stateValue)=>{
-        this.setState({CurrentState :stateValue});
+        this.setState({CurrentState :stateValue,StateDialog:true});
     };
-
+    closeStateDialog=()=>{
+        this.setState({StateDialog:false});
+    }
 
 
 
@@ -69,17 +75,18 @@ class App extends React.Component{
             MapProvider=<MapProviderMenu changeProvider={this.changeProvider} closeProviderMenu={this.closeProviderMenu}/>
         }
         if(this.state.ToolMenu===true){
-            Tool=<ToolMenu  closeToolMenu={this.closeToolMenu} changeCurrentState={this.changeCurrentState}/>
+            Tool=<ToolMenu  closeToolMenu={this.closeToolMenu} changeCurrentState={this.changeCurrentState} />
         }
         if(this.state.StateDialog===true){
-            StateDialog=<CurrentStateDialog CurrentState={this.state.CurrentState}/>
+            StateDialog=<CurrentStateDialog CurrentState={this.state.CurrentState} closeStateDialog={this.closeStateDialog}/>
+            //setTimeout(function(){alert("Hello")},5000);
         }
 
 
 
         if(this.state.isFull===false){
             Index = <div>
-                            {StateDialog}
+
                             {Tool}
                             {MapProvider}
                             <div id="Describe">
@@ -98,6 +105,7 @@ class App extends React.Component{
                             </div>
                     </div>
         }else{
+
             Index= <div>
                         <Navigation  checkFull={this.fullScreenSwitch}
                                      isFull={this.state.isFull}
@@ -106,6 +114,9 @@ class App extends React.Component{
                                      openToolMenu={this.openToolMenu}
                         />
                         <div id="fullScreenMap">
+                            <div id="stateDialog">
+                                {StateDialog}
+                            </div>
                             {Tool}
                             {MapProvider}
                             <OriginMap OSMUrl={this.state.OSMUrl}/>

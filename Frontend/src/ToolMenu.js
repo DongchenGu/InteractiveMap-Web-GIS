@@ -20,10 +20,9 @@ export default class ToolMenu extends React.Component{
         this.handleCloseToolMenu=()=>{
             closeToolMenu();
         };
-        this.handleStateChanged=(value)=>{
-            return (value)=> {
-                changeCurrentState(value);
-            }
+        this.handleStateChanged=function (toolValue,e){
+            changeCurrentState(toolValue);
+            //console.log(toolValue);
         };
     }
 
@@ -33,20 +32,21 @@ export default class ToolMenu extends React.Component{
             <div id="largeToolMenu">
                 <div id="ToolMenuTag">
                     ToolMenu &nbsp;
-                    <IconButton>
-                        <ClearIcon onClick={this.handleCloseToolMenu} fontSize="small" style={{marginTop:"auto"}}/>
+                    <IconButton onClick={this.handleCloseToolMenu}>
+                        <ClearIcon  fontSize="small" style={{marginTop:"auto"}}/>
                     </IconButton>
                 </div>
                 <div id="ToolTable">
                     <table>
+                        <tbody>
                         <tr id="TableRow">
                             <td id="TableData">
-                                <IconButton>
-                                    <PlaceTwoToneIcon onClick={this.handleStateChanged("point")} fontSize="medium"></PlaceTwoToneIcon>
+                                <IconButton onClick={this.handleStateChanged.bind(this,"point")}>
+                                    <PlaceTwoToneIcon  fontSize="medium"></PlaceTwoToneIcon>
                                 </IconButton>
                             </td>
                             <td>
-                                <IconButton>
+                                <IconButton onClick={this.handleStateChanged.bind(this,"circle")}>
                                     <PanoramaFishEyeIcon fontSize="medium"></PanoramaFishEyeIcon>
                                 </IconButton>
                             </td>
@@ -87,6 +87,8 @@ export default class ToolMenu extends React.Component{
                                 </IconButton>
                             </td>
                         </tr>
+                        </tbody>
+
                     </table>
                 </div>
 

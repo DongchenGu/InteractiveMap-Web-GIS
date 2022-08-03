@@ -4,29 +4,72 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
+
 export default class CurrentStateDialog extends React.Component{
+    constructor(props) {
+        super(props);
+        this.Dialog= null;
+        this.styleName ="largeCurrentStateDialogGETIN";
+        this.text=null;
 
+    };
 
-    content =null;
     handleLeftClick=()=>{
         console.log("click has been handled");
     };
 
-    componentDidMount(){
-        this.content="into the Full Screen WorkStation";
-    };
+
+    componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
+        setTimeout(()=>{this.props.closeStateDialog();
+                               console.log("StateDialog has been removed")},"2000");
+    }
 
     render() {
+        if( this.props.CurrentState==="point"){
+            this.text="Draw your PointMark on Map";
+            this.styleName ="largeCurrentStateDialog";
+        }
+        if(this.props.CurrentState==="circle"){
+            this.text="Draw your CircleMark on Map";
+            this.styleName ="largeCurrentStateDialog";
+        }
+        if(this.props.CurrentState==="outFullScreen"){
+            this.text="out";
+        }
+        if(this.props.CurrentState==="intoFullScreen"){
+            this.text="into the Full Screen Mode";
+        }
+
+        if(this.props.CurrentState==="intoFullScreen"){
+            this.Dialog=<div className={this.styleName}>
+                            <div id="close">
+                                <IconButton onClick={this.handleLeftClick}>
+                                    <ChevronLeftIcon  fontSize="large"/>
+                                </IconButton>
+                            </div>
+                            <div id="content">
+                                {this.text}
+                            </div>
+                        </div>
+        }
+
+       if(this.props.CurrentState!=="intoFullScreen"){
+            this.Dialog=<div className={this.styleName}>
+                            <div id="close">
+                                <IconButton onClick={this.handleLeftClick}>
+                                    <ChevronLeftIcon  fontSize="large"/>
+                                </IconButton>
+                            </div>
+                            <div id="content">
+                                {this.text}
+                            </div>
+                        </div>
+        }
+
+
         return(
-            <div className="largeCurrentStateDialog">
-                <div id="close">
-                    <IconButton>
-                        <ChevronLeftIcon onClick={this.handleLeftClick} fontSize="large"/>
-                    </IconButton>
-                </div>
-                <div id="content">
-                    {this.content}
-                </div>
+            <div>
+                {this.Dialog}
             </div>
 
         );
@@ -35,5 +78,10 @@ export default class CurrentStateDialog extends React.Component{
 
 }
 
-//   transform: translateX(-80vw);
-//     transition: all 1s;
+
+
+// animation-delay: 2s;
+//     animation-duration: 4s;
+//     animation-name: slideout;
+//     animation-iteration-count: 1;
+//     animation-fill-mode: forwards;

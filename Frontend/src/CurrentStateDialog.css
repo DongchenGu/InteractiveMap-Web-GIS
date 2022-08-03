@@ -3,7 +3,7 @@
     flex-direction: row;
     justify-content: center;
     margin-bottom: 4vh;
-    margin-left: 1vw;
+    margin-left: 0vw;
     margin-top: 86vh;
 
     height:10vh;
@@ -17,12 +17,63 @@
     padding: 5px;
 
 
+    transition: all 1s;
+    animation-delay: 4s;
+     animation-duration: 4s;
+     animation-name: slideout;
+     animation-iteration-count: 1;
+     animation-fill-mode: forwards;
 
 }
 
-.dialog_visible {
-    transform: translateX(0);
+.largeCurrentStateDialogGETIN {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 4vh;
+    margin-left: -80vw;
+    margin-top: 86vh;
+
+    height:10vh;
+    width: fit-content;
+    position: absolute;
+    z-index: 990;
+    color: #01194b;
+    background-color: #faf8f8;
+    opacity: 70%;
+    font:bold 20px/24px Verdana, Geneva, sans-serif;
+    padding: 5px;
+
+    transition: all 1s;
+    animation-duration: 2s;
+    animation-name: slidein;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+
 }
+
+
+
+
+@keyframes slideout {
+    0%{
+        transform: translateX(0);
+    }
+    100%{
+        transform: translateX(-80vw);
+    }
+}
+@keyframes slidein {
+    60%{
+        transform: translateX(40vw);
+    }
+    100%{
+        transform: translateX(80vw);
+    }
+}
+
+
+
 #close{
     display: flex;
     flex-direction: column;
