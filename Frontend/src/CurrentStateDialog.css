@@ -18,7 +18,7 @@
 
 
     transition: all 1s;
-    animation-delay: 4s;
+    animation-delay: 6s;
      animation-duration: 4s;
      animation-name: slideout;
      animation-iteration-count: 1;
@@ -45,7 +45,7 @@
     padding: 5px;
 
     transition: all 1s;
-    animation-duration: 2s;
+    animation-duration: 8s;
     animation-name: slidein;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
@@ -57,18 +57,24 @@
 
 @keyframes slideout {
     0%{
-        transform: translateX(0);
+        opacity: 70%;
     }
     100%{
-        transform: translateX(-80vw);
+        opacity: 0;
     }
 }
 @keyframes slidein {
-    60%{
-        transform: translateX(40vw);
+    0%{
+        transform: translateX(35vw);
+    }
+    20%{
+        transform: translateX(80vw);
+    }
+    80%{
+        transform: translateX(80vw);
     }
     100%{
-        transform: translateX(80vw);
+        transform: translateX(35vw);
     }
 }
 

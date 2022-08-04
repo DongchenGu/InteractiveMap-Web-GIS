@@ -17,6 +17,7 @@ import NMenu from "./NMenu";
 
 
 class App extends React.Component{
+    timer = true;
     state={
         isFull: false,
         OSMUrl: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
@@ -25,7 +26,8 @@ class App extends React.Component{
         StateDialog: false,
         CurrentState: null,
     }
-
+    //计时器的flag
+    stateTimer = null;
     fullScreenSwitch= ()=>{
         //console.log("切换全屏")
         var temp = this.state.isFull;
@@ -51,7 +53,6 @@ class App extends React.Component{
         this.setState({MapMenu: false});
     }
     openToolMenu=()=>{
-        console.log("hello");
         this.setState({ToolMenu: true});
     }
     closeToolMenu=()=>{
@@ -62,6 +63,20 @@ class App extends React.Component{
     };
     closeStateDialog=()=>{
         this.setState({StateDialog:false});
+    }
+    //设置计时器来关掉stateDialog
+    setTimerToCloseDialog=()=>{
+        this.stateTimer = setTimeout(()=>{ this.stateTimer=null; this.closeStateDialog();console.log("Dialog timeOut")},"8000");
+        //setTimeout(this.timeToCloseDialog,"200");
+    }
+    //在改变currentState前关掉stateTimer并且关闭dialog
+    clearTimerAboutStateDialog=()=>{
+            if(this.stateTimer!==null){
+                clearTimeout(this.stateTimer);
+                this.closeStateDialog();
+                this.stateTimer=null;
+                console.log("timer has been removed")
+            }
     }
 
 
@@ -75,10 +90,15 @@ class App extends React.Component{
             MapProvider=<MapProviderMenu changeProvider={this.changeProvider} closeProviderMenu={this.closeProviderMenu}/>
         }
         if(this.state.ToolMenu===true){
-            Tool=<ToolMenu  closeToolMenu={this.closeToolMenu} changeCurrentState={this.changeCurrentState} />
+            Tool=<ToolMenu  closeToolMenu={this.closeToolMenu}
+                            changeCurrentState={this.changeCurrentState}
+                            setTimerToCloseDialog={this.setTimerToCloseDialog}
+                            clearTimerAboutStateDialog={this.clearTimerAboutStateDialog}/>
         }
         if(this.state.StateDialog===true){
-            StateDialog=<CurrentStateDialog CurrentState={this.state.CurrentState} closeStateDialog={this.closeStateDialog}/>
+            StateDialog=<CurrentStateDialog
+                CurrentState={this.state.CurrentState}
+                />
             //setTimeout(function(){alert("Hello")},5000);
         }
 

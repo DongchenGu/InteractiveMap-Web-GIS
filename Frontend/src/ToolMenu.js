@@ -16,13 +16,21 @@ export default class ToolMenu extends React.Component{
 
     constructor(props) {
         super(props);
-        const {closeToolMenu,changeCurrentState} = props;
+        const {closeToolMenu,changeCurrentState,setTimerToCloseDialog,clearTimerAboutStateDialog} = props;
         this.handleCloseToolMenu=()=>{
             closeToolMenu();
         };
+        //仅当当前工具Tool改变的时候才执行后面的，否则点击同一个工具多次的时候，会不停地刷新dom导致性能问题
+        this.currentTool= null;
         this.handleStateChanged=function (toolValue,e){
-            changeCurrentState(toolValue);
-            //console.log(toolValue);
+            if(this.currentTool!== toolValue){
+                this.currentTool=toolValue;
+                clearTimerAboutStateDialog();
+                setTimeout(()=>{changeCurrentState(toolValue);
+                    setTimerToCloseDialog();},200);
+            }else{
+                return;
+            }
         };
     }
 
