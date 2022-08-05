@@ -1,6 +1,6 @@
 import './Navigation.css'
 import React from 'react';
-import logo from "./logo.svg"
+import logo from "../../images/logo.svg"
 import Button from '@mui/material/Button';
 import {SvgIcon, TextField} from "@mui/material";
 import Icon from '@mui/material/Icon';
@@ -11,9 +11,9 @@ import Switch from '@mui/material/Switch';
 import IconButton from '@mui/material/IconButton';
 import PersonIcon from '@mui/icons-material/Person';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-import NMenu from "./NMenu";
+import NMenu from "../NMenu/NMenu";
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
-import AccountMenu from "./AccountMenu";
+import AccountMenu from "../AccountMenu/AccountMenu";
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 
 

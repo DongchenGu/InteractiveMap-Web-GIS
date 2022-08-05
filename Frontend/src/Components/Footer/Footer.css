@@ -23,13 +23,13 @@
     width: 30px;
     height: 30px;
     display:block;
-    background: url("facebook.png") center/cover;
+    background: url("../../images/facebook.png") center/cover;
 }
 #shareOnTwitter{
     width: 30px;
     height: 30px;
     display:block;
-    background: url("Twitter.png") center/cover;
+    background: url("../../images/Twitter.png") center/cover;
 }
 
 

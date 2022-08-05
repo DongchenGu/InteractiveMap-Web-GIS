@@ -1,19 +1,19 @@
-import logo from './logo.svg';
+import logo from '../../images/logo.svg';
 import './App.css';
-import Navigation from "./Navigation";
+import Navigation from "../Navigation/Navigation";
 import {render} from "react-dom";
-import Map from "./OriginMap"
+import Map from "../OriginMap/OriginMap"
 import React from "react";
-import OriginMap from "./OriginMap";
+import OriginMap from "../OriginMap/OriginMap";
 import ReactDOM from 'react-dom';
-import Footer from './Footer'
-import MapProviderMenu from './MapProviderMenu'
-import ToolMenu from "./ToolMenu";
-import CurrentStateDialog from './CurrentStateDialog'
+import Footer from '../Footer/Footer'
+import MapProviderMenu from '../MapProviderMenu/MapProviderMenu'
+import ToolMenu from "../ToolMenu/ToolMenu";
+import CurrentStateDialog from '../CurrentStateDialog/CurrentStateDialog'
 
 
-import Title from "./Title"
-import NMenu from "./NMenu";
+import Title from "../Title/Title"
+import NMenu from "../NMenu/NMenu";
 
 
 class App extends React.Component{
