@@ -12,11 +12,13 @@
     "@testing-library/user-event": "^13.5.0",
     "bootstrap": "^5.2.0",
     "leaflet": "^1.8.0",
+    "package.json": "^2.0.1",
     "react": "^17.0.0",
     "react-bootstrap": "^2.4.0",
     "react-dom": "^17.0.0",
     "react-leaflet": "^4.0.1",
     "react-load-script": "^0.0.6",
+    "react-router-dom": "^6.3.0",
     "react-scripts": "^5.0.1",
     "web-vitals": "^2.1.4"
   },
