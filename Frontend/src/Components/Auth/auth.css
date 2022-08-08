@@ -1,0 +1,74 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;1,300;1,400&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+.ct{
+    font-family: 'Raleway', sans-serif;
+    /*background-color: #3580ee;*/
+    background-image: url("./img_1.png");
+    background-size: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.authBorder{
+
+    height: 80vh;
+    width: 30vw;
+    min-width: 300px;
+    background:rgba(255,255,255,0.15);
+    box-shadow: 0 8px 32px 0 darkgray;
+    backdrop-filter: blur(3.5px);
+    border-radius: 10px;
+    letter-spacing: 0.4rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*justify-content: space-between;*/
+    /*align-items: center;*/
+
+}
+
+.welcome{
+    margin: 2rem 0 2rem 0;
+    color: white;
+}
+
+.inputContainer{
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*justify-content: space-around;*/
+    /*align-items: center;*/
+    /*height: auto;*/
+    /*width: 100%;*/
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translate3d(-100%, 0, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/*添加动画*/
+.anime{
+    animation-duration: 1s;
+    animation-fill-mode: both;
+    animation-name: fadeInLeft;
+}
+
+.slide-top{-webkit-animation:slide-top .5s cubic-bezier(.25,.46,.45,.94) both;animation:slide-top .5s cubic-bezier(.25,.46,.45,.94) both}

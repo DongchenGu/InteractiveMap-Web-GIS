@@ -147,9 +147,7 @@ class App extends React.Component{
         return(
             <div id="App">
                 {Index}
-                <div id="endMenu">
-                    <Footer/>
-                </div>
+                {/*<Footer/>*/}
             </div>
         )
 

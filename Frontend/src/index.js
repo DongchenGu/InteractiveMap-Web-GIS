@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './Components/APP/App';
+import RouterApp from "./RouterApp";
 import reportWebVitals from './reportWebVitals';
 
 var toolBarTag = false;
@@ -10,7 +11,7 @@ var toolBarTag = false;
 
 ReactDOM.render(
     <React.StrictMode>
-        <App />
+        <RouterApp />
     </React.StrictMode>,
     document.getElementById('root')
 );

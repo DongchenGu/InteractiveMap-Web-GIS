@@ -2,12 +2,13 @@ import React from 'react';
 import {Container, createTheme, ThemeProvider} from "@material-ui/core";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
-import App from "./App"
-import Footer from "./Footer"
-import Auth from "./components/Auth/Auth"
-import Navigation from "./Navigation"
+import App from "./Components/APP/App"
+import Footer from "./Components/Footer/Footer"
+import Auth from "./Components/Auth/Auth"
+import "./RouterApp.css"
+// import Navigation from "./Navigation"
 
-import "./App.css"
+// import "./App.css"
 
 const theme = createTheme({
   palette: {
@@ -29,10 +30,10 @@ const RouterApp = ()=>{
                     <ThemeProvider theme={theme}>
                         <Container maxWidth="xl">
                             {/*<Navbar/>*/}
-                            <Navigation/>
+                            {/*<Navigation/>*/}
                             <Routes>
                                 <Route path="/" exact element={<App/>}/>
-                                <Route path="/auth" exact element={<Auth id={"endMenu"}/>}/>
+                                <Route path="/auth" exact element={<Auth/>}/>
                             </Routes>
                             <Footer/>
                         </Container>

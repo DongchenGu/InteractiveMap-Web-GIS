@@ -1,0 +1,12 @@
+.input{
+  /*width: 100%;*/
+  /*padding: 12px 20px;*/
+  /*display: inline-block;*/
+  /*color: white;*/
+  width: 95%;
+
+}
+
+.MuiInputBase-input{
+  color: white;
+}

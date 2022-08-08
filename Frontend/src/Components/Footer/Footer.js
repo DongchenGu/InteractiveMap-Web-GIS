@@ -14,7 +14,7 @@ export  default  class Footer extends  React.Component{
 
     render() {
         return (
-            <div>
+            <div id="endMenu">
 
                 <div className="table">
                         <div className='tr'>
