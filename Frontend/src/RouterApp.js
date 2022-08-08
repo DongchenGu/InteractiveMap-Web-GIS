@@ -28,7 +28,6 @@ const RouterApp = ()=>{
 
             <Router>
                     <ThemeProvider theme={theme}>
-                        <Container maxWidth="xl">
                             {/*<Navbar/>*/}
                             {/*<Navigation/>*/}
                             <Routes>
@@ -36,13 +35,10 @@ const RouterApp = ()=>{
                                 <Route path="/auth" exact element={<Auth/>}/>
                             </Routes>
                             <Footer/>
-                        </Container>
                     </ThemeProvider>
             </Router>
-
-
-
     )
+    /*<Container maxWidth="xl"></Container>*/
 }
 
 export default RouterApp;

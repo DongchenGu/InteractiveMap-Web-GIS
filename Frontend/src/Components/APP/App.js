@@ -147,7 +147,7 @@ class App extends React.Component{
         return(
             <div id="App">
                 {Index}
-                {/*<Footer/>*/}
+                {/* <Footer/>*/}
             </div>
         )
 

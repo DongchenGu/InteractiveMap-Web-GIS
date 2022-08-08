@@ -4,9 +4,16 @@
   /*display: inline-block;*/
   /*color: white;*/
   width: 95%;
+  margin-top: 1vh;
+  margin-bottom: 1vh;
 
 }
 
 .MuiInputBase-input{
-  color: white;
+}
+.MuiInputBase-root{
+  color: white !important;
+}
+.MuiFormLabel-root.Mui-focused{
+  color:#000000 !important;
 }
