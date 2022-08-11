@@ -120,7 +120,7 @@ class App extends React.Component{
                             </div>
                             <div id="canvas">
                                 <div id="indexMap">
-                                    <OriginMap OSMUrl={this.state.OSMUrl}/>
+                                    <OriginMap OSMUrl={this.state.OSMUrl}  CurrentState={this.state.CurrentState}/>
                                 </div>
                             </div>
                     </div>
@@ -139,7 +139,7 @@ class App extends React.Component{
                             </div>
                             {Tool}
                             {MapProvider}
-                            <OriginMap OSMUrl={this.state.OSMUrl}/>
+                            <OriginMap OSMUrl={this.state.OSMUrl} CurrentState={this.state.CurrentState} />
                         </div>
                     </div>
         }
