@@ -53,18 +53,18 @@ export default class CurrentStateDialog extends React.Component{
                         </div>
         }
 
-       if(this.props.CurrentState!=="intoFullScreen"){
-            this.Dialog=<div className={this.styleName}>
-                            <div id="close">
-                                <IconButton onClick={this.handleLeftClick}>
-                                    <ChevronLeftIcon  fontSize="large"/>
-                                </IconButton>
-                            </div>
-                            <div id="content">
-                                {this.text}
-                            </div>
-                        </div>
-        }
+       // if(this.props.CurrentState!=="intoFullScreen"){
+       //      this.Dialog=<div className={this.styleName}>
+       //                      <div id="close">
+       //                          <IconButton onClick={this.handleLeftClick}>
+       //                              <ChevronLeftIcon  fontSize="large"/>
+       //                          </IconButton>
+       //                      </div>
+       //                      <div id="content">
+       //                          {this.text}
+       //                      </div>
+       //                  </div>
+       //  }
 
 
         return(

@@ -10,6 +10,8 @@ import Footer from '../Footer/Footer'
 import MapProviderMenu from '../MapProviderMenu/MapProviderMenu'
 import ToolMenu from "../ToolMenu/ToolMenu";
 import CurrentStateDialog from '../CurrentStateDialog/CurrentStateDialog'
+import Property from '../Property/Property'
+
 
 
 import Title from "../Title/Title"
@@ -25,6 +27,7 @@ class App extends React.Component{
         ToolMenu: false,
         StateDialog: false,
         CurrentState: null,
+        Property:true,
     }
     //计时器的flag
     stateTimer = null;
@@ -52,6 +55,13 @@ class App extends React.Component{
     closeProviderMenu=()=>{
         this.setState({MapMenu: false});
     }
+
+    openProperty=()=>{
+        this.setState({Property:true});
+    }
+    closeProperty=()=>{
+        this.setState({Property:false});
+    }
     openToolMenu=()=>{
         this.setState({ToolMenu: true});
     }
@@ -64,6 +74,9 @@ class App extends React.Component{
     closeStateDialog=()=>{
         this.setState({StateDialog:false});
     }
+
+
+
     //设置计时器来关掉stateDialog
     setTimerToCloseDialog=()=>{
         this.stateTimer = setTimeout(()=>{ this.stateTimer=null; this.closeStateDialog();console.log("Dialog timeOut")},"8000");
@@ -86,6 +99,7 @@ class App extends React.Component{
         let MapProvider =null;
         let Tool= null;
         let StateDialog = null;
+        let PropertyDialog=null;
         if(this.state.MapMenu===true){
             MapProvider=<MapProviderMenu changeProvider={this.changeProvider} closeProviderMenu={this.closeProviderMenu}/>
         }
@@ -101,6 +115,13 @@ class App extends React.Component{
                 />
             //setTimeout(function(){alert("Hello")},5000);
         }
+        if(this.state.Property===true){
+            PropertyDialog=<Property CurrentState={this.state.CurrentState}
+                                     closeProperty={this.closeProperty}/>
+        }
+
+
+
 
 
 
@@ -109,6 +130,7 @@ class App extends React.Component{
 
                             {Tool}
                             {MapProvider}
+                            {PropertyDialog}
                             <div id="Describe">
                                 <Navigation  checkFull={this.fullScreenSwitch}
                                              isFull={this.state.isFull}
@@ -132,6 +154,7 @@ class App extends React.Component{
                                      changeMapMenu={this.state.changeMapMenu}
                                      openProviderMenu={this.openProviderMenu}
                                      openToolMenu={this.openToolMenu}
+                                     openProperty={this.openProperty}
                         />
                         <div id="fullScreenMap">
                             <div id="stateDialog">
@@ -139,6 +162,7 @@ class App extends React.Component{
                             </div>
                             {Tool}
                             {MapProvider}
+                            {PropertyDialog}
                             <OriginMap OSMUrl={this.state.OSMUrl} CurrentState={this.state.CurrentState} />
                         </div>
                     </div>

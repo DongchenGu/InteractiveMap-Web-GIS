@@ -47,17 +47,6 @@ class  OriginMap  extends React.Component{
     //it's used to shut down the listener of the previous event
     previousState= null;
 
-    handlePointTool = ()=>{
-        var temp=null;
-        console.log("调用到这个PointTool")
-        mymap.on('click',pointClick);
-    }
-    handleCircleTool = ()=>{
-        console.log("已经调用到CircleTool");
-        mymap.on('click', function(ev) {
-            alert(ev.latlng); // ev 是一个事件对象（本例中是 MouseEvent ）
-        });
-    };
 
 
     componentDidMount() {
@@ -77,16 +66,10 @@ class  OriginMap  extends React.Component{
     componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
         const{OSMUrl,CurrentState} = this.props;
         L.tileLayer(OSMUrl).addTo(mymap);
-        //off all the listener
-        if (this.previousState==="point"){
-            mymap.off('click',pointClick);
-        }else if (this.previousState==="circle"){
 
-        }
-
-        //open listener
+        //open listener for once
         if(CurrentState ==="point"){
-            mymap.on('click',pointClick);
+            mymap.once('click',pointClick);
         }else if(CurrentState ==="circle"){
             console.log("点击了圆形tool");
             console.log(pointStack);

@@ -24,7 +24,7 @@ class Navigation extends React.Component{
 
 
     render() {
-        const {isFull,checkFull,openProviderMenu,openToolMenu} = this.props;
+        const {isFull,checkFull,openProviderMenu,openToolMenu,openProperty} = this.props;
         return(
             <div id="navigation">
                 <div id="leftBar">
@@ -45,7 +45,9 @@ class Navigation extends React.Component{
                         <AccountMenu/>
                     </div>
                     <div id="menu">
-                        <NMenu openProviderMenu={openProviderMenu} openToolMenu={openToolMenu}/>
+                        <NMenu openProviderMenu={openProviderMenu}
+                               openToolMenu={openToolMenu}
+                               openProperty={openProperty}/>
                     </div>
 
 
