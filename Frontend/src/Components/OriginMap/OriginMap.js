@@ -2,39 +2,61 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import React from "react";
 import './OriginMap.css'
+import markerIcon from 'leaflet/dist/images/marker-icon.png'
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
+import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 
 const position = [51.505, -0.09]
 
+//global variables to store the data
 let mymap = null;
-var myimage = L.icon({
-    iconUrl:'../images/point.png', //图片url
-    iconSize:[12,12],     //设置图片大小 宽度50.高度100
-    iconAnchor: [0,0] ,   //设置定位点的位置。默认为中心  例子中以左上角为定位参考。相当于relative
-    popupAnchor:[50 ,0],   //设置警示框位置 ，以iconAnchor的值进行定位。相当于absolute 例子中的警示框定位到有、右上角。
+let pointStack=[];
+//this is the default pointMark image
+let point = L.icon({
+    iconUrl: markerIcon,
+    iconRetinaUrl: markerIcon2x,
+    shadowUrl: markerShadow,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    tooltipAnchor: [16, -28],
+    shadowSize: [41, 41]
 });
 
+//for you to cstomize the mark image
+var LeafIcon = L.Icon.extend({
+    options: {
+        iconSize:     [25, 41],
+        shadowSize:   [50, 64],
+        iconAnchor:   [22, 94],
+        shadowAnchor: [4, 62],
+        popupAnchor:  [-3, -76]
+    }
+});
+
+function pointClick(ev) {
+    var name ="point"+(pointStack.length+1);
+    L.marker(ev.latlng,{icon:point}).addTo(mymap);
+    pointStack.push(ev.latlng);
+    //alert(ev.latlng); // ev 是一个事件对象（本例中是 MouseEvent ）
+}
+
+
+
 class  OriginMap  extends React.Component{
-
-     state={
-            pointStack:[],
-        }
-
+    //it's used to shut down the listener of the previous event
+    previousState= null;
 
     handlePointTool = ()=>{
-        const {pointStack} = this.state;
         var temp=null;
         console.log("调用到这个PointTool")
-        mymap.on('click', function(ev) {
-            var name =pointStack.length+1;
-            var marker = L.marker(ev.latlng,).addTo(mymap);
-            //pointStack.push({[name]:temp});
-            //alert(ev.latlng); // ev 是一个事件对象（本例中是 MouseEvent ）
-        });
-
+        mymap.on('click',pointClick);
     }
     handleCircleTool = ()=>{
         console.log("已经调用到CircleTool");
-
+        mymap.on('click', function(ev) {
+            alert(ev.latlng); // ev 是一个事件对象（本例中是 MouseEvent ）
+        });
     };
 
 
@@ -42,17 +64,34 @@ class  OriginMap  extends React.Component{
         const{OSMUrl,CurrentState} = this.props;
         mymap = L.map("originMap").setView([45.4131, -75.7026], 12);
         L.tileLayer(OSMUrl).addTo(mymap);
+        if(pointStack.length>0){
+             pointStack.map((obj)=>{
+                 L.marker(obj,{icon:point}).addTo(mymap);
+             })
+            console.log(">0")
+        }
+
 
     }
 
     componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
         const{OSMUrl,CurrentState} = this.props;
         L.tileLayer(OSMUrl).addTo(mymap);
-        if(CurrentState ==="point"){
-            this.handlePointTool();
-        }else if(CurrentState ==="circle"){
-            this.handleCircleTool();
+        //off all the listener
+        if (this.previousState==="point"){
+            mymap.off('click',pointClick);
+        }else if (this.previousState==="circle"){
+
         }
+
+        //open listener
+        if(CurrentState ==="point"){
+            mymap.on('click',pointClick);
+        }else if(CurrentState ==="circle"){
+            console.log("点击了圆形tool");
+            console.log(pointStack);
+        }
+        this.previousState = CurrentState;
     }
 
     render() {
