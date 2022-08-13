@@ -2,16 +2,22 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import React from "react";
 import './OriginMap.css'
+import {useSelector} from "react-redux";
 
-const position = [51.505, -0.09]
+
+// const position = [51.505, -0.09]
+
+// const coord = useSelector(state => state.navi.coord)
 
 class  OriginMap  extends React.Component{
-
     mymap = null;
 
+
+
     componentDidMount() {
+        // console.log(this.props.coord)
         const {OSMUrl} =this.props;
-        this.mymap = L.map("originMap").setView([45.4131, -75.7026], 12);
+        this.mymap = L.map("originMap").setView([51.505, -0.09], 12);
         L.tileLayer(OSMUrl).addTo(this.mymap);
 
         /**
@@ -43,7 +49,9 @@ class  OriginMap  extends React.Component{
     }
 
     componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
-        const {OSMUrl} =this.props;
+        console.log(this.props)
+        const {OSMUrl, coord} = this.props;
+        // console.log(coord)
         L.tileLayer(OSMUrl).addTo(this.mymap);
     }
 

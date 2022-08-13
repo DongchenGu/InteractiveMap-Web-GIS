@@ -31,7 +31,7 @@ class Navigation extends React.Component{
             <div id="navigation">
                 <div id="leftBar">
                     <Button  id="Nbutton1">FindCity -></Button>
-                    <Search/>
+                    <Search getCoord={this.props.getCoord}/>
                     {/*<TextField id="outlined-basic" label="CityName" variant="outlined"  size="small"/>*/}
                 </div>
 

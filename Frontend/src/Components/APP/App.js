@@ -25,7 +25,15 @@ class App extends React.Component{
         ToolMenu: false,
         StateDialog: false,
         CurrentState: null,
+        coord:[51.505, -0.09]
     }
+
+    getCoord = (coord) => {
+        // console.log(coord)
+        this.setState({...this.state, coord:coord})
+    }
+
+
     //计时器的flag
     stateTimer = null;
     fullScreenSwitch= ()=>{
@@ -115,6 +123,7 @@ class App extends React.Component{
                                              changeMapMenu={this.state.changeMapMenu}
                                              openProviderMenu={this.openProviderMenu}
                                              openToolMenu={this.openToolMenu}
+                                             getCoord={this.getCoord}
                                 />
                                 <Title/>
                             </div>
@@ -139,7 +148,7 @@ class App extends React.Component{
                             </div>
                             {Tool}
                             {MapProvider}
-                            <OriginMap OSMUrl={this.state.OSMUrl}/>
+                            <OriginMap OSMUrl={this.state}/>
                         </div>
                     </div>
         }
