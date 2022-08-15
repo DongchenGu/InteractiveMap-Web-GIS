@@ -11,6 +11,10 @@ import CropLandscapeIcon from '@mui/icons-material/CropLandscape';
 import ShowChartIcon from '@mui/icons-material/ShowChart';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import SpellcheckIcon from '@mui/icons-material/Spellcheck';
+import PubSub from 'pubsub-js'
+import LayersClearTwoToneIcon from '@mui/icons-material/LayersClearTwoTone';
+
+
 
 export default class ToolMenu extends React.Component{
 
@@ -34,8 +38,13 @@ export default class ToolMenu extends React.Component{
         //     }
         // };
         this.handleStateChanged=function (toolValue,e){
+            if(this.currentTool!== toolValue){
+                this.currentTool=toolValue;
+                changeCurrentState(toolValue);
+            }else{
+                PubSub.publish(toolValue, 'xxxx');
+                    }
 
-               changeCurrentState(toolValue);
         };
 
     }
@@ -99,6 +108,15 @@ export default class ToolMenu extends React.Component{
                                 <IconButton>
                                     <ArrowRightAltIcon fontSize="medium"></ArrowRightAltIcon>
                                 </IconButton>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <IconButton onClick={this.handleStateChanged.bind(this,"deleteItems")}>
+                                    <LayersClearTwoToneIcon fontSize="medium"></LayersClearTwoToneIcon>
+                                </IconButton>
+
                             </td>
                         </tr>
                         </tbody>

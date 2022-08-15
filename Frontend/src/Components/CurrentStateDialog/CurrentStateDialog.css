@@ -45,7 +45,7 @@
     padding: 5px;
 
     transition: all 1s;
-    animation-duration: 8s;
+    animation-duration: 5s;
     animation-name: slidein;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;

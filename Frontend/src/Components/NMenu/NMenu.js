@@ -21,7 +21,6 @@ export default function NMenu(props) {
     };
     const handleProperty = ()=>{
         openProperty();
-        console.log("已被调用");
     }
 
 

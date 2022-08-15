@@ -1,17 +1,17 @@
 #largeProperty{
     display: flex;
     flex-direction: column;
-    margin-top: 80vh;
-    margin-left: 82vw;
-    margin-right: 0.5vw;
+    margin-top: 84vh;
+    margin-left: 10%;
+    float:right;
     height: 10vh;
-    width: 16vw;
-    position: absolute;
+    width: fit-content;
     z-index: 999;
     border-radius: 10px 10px;
     color: #01194b;
     background-color: #faf8f8;
     opacity: 70%;
+    position: absolute;
 
     padding: 0;
 }
