@@ -23,10 +23,13 @@
 #canvas {
   margin-top: 0px;
   width: 100%;
-  height: 92vh;
+  height: 90vh;
   margin-left: auto;
   margin-right: auto;
   background: url("../../images/backGround2.jpg") center/cover;
+  padding-left: 9%;
+  padding-right: 9%;
+  padding-bottom: 10%;
 }
 #indexMap{
   height: 80vh;

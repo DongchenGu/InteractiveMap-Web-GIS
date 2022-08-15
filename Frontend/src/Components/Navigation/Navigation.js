@@ -24,7 +24,7 @@ class Navigation extends React.Component{
 
 
     render() {
-        const {isFull,checkFull,openProviderMenu,openToolMenu,openProperty} = this.props;
+        const {IsFull,checkFull,openProviderMenu,openToolMenu,openProperty} = this.props;
         return(
             <div id="navigation">
                 <div id="leftBar">
@@ -37,7 +37,7 @@ class Navigation extends React.Component{
                     <IconButton >
                         <DeleteTwoToneIcon/>
                     </IconButton>
-                    <FormControlLabel control={<Switch checked={isFull} onChange={checkFull} name="isFull"/>}   />
+                    <FormControlLabel control={<Switch checked={IsFull} onChange={checkFull} name="isFull"/>}   />
                     <div id="fullScreenSwitchIcon">
                         <OpenInFullIcon style={{fontSize:"x-large"}}/>
                     </div>

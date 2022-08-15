@@ -18,6 +18,9 @@ let pointToken=null;
 let mymap = null;
 let pointStack=[];
 let focusedPoint=null;
+let CurrentStateGlobal=null;
+//给每一个Marker对象一个独立的id，方便进行查找
+let idMarker =0;
 //this is the default pointMark image
 let point = L.icon({
     iconUrl: markerIcon,
@@ -59,20 +62,39 @@ let redIcon = new L.Icon({
 
 
 function pointClick(ev) {
-    var name ="point"+(pointStack.length+1);
+    let index= idMarker++;
+    let name ="point"+index;
     pointToken=L.marker(ev.latlng,{icon:point}).addTo(mymap).on('click',function (ev){
-        if(this.getLatLng()!==focusedPoint){
-            pointStack.map((obj,index)=>{
-                obj.pointToken.setIcon(point);
-            })
-            this.setIcon(redIcon);
+        if(CurrentStateGlobal !=="deleteItems"){
+            if(this.getLatLng()!==focusedPoint){
+                pointStack.map((obj,index)=>{
+                    obj.pointToken.setIcon(point);
+                })
+                this.setIcon(redIcon);
+            }
+            PubSub.publish('property',{'LL':this.getLatLng()});
         }
-        PubSub.publish('property',{'LL':this.getLatLng()});
+        else{
+            //要从pointStack中移出相应的点
+            deletePoint(this.id);
+            this.removeFrom(mymap);
+        }
+
     });
     focusedPoint = pointToken;
+    //强行向Marker对象中写入id，便于查找
+    pointToken.id=index;
     pointStack.push({id:name,pointToken:pointToken});
     console.log(pointStack);
     //alert(ev.latlng); // ev 是一个事件对象（本例中是 MouseEvent ）
+}
+//从pointStack中删除点
+function deletePoint(id){
+    pointStack.map((obj,index)=>{
+        if(obj.pointToken.id===id){
+            pointStack.splice(index,1);
+        }
+    });
 }
 
 
@@ -83,7 +105,8 @@ function handleSubscribeTool(msg,data) {
     }else if(msg==="circle"){
         console.log(msg);
     }else if(msg==="deleteItems"){
-
+        //一个功能按键要能删除所有内容
+        //mymap.on('click',pointClick);
     }
 }
 
@@ -100,20 +123,29 @@ class  OriginMap  extends React.Component{
 
     componentDidMount() {
         const{OSMUrl,CurrentState} = this.props;
+        CurrentStateGlobal = CurrentState;
         mymap = L.map("originMap").setView(position, 12);
         L.tileLayer(OSMUrl).addTo(mymap);
-        if(pointStack.length>0){
-             pointStack.map((obj)=>{
-                 L.marker(obj.pointToken.getLatLng(),{icon: obj.pointToken.getIcon()}).addTo(mymap);
-             })
-            console.log(">0")
-        }
+        // if(mymap ===null){
+        //     mymap = L.map("originMap").setView(position, 12);
+        //     L.tileLayer(OSMUrl).addTo(mymap);
+        // }else{
+        //     mymap = L.map("originMap").setView(position, 12);
+        //     L.tileLayer(OSMUrl).addTo(mymap);
+        //     if(pointStack.length>0){
+        //         pointStack.map((obj)=>{
+        //             L.marker(obj.pointToken.getLatLng(),{icon: obj.pointToken.getIcon()}).addTo(mymap);
+        //         })
+        //     }
+        // }
+
         let token1 = PubSub.subscribe("point", handleSubscribeTool);
         let token2 = PubSub.subscribe("deleteItems", handleSubscribeTool);
     }
 
     componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
         const{OSMUrl,CurrentState} = this.props;
+        CurrentStateGlobal = CurrentState;
         L.tileLayer(OSMUrl).addTo(mymap);
 
         //open listener for once
