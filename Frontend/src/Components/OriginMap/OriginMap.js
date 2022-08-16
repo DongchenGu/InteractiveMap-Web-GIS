@@ -10,9 +10,10 @@ import {icon} from "leaflet/dist/leaflet-src.esm";
 import RedIcon from "../../images/marker-icon-2x-red.png"
 import MarkerShadow from '../../images/marker-shadow.png'
 import GreenIcon from '../../images/marker-icon-2x-green.png'
+import {useEffect,useState} from "react";
 
 
-let position = [51.505, -0.09]
+let position = [45.2498, -76.0804];
 let pointToken=null;
 //global variables to store the data
 let mymap = null;
@@ -115,16 +116,18 @@ function handleSubscribeTool(msg,data) {
 
 
 
-class  OriginMap  extends React.Component{
+  function OriginMap(props) {
     //it's used to shut down the listener of the previous event
-    previousState= null;
+    let previousState = null;
+    const {OSMUrl, CurrentState,IsFull} = props;
+    if(CurrentState==="intoFullScreen"){
+        mymap.invalidateSize(true);
+    }
 
-
-
-    componentDidMount() {
-        const{OSMUrl,CurrentState} = this.props;
+    //ComponentDidMount
+    useEffect(() => {
         CurrentStateGlobal = CurrentState;
-        mymap = L.map("originMap").setView(position, 12);
+        mymap = L.map("originMap").setView(position, 10);
         L.tileLayer(OSMUrl).addTo(mymap);
         // if(mymap ===null){
         //     mymap = L.map("originMap").setView(position, 12);
@@ -141,29 +144,29 @@ class  OriginMap  extends React.Component{
 
         let token1 = PubSub.subscribe("point", handleSubscribeTool);
         let token2 = PubSub.subscribe("deleteItems", handleSubscribeTool);
-    }
+    }, []);
 
-    componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
-        const{OSMUrl,CurrentState} = this.props;
+
+    //ComponentDidUpdate
+    useEffect(() => {
         CurrentStateGlobal = CurrentState;
         L.tileLayer(OSMUrl).addTo(mymap);
-
+        mymap.invalidateSize(true);
         //open listener for once
-        if(CurrentState ==="point"){
-            mymap.once('click',pointClick);
-        }else if(CurrentState ==="circle"){
+        if (CurrentState === "point") {
+            mymap.once('click', pointClick);
+        } else if (CurrentState === "circle") {
             console.log("点击了圆形tool");
             console.log(pointStack);
-        }else if(CurrentState ==="deleteItems"){
+        } else if (CurrentState === "deleteItems") {
             console.log("点击了删除选项");
         }
-    }
+    });
 
-    render() {
-        return(
-            <div  id="originMap"></div>
-        );
-    }
+
+    return (
+        <div id="originMap" className="originMap"></div>
+    );
 }
 
-export default OriginMap;
+export  {mymap,OriginMap};

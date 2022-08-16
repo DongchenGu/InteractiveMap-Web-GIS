@@ -1,6 +1,12 @@
-#originMap{
-    height: 80vh;
-    width: inherit;
-    margin-left: inherit;
-    margin-right: inherit;
+.originMap{
+    height: calc(100% - 8vh);
+    width: 100%;
+}
+.originMapFull{
+    height: 90vh;
+    width: 100%;
+
+}
+
+.leaflet-pane.leaflet-map-pane{
 }

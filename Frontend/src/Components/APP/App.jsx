@@ -1,9 +1,8 @@
 
 import './App.css';
 import Navigation from "../Navigation/Navigation";
-import Map from "../OriginMap/OriginMap"
+import {mymap,OriginMap} from "../OriginMap/OriginMap"
 import React, {useState} from "react";
-import OriginMap from "../OriginMap/OriginMap";
 import ReactDOM from 'react-dom';
 import Footer from '../Footer/Footer'
 import MapProviderMenu from '../MapProviderMenu/MapProviderMenu'
@@ -27,7 +26,7 @@ export  default function App(){
     const [MapProviderMenuOpen, setMapProviderMenuOpen] = useState(false);
     const [ToolMenuOpen, setToolMenuOpen] = useState(false);
     const [CurrentStateDialogOpen, setCurrentStateDialogOpen] = useState(false);
-    const [CurrentState, setCurrentState] = useState(null);
+    const [CurrentState, setCurrentState] = useState("outFullScreen");
     const [PropertyOpen, setPropertyOpen] = useState(true);
 
 
@@ -51,6 +50,8 @@ export  default function App(){
             // eslint-disable-next-line no-unused-expressions
             setCurrentStateDialogOpen(!temp);
             setCurrentState("intoFullScreen");
+
+
         }
         if(temp ===true){
             setCurrentStateDialogOpen(!temp);
@@ -153,8 +154,9 @@ export  default function App(){
                               </div> : null}
 
                     <div   id={IsFull===false? "canvas":"fullScreenMap"}ref={ manageFull }>
-                                     <OriginMap OSMUrl={OSMUrl}  CurrentState={CurrentState}/>
-                    </div>
+                                     <OriginMap OSMUrl={OSMUrl}  CurrentState={CurrentState} IsFull={IsFull}/>
+
+            </div>
             {/*{IsFull===false? null:*/}
             {/*    manageFull.current.style.width='100%'*/}
             {/*    manageFull.current.style.height}*/}
