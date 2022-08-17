@@ -16,7 +16,12 @@ let CirclePop = null;
 let tempCircle =null;
 let circleI= null;
 let radius = 0;
+let circleStack =[];
+let idCircle=0;
+let focusedCircle=null;
+
 let position = [45.2498, -76.0804];
+
 let pointToken=null;
 //global variables to store the data
 let mymap = null;
@@ -76,7 +81,7 @@ function pointClick(ev) {
                 })
                 this.setIcon(redIcon);
             }
-            PubSub.publish('property',{'LL':this.getLatLng()});
+            PubSub.publish('pointProperty',{'LL':this.getLatLng()});
         }
         else{
             //要从pointStack中移出相应的点
@@ -103,6 +108,7 @@ function deletePoint(id){
 
 //----------------------------------------------------------------used to draw circle
 function drawCircle(){
+    let index = idCircle++;
     tempCircle = new L.circle();
     mymap.dragging.disable();//将mousemove事件移动地图禁用
     mymap.once('mousedown', (e)=>{
@@ -114,7 +120,10 @@ function drawCircle(){
         mymap.on('mousemove', drawCircleOnMove);
         //监听鼠标弹起事件
         mymap.on('mouseup', drawCircleOnmouseUp);
-
+        //save into the stack
+        tempCircle.id = index;
+        circleStack.push({id:index,circleToken:tempCircle});
+        console.log(circleStack);
     });
 }
 
@@ -125,8 +134,9 @@ function drawCircleOnMove(e){
             //绘制圆心位置与半径
             tempCircle.setLatLng(circleI)
             tempCircle.setRadius(radius)
-            tempCircle.setStyle({ color: '#ff0000',  fillOpacity: 0 })
-            mymap.addLayer(tempCircle)
+            tempCircle.setStyle({ color: '#000000',  fillOpacity: 0 })
+            //tempCircle.addTo(mymap);
+            mymap.addLayer(tempCircle);
         }
         //toFixed()方法用来保留两位小数（四舍五入）
         CirclePop.setContent("绘制圆半径为："+radius.toFixed(2)+"米");
@@ -135,7 +145,7 @@ function drawCircleOnMove(e){
         if (circleI) {
             tempCircle.setLatLng(circleI)
             tempCircle.setRadius(radius)
-            tempCircle.setStyle({ color: '#ff0000',  fillOpacity: 0 })
+            tempCircle.setStyle({ color: '#000000',  fillOpacity: 0 })
             mymap.addLayer(tempCircle)
         }
         CirclePop.setContent("绘制圆半径为："+radius+"米");;
@@ -145,8 +155,23 @@ function drawCircleOnMove(e){
 function drawCircleOnmouseUp(){
     /* r = L.latLng(e.latlng).distanceTo(i); */
     mymap.removeLayer(CirclePop);
-    L.circle(circleI, { radius: radius, color: '#ff0000',  fillOpacity: 0 });
+    //L.circle(circleI, { radius: radius, color: '#ff0000',  fillOpacity: 0 });
     mymap.addLayer(tempCircle);
+    tempCircle.on('click',function (e){
+        if(CurrentStateGlobal!== "deleteItems"){
+            if(this.id !== focusedCircle){
+                circleStack.map((obj)=>{
+                    obj.circleToken.setStyle({color: '#000000'});
+                })
+                this.setStyle({color:'#ff0000'});
+                focusedCircle =this.id;
+                PubSub.publish('circleProperty',{'CC':this.getLatLng(),'CR':this.getRadius()});
+            }
+        }else{
+                deleteCircle(this.id);
+                this.removeFrom(mymap);
+        }
+    });
     mymap.dragging.enable();
     //focus on the circle
     //mymap.setView(circleI,13);
@@ -159,7 +184,13 @@ function drawCircleOnmouseUp(){
     mymap.off('mousemove');
 }
 
-
+function  deleteCircle(id){
+    circleStack.map((obj,index)=>{
+        if(obj.id===id){
+            circleStack.splice(index,1);
+        }
+    });
+}
 
 //----------------------------------------------------------------------
 //用来分发pubsub的订阅消息

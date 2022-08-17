@@ -14,7 +14,7 @@ import { FullScreen, useFullScreenHandle } from "react-full-screen"
 
 import Title from "../Title/Title"
 import NMenu from "../NMenu/NMenu";
-
+import Draggable from 'react-draggable'; // The default
 
 
 export  default function App(){
@@ -130,8 +130,9 @@ export  default function App(){
             //setTimeout(function(){alert("Hello")},5000);
         }
         if(PropertyOpen===true){
-            PropertyDialog=<Property CurrentState={CurrentState}
-                                     closeProperty={closeProperty}/>
+            PropertyDialog= <Property CurrentState={CurrentState}
+                                          closeProperty={closeProperty}/>
+
         }
 
 
