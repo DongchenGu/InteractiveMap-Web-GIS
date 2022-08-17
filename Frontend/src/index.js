@@ -4,6 +4,7 @@ import './index.css';
 import App from './Components/APP/App';
 import RouterApp from "./RouterApp";
 import reportWebVitals from './reportWebVitals';
+import {BrowserRouter} from "react-router-dom";
 
 var toolBarTag = false;
 
@@ -11,7 +12,9 @@ var toolBarTag = false;
 
 ReactDOM.render(
     <React.StrictMode>
-        <RouterApp />
+        <BrowserRouter>
+            <RouterApp />
+        </BrowserRouter>
     </React.StrictMode>,
     document.getElementById('root')
 );

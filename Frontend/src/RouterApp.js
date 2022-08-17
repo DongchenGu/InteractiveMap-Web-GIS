@@ -1,14 +1,16 @@
 import React from 'react';
 import {Container, createTheme, ThemeProvider} from "@material-ui/core";
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 
-import App from "./Components/APP/App"
+//import App from "./Components/APP/App"
 import Footer from "./Components/Footer/Footer"
-import Auth from "./Components/Auth/Auth"
+//import Auth from "./Components/Auth/Auth"
 import "./RouterApp.css"
 // import Navigation from "./Navigation"
-
+import { useRoutes} from 'react-router-dom';
 // import "./App.css"
+import routes from './Components/Routes/Route';
+
 
 const theme = createTheme({
   palette: {
@@ -21,22 +23,14 @@ const theme = createTheme({
   },
 });
 
-const RouterApp = ()=>{
-
+function RouterApp(){
+    const element = useRoutes(routes);
     // const user = JSON.parse(localStorage.getItem('profile'))
     return(
-
-            <Router>
                     <ThemeProvider theme={theme}>
-                            {/*<Navbar/>*/}
-                            {/*<Navigation/>*/}
-                            <Routes>
-                                <Route path="/" exact element={<App/>}/>
-                                <Route path="/auth" exact element={<Auth/>}/>
-                            </Routes>
-                            <Footer/>
+                              {element}
+                        <Footer/>
                     </ThemeProvider>
-            </Router>
     )
     /*<Container maxWidth="xl"></Container>*/
 }

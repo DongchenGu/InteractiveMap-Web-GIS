@@ -12,7 +12,10 @@ import MarkerShadow from '../../images/marker-shadow.png'
 import GreenIcon from '../../images/marker-icon-2x-green.png'
 import {useEffect,useState} from "react";
 
-
+let CirclePop = null;
+let tempCircle =null;
+let circleI= null;
+let radius = 0;
 let position = [45.2498, -76.0804];
 let pointToken=null;
 //global variables to store the data
@@ -61,7 +64,7 @@ let redIcon = new L.Icon({
     shadowSize: [41, 41]
 });
 
-
+//---------------------------------------------------------------------used to draw point
 function pointClick(ev) {
     let index= idMarker++;
     let name ="point"+index;
@@ -86,7 +89,7 @@ function pointClick(ev) {
     //强行向Marker对象中写入id，便于查找
     pointToken.id=index;
     pointStack.push({id:name,pointToken:pointToken});
-    console.log(pointStack);
+    //console.log(pointStack);
     //alert(ev.latlng); // ev 是一个事件对象（本例中是 MouseEvent ）
 }
 //从pointStack中删除点
@@ -98,14 +101,75 @@ function deletePoint(id){
     });
 }
 
+//----------------------------------------------------------------used to draw circle
+function drawCircle(){
+    tempCircle = new L.circle();
+    mymap.dragging.disable();//将mousemove事件移动地图禁用
+    mymap.once('mousedown', (e)=>{
+        //确定圆心
+        circleI = e.latlng
+        CirclePop=L.popup().setLatLng(e.latlng);
+        mymap.addLayer(CirclePop);
+        //监听鼠标移动事件
+        mymap.on('mousemove', drawCircleOnMove);
+        //监听鼠标弹起事件
+        mymap.on('mouseup', drawCircleOnmouseUp);
 
+    });
+}
+
+function drawCircleOnMove(e){
+    radius = L.latLng(e.latlng).distanceTo(circleI);//计算半径
+    if(radius<5000){
+        if (circleI) {
+            //绘制圆心位置与半径
+            tempCircle.setLatLng(circleI)
+            tempCircle.setRadius(radius)
+            tempCircle.setStyle({ color: '#ff0000',  fillOpacity: 0 })
+            mymap.addLayer(tempCircle)
+        }
+        //toFixed()方法用来保留两位小数（四舍五入）
+        CirclePop.setContent("绘制圆半径为："+radius.toFixed(2)+"米");
+    }else{
+        radius=5000;
+        if (circleI) {
+            tempCircle.setLatLng(circleI)
+            tempCircle.setRadius(radius)
+            tempCircle.setStyle({ color: '#ff0000',  fillOpacity: 0 })
+            mymap.addLayer(tempCircle)
+        }
+        CirclePop.setContent("绘制圆半径为："+radius+"米");;
+    }
+}
+
+function drawCircleOnmouseUp(){
+    /* r = L.latLng(e.latlng).distanceTo(i); */
+    mymap.removeLayer(CirclePop);
+    L.circle(circleI, { radius: radius, color: '#ff0000',  fillOpacity: 0 });
+    mymap.addLayer(tempCircle);
+    mymap.dragging.enable();
+    //focus on the circle
+    //mymap.setView(circleI,13);
+
+    circleI = null;
+    radius = 0;
+    //取消监听事件
+    // mymap.off('mousedown');
+    mymap.off('mouseup');
+    mymap.off('mousemove');
+}
+
+
+
+//----------------------------------------------------------------------
+//用来分发pubsub的订阅消息
 function handleSubscribeTool(msg,data) {
     console.log(msg)
     if(msg==="point"){
         mymap.once('click',pointClick);
-    }else if(msg==="circle"){
-        console.log(msg);
-    }else if(msg==="deleteItems"){
+    }else if(msg==="circle") {
+        drawCircle();
+    } else if(msg==="deleteItems"){
         //一个功能按键要能删除所有内容
         //mymap.on('click',pointClick);
     }
@@ -144,6 +208,7 @@ function handleSubscribeTool(msg,data) {
 
         let token1 = PubSub.subscribe("point", handleSubscribeTool);
         let token2 = PubSub.subscribe("deleteItems", handleSubscribeTool);
+        let token3 = PubSub.subscribe("circle", handleSubscribeTool);
     }, []);
 
 
@@ -156,8 +221,9 @@ function handleSubscribeTool(msg,data) {
         if (CurrentState === "point") {
             mymap.once('click', pointClick);
         } else if (CurrentState === "circle") {
+            drawCircle();
             console.log("点击了圆形tool");
-            console.log(pointStack);
+
         } else if (CurrentState === "deleteItems") {
             console.log("点击了删除选项");
         }
