@@ -5,7 +5,10 @@ import IconButton from "@mui/material/IconButton";
 import TextField from '@mui/material/TextField';
 import PubSub from "pubsub-js";
 import { HuePicker,SketchPicker} from 'react-color';
-import Draggable from 'react-draggable'; // The default
+import Draggable from 'react-draggable';
+import ColorPicker from "../ColorPicker/ColorPicker"; // The default
+
+
 
 
 let color="#000000";
@@ -14,11 +17,28 @@ function setColor(){
 }
 
 export  default function Property (props){
+    //状态提升后提上来的
+    const [displayColorPicker,setDisplayColorPicker] = useState(false);
+    const [color, setColor] = useState({
+        r: '0',
+        g: '0',
+        b: '0',
+        a: '1',
+    },);
+
     const [LL, setLL]= useState("N/A");
     const [CC,setCC] = useState("N/A"); //center of circle
     const [CR, setCR] = useState("N/A");
     const nodeRef = React.useRef(null);
 
+
+    //two functions that are used to get the picked color;
+    const setColorPicker=(temp)=>{
+        setDisplayColorPicker(temp);
+    }
+    const setPickedColor=(co)=>{
+        setColor(co);
+    }
 
     const handleCloseToolMenu=()=>{
         props.closeProperty();
@@ -85,20 +105,22 @@ export  default function Property (props){
                             </div>
                             <div id="secondLine">
                                 <div id="toolAttributes">
-                                    center:{CC==="N/A"? "Not choose": CC.lng.toFixed(3)+"/"+CC.lat.toFixed(3)}
-                                    &nbsp;
-                                    radius:{CR==="N/A"? "Not choose" : CR.toFixed(3)}
+                                    Center of the choosen Circle:&nbsp;{CC==="N/A"? "Not choose": CC.lng.toFixed(3)+"/"+CC.lat.toFixed(3)}
                                 </div>
                             </div>
-                            <div  id="thirdLine">
-                                colorPicker:
-                                <div id="colorPicker">
-                                    <SketchPicker
-                                        width="12vw"
-                                        color={color}
-                                        onChangeComplete={ setColor() }
-                                    />
+                            <div id="secondLine">
+                                <div id="toolAttributes">
+                                    Radius of the choosen Circle:&nbsp;{CR==="N/A"? "Not choose" : CR.toFixed(3)}
                                 </div>
+                            </div>
+
+                            <div  id="thirdLine">
+                                Choose color that will use: &nbsp;
+                                <ColorPicker setDisplayColorPicker={setDisplayColorPicker}
+                                             setColor={setColor}
+                                             displayColorPicker={displayColorPicker}
+                                             color={color}
+                                             />
                             </div>
                         </div>
 
