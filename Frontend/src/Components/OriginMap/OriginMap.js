@@ -12,6 +12,12 @@ import MarkerShadow from '../../images/marker-shadow.png'
 import GreenIcon from '../../images/marker-icon-2x-green.png'
 import {useEffect,useState} from "react";
 
+import store from "../Store";
+
+//from redux
+let color = null;
+
+
 let CirclePop = null;
 let tempCircle =null;
 let circleI= null;
@@ -108,6 +114,8 @@ function deletePoint(id){
 
 //----------------------------------------------------------------used to draw circle
 function drawCircle(){
+    console.log(store.getState().color);
+    color =getHexColor(store.getState().color);
     let index = idCircle++;
     tempCircle = new L.circle();
     mymap.dragging.disable();//将mousemove事件移动地图禁用
@@ -134,7 +142,7 @@ function drawCircleOnMove(e){
             //绘制圆心位置与半径
             tempCircle.setLatLng(circleI)
             tempCircle.setRadius(radius)
-            tempCircle.setStyle({ color: '#000000',  fillOpacity: 0 })
+            tempCircle.setStyle({ color: color,  fillOpacity: 0 })
             //tempCircle.addTo(mymap);
             mymap.addLayer(tempCircle);
         }
@@ -145,7 +153,7 @@ function drawCircleOnMove(e){
         if (circleI) {
             tempCircle.setLatLng(circleI)
             tempCircle.setRadius(radius)
-            tempCircle.setStyle({ color: '#000000',  fillOpacity: 0 })
+            tempCircle.setStyle({ color: color,  fillOpacity: 0 })
             mymap.addLayer(tempCircle)
         }
         CirclePop.setContent("绘制圆半径为："+radius+"米");;
@@ -192,7 +200,7 @@ function  deleteCircle(id){
     });
 }
 
-//----------------------------------------------------------------------
+//------------------------------------------------------------------------------
 //用来分发pubsub的订阅消息
 function handleSubscribeTool(msg,data) {
     console.log(msg)
@@ -210,14 +218,28 @@ function handleSubscribeTool(msg,data) {
 
 
 
+//translate color from rgba to hex
+const toHex = (n: number) => `${n > 15 ? '' : 0}${n.toString(16)}`;
+function  getHexColor(colorObj) {
+    const { r, g, b, a = 1 } = colorObj;
+    return `#${toHex(r)}${toHex(g)}${toHex(b)}${a === 1 ? '' : toHex(Math.floor(a * 255))}`;
+}
 
+
+
+//+++++++++++++++++++++++++++++++++++++++++++++++++++React Component++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   function OriginMap(props) {
     //it's used to shut down the listener of the previous event
     let previousState = null;
     const {OSMUrl, CurrentState,IsFull} = props;
+    //自适应画面，防止白屏
     if(CurrentState==="intoFullScreen"){
         mymap.invalidateSize(true);
     }
+
+    //从redux中拿到颜色，转换成hex
+    //color =getHexColor(store.getState().color.toString.);
+      //console.log(store.getState());
 
     //ComponentDidMount
     useEffect(() => {
@@ -246,6 +268,7 @@ function handleSubscribeTool(msg,data) {
     //ComponentDidUpdate
     useEffect(() => {
         CurrentStateGlobal = CurrentState;
+
         L.tileLayer(OSMUrl).addTo(mymap);
         mymap.invalidateSize(true);
         //open listener for once

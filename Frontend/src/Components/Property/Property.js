@@ -8,6 +8,9 @@ import { HuePicker,SketchPicker} from 'react-color';
 import Draggable from 'react-draggable';
 import ColorPicker from "../ColorPicker/ColorPicker"; // The default
 
+//redux
+import store from "../Store";
+import {changeColor} from "../Store/actionCreater";
 
 
 
@@ -20,11 +23,12 @@ export  default function Property (props){
     //状态提升后提上来的
     const [displayColorPicker,setDisplayColorPicker] = useState(false);
     const [color, setColor] = useState({
-        r: '0',
-        g: '0',
-        b: '0',
-        a: '1',
+        r: 0,
+        g: 0,
+        b: 0,
+        a: 1,
     },);
+
 
     const [LL, setLL]= useState("N/A");
     const [CC,setCC] = useState("N/A"); //center of circle
@@ -32,12 +36,11 @@ export  default function Property (props){
     const nodeRef = React.useRef(null);
 
 
-    //two functions that are used to get the picked color;
-    const setColorPicker=(temp)=>{
-        setDisplayColorPicker(temp);
-    }
     const setPickedColor=(co)=>{
         setColor(co);
+        console.log("设置");
+        console.log(co);
+        store.dispatch(changeColor(color));
     }
 
     const handleCloseToolMenu=()=>{
@@ -57,6 +60,7 @@ export  default function Property (props){
     useEffect(()=>{
         PubSub.subscribe('pointProperty',handleSubscribeProperty);
         PubSub.subscribe('circleProperty',handleSubscribeProperty);
+
     },[])
     useEffect(()=>{
         return () => {
@@ -117,7 +121,7 @@ export  default function Property (props){
                             <div  id="thirdLine">
                                 Choose color that will use: &nbsp;
                                 <ColorPicker setDisplayColorPicker={setDisplayColorPicker}
-                                             setColor={setColor}
+                                             setPickedColor={setPickedColor}
                                              displayColorPicker={displayColorPicker}
                                              color={color}
                                              />

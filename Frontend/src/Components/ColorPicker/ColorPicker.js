@@ -4,7 +4,7 @@ import { HuePicker,SketchPicker} from 'react-color';
 
 export default function ColorPicker(props){
 
-    const {setDisplayColorPicker,setColor,displayColorPicker ,color} = props;
+    const {setDisplayColorPicker,setPickedColor,displayColorPicker ,color} = props;
     // const [displayColorPicker,setDisplayColorPicker] = useState(false);
     // const [color, setColor] = useState({
     //     r: '0',
@@ -22,7 +22,7 @@ export default function ColorPicker(props){
         };
 
     const  handleChange = (color) => {
-        setColor(color.rgb);
+        setPickedColor(color.rgb);
         };
 
     const styles = reactCSS({
