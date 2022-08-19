@@ -13,20 +13,38 @@ import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import SpellcheckIcon from '@mui/icons-material/Spellcheck';
 import PubSub from 'pubsub-js'
 import LayersClearTwoToneIcon from '@mui/icons-material/LayersClearTwoTone';
+import {mymap} from "../OriginMap/OriginMap";
 
 
+let StateBeforeoutFullScreen = null;
 
 export default class ToolMenu extends React.Component{
 
+
     constructor(props) {
         super(props);
-        const {closeToolMenu,changeCurrentState,setTimerToCloseDialog,clearTimerAboutStateDialog} = props;
+        const {closeToolMenu,CurrentState,changeCurrentState,setTimerToCloseDialog,clearTimerAboutStateDialog} = props;
         this.handleCloseToolMenu=()=>{
             closeToolMenu();
         };
-        //these codes are used to always listen to the event
+
         //仅当当前工具Tool改变的时候才执行后面的，否则点击同一个工具多次的时候，会不停地刷新dom导致性能问题
-        this.currentTool= null;
+        this.state={
+            CurrentState: CurrentState,
+        }
+
+        this.handleStateChanged=function (toolValue,e){
+            if(this.state.CurrentState!== toolValue){
+                changeCurrentState(toolValue);
+                // console.log("这里执行了")
+                // console.log(CurrentState);
+            }else{
+                PubSub.publish(toolValue, 'xxxx');
+            }
+
+        };
+        //these codes are used to always listen to the event
+
         // this.handleStateChanged=function (toolValue,e){
         //     if(this.currentTool!== toolValue){
         //         this.currentTool=toolValue;
@@ -37,16 +55,33 @@ export default class ToolMenu extends React.Component{
         //         return;
         //     }
         // };
-        this.handleStateChanged=function (toolValue,e){
-            if(this.currentTool!== toolValue){
-                this.currentTool=toolValue;
-                changeCurrentState(toolValue);
-            }else{
-                PubSub.publish(toolValue, 'xxxx');
-                    }
+    }
 
-        };
 
+    static getDerivedStateFromProps(nextProps, prevState) {
+        //该方法内禁止访问this
+        if (nextProps.CurrentState !== prevState.CurrentState) {
+            //通过对比nextProps和prevState，返回一个用于更新状态的对象
+            //console.log("sdfsdf"+prevState.CurrentState);
+            //记住退出全屏之前的状态
+            if(nextProps.CurrentState === "outFullScreen"){
+                StateBeforeoutFullScreen = prevState.CurrentState;
+            }
+            return {
+                CurrentState: nextProps.CurrentState
+            }
+
+        }
+
+        //不需要更新状态，返回null
+        return null
+    }
+
+    componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
+        //恢复退出全屏前的状态
+        if(prevProps.CurrentState === "outFullScreen"){
+            this.props.changeCurrentState(StateBeforeoutFullScreen);
+        }
     }
 
 

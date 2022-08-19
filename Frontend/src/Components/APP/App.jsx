@@ -85,7 +85,7 @@ export  default function App(){
     }
     const changeCurrentState=(stateValue)=>{
        setCurrentState(stateValue);
-        setCurrentStateDialogOpen(true);
+       setCurrentStateDialogOpen(true);
     };
     const closeStateDialog=()=>{
         setCurrentStateDialogOpen(false);
@@ -120,6 +120,7 @@ export  default function App(){
         if(ToolMenuOpen===true){
             Tool=<ToolMenu  closeToolMenu={closeToolMenu}
                             changeCurrentState={changeCurrentState}
+                            CurrentState={CurrentState}
                             setTimerToCloseDialog={setTimerToCloseDialog}
                             clearTimerAboutStateDialog={clearTimerAboutStateDialog}/>
         }

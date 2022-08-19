@@ -52,7 +52,7 @@ export  default function Property (props){
         }else if(msg==='circleProperty'){
             setCC(data.CC);
             setCR(data.CR);
-            console.log("此处一致性")
+           // console.log("此处一致性")
         }
     }
 

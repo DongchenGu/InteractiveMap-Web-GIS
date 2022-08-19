@@ -36,6 +36,10 @@ let focusedPoint=null;
 let CurrentStateGlobal=null;
 //给每一个Marker对象一个独立的id，方便进行查找
 let idMarker =0;
+//引入一个标记，标记从非全屏状态回来
+let BackFlag = false;
+let InitialFlag = true;
+
 //this is the default pointMark image
 let point = L.icon({
     iconUrl: markerIcon,
@@ -165,11 +169,12 @@ function drawCircleOnmouseUp(){
     mymap.removeLayer(CirclePop);
     //L.circle(circleI, { radius: radius, color: '#ff0000',  fillOpacity: 0 });
     mymap.addLayer(tempCircle);
+    tempCircle.originColor=color;
     tempCircle.on('click',function (e){
         if(CurrentStateGlobal!== "deleteItems"){
             if(this.id !== focusedCircle){
                 circleStack.map((obj)=>{
-                    obj.circleToken.setStyle({color: '#000000'});
+                    obj.circleToken.setStyle({color: obj.circleToken.originColor});
                 })
                 this.setStyle({color:'#ff0000'});
                 focusedCircle =this.id;
@@ -258,7 +263,6 @@ function  getHexColor(colorObj) {
         //         })
         //     }
         // }
-
         let token1 = PubSub.subscribe("point", handleSubscribeTool);
         let token2 = PubSub.subscribe("deleteItems", handleSubscribeTool);
         let token3 = PubSub.subscribe("circle", handleSubscribeTool);
@@ -271,17 +275,31 @@ function  getHexColor(colorObj) {
 
         L.tileLayer(OSMUrl).addTo(mymap);
         mymap.invalidateSize(true);
+        //这里当处于非全屏模式，并且绘制了内容的时候，将BackFlag置为TRUE，防止回到全屏模式下的-重新恢复之前的state的时候-自动绘图
+        if(CurrentState === "outFullScreen"&& (pointStack.length>0||circleStack.length>0)){
+            BackFlag =true;
+            console.log("true了")
+            console.log(mymap)
+        }
         //open listener for once
         if (CurrentState === "point") {
-            mymap.once('click', pointClick);
+            if(BackFlag===false){
+                mymap.once('click', pointClick);
+            }else { BackFlag =false;}
         } else if (CurrentState === "circle") {
-            drawCircle();
-            console.log("点击了圆形tool");
-
+            if(BackFlag===false){
+                drawCircle();
+                console.log("点击了圆形tool");
+            }else { BackFlag =false;}
         } else if (CurrentState === "deleteItems") {
-            console.log("点击了删除选项");
+            if(BackFlag===false){
+                console.log("点击了删除选项");
+            }else { BackFlag =false;}
         }
     });
+
+
+
 
 
     return (
