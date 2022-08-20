@@ -1,7 +1,7 @@
 
 import './App.css';
 import Navigation from "../Navigation/Navigation";
-import {mymap,OriginMap} from "../OriginMap/OriginMap"
+import OriginMap from "../OriginMap/OriginMap"
 import React, {useState} from "react";
 import ReactDOM from 'react-dom';
 import Footer from '../Footer/Footer'
@@ -97,6 +97,7 @@ export  default function App(){
     const setTimerToCloseDialog=()=>{
         stateTimer = setTimeout(()=>{ stateTimer=null; closeStateDialog();console.log("Dialog timeOut")},"8000");
         //setTimeout(this.timeToCloseDialog,"200");
+
     }
     //在改变currentState前关掉stateTimer并且关闭dialog
     const clearTimerAboutStateDialog=()=>{

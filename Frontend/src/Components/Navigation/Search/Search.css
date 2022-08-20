@@ -1,0 +1,30 @@
+.dataItem {
+  width: 100%;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  color: black;
+  font-size: small;
+  padding-left: 6px;
+}
+
+.dataItem:hover{
+  background-color: #3580ee;
+  cursor: pointer;
+}
+
+.active{
+  background-color: #3580ee;
+}
+
+.dataResult {
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  overflow: hidden;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 5px;
+  margin-top: 4px;
+}

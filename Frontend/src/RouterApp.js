@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Container, createTheme, ThemeProvider} from "@material-ui/core";
 import { BrowserRouter } from 'react-router-dom'
 
@@ -23,8 +23,10 @@ const theme = createTheme({
   },
 });
 
+
 function RouterApp(){
     const element = useRoutes(routes);
+
     // const user = JSON.parse(localStorage.getItem('profile'))
     return(
                     <ThemeProvider theme={theme}>

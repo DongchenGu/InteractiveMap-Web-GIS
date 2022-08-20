@@ -2,6 +2,7 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import React from "react";
 import './OriginMap.css'
+
 import markerIcon from 'leaflet/dist/images/marker-icon.png'
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
@@ -25,6 +26,7 @@ let radius = 0;
 let circleStack =[];
 let idCircle=0;
 let focusedCircle=null;
+
 
 let position = [45.2498, -76.0804];
 
@@ -98,7 +100,6 @@ function pointClick(ev) {
             deletePoint(this.id);
             this.removeFrom(mymap);
         }
-
     });
     focusedPoint = pointToken;
     //强行向Marker对象中写入id，便于查找
@@ -308,10 +309,10 @@ function  deletePolygon(){
 
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++React Component++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  function OriginMap(props) {
+  export  default function OriginMap(props) {
     //it's used to shut down the listener of the previous event
     let previousState = null;
-    const {OSMUrl, CurrentState,IsFull} = props;
+    const {OSMUrl, CurrentState,IsFull,coord} = props;
     //自适应画面，防止白屏
     if(CurrentState==="intoFullScreen"){
         mymap.invalidateSize(true);
@@ -347,6 +348,9 @@ function  deletePolygon(){
 
     //ComponentDidUpdate
     useEffect(() => {
+        // console.log(coord);
+        //mymap.setView(coord, 12);
+
         CurrentStateGlobal = CurrentState;
 
         L.tileLayer(OSMUrl).addTo(mymap);
@@ -381,11 +385,9 @@ function  deletePolygon(){
 
 
 
-
-
     return (
         <div id="originMap" className="originMap"></div>
     );
 }
 
-export  {mymap,OriginMap};
+
