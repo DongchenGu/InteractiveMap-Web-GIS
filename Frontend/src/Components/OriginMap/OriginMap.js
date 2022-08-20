@@ -213,14 +213,16 @@ function handleSubscribeTool(msg,data) {
         mymap.once('click',pointClick);
     }else if(msg==="circle") {
         drawCircle();
-    } else if(msg==="deleteItems"){
+    }else if(msg==="polygon") {
+        drawPolygon();
+    }else if(msg==="deleteItems"){
         //一个功能按键要能删除所有内容
         //mymap.on('click',pointClick);
     }
 }
 
 
-
+//--------------------------------------------------------------------------------------------------------------
 
 
 //translate color from rgba to hex
@@ -229,6 +231,77 @@ function  getHexColor(colorObj) {
     const { r, g, b, a = 1 } = colorObj;
     return `#${toHex(r)}${toHex(g)}${toHex(b)}${a === 1 ? '' : toHex(Math.floor(a * 255))}`;
 }
+
+//---------------------------------------------------------------------------used to draw
+
+let points, geometry,lines,tempLines,node;
+let polygonToken, polygonStack=[];
+let idPolygon=0;
+function drawPolygon(){
+    if(tempLines){
+        removePolygon();
+    }
+    mymap.doubleClickZoom.disable();
+    lines = new L.polyline([]);
+    tempLines = new L.polyline([],{ dashArray: 5 });
+    points = [];
+    geometry = [];
+    mymap.on('click', onClick);    //click
+    mymap.on('dblclick', onDoubleClick);
+    mymap.on('mousemove', onMove)//双击
+
+    function onClick(e) {
+        points.push([e.latlng.lat, e.latlng.lng])
+        lines.addLatLng(e.latlng)
+        mymap.addLayer(tempLines)
+        mymap.addLayer(lines)
+        node=L.circle(e.latlng, { color: '#ff0000', fillColor: 'ff0000', fillOpacity: 1 }).setRadius(2);
+        mymap.addLayer(node)
+        geometry.push(node)
+    }
+    function onMove(e) {
+        if (points.length > 0) {
+            L.ls = [points[points.length - 1], [e.latlng.lat, e.latlng.lng], points[0]]
+            tempLines.setLatLngs(L.ls)
+            //mymap.addLayer(tempLines)
+        }
+    }
+    function onDoubleClick(e) {
+
+        polygonToken = L.polygon(points,{color: 'red'});
+        polygonToken.id = idPolygon++;
+        polygonToken.color = color;
+
+        mymap.addLayer(polygonToken);
+        console.log(polygonToken);
+
+        polygonStack.push(polygonToken);
+        //geometry.push(L.polygon(points).addTo(mymap))
+        points = [];
+        node=null;
+        //把前面的点击事件都取消掉
+        mymap.off('click', onClick);
+        mymap.off('dblclick', onDoubleClick);
+        mymap.off('mousemove', onMove)//双击地图
+        polygonToken.on('click',()=>{console.log("点击了已经创建好的多边形")})
+
+        mymap.doubleClickZoom.enable();
+        //isInPolygon(marker);
+    }
+}
+function removeCircle(){
+    mymap.removeLayer(tempCircle);
+}
+function removePolygon(){
+    for(let ooo of geometry){
+        ooo.remove();
+    }
+    //mymap.removeLayer(lines);
+    //mymap.removeLayer(tempLines);
+}
+
+
+
 
 
 
@@ -266,6 +339,7 @@ function  getHexColor(colorObj) {
         let token1 = PubSub.subscribe("point", handleSubscribeTool);
         let token2 = PubSub.subscribe("deleteItems", handleSubscribeTool);
         let token3 = PubSub.subscribe("circle", handleSubscribeTool);
+        let token4 = PubSub.subscribe("polygon", handleSubscribeTool);
     }, []);
 
 
@@ -291,7 +365,12 @@ function  getHexColor(colorObj) {
                 drawCircle();
                 console.log("点击了圆形tool");
             }else { BackFlag =false;}
-        } else if (CurrentState === "deleteItems") {
+        }else if(CurrentState === "polygon"){
+            if(BackFlag===false){
+                drawPolygon();
+                console.log("点击了多边形工具");
+            }else { BackFlag =false;}
+        }else if (CurrentState === "deleteItems") {
             if(BackFlag===false){
                 console.log("点击了删除选项");
             }else { BackFlag =false;}

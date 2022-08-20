@@ -13,7 +13,9 @@ import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import SpellcheckIcon from '@mui/icons-material/Spellcheck';
 import PubSub from 'pubsub-js'
 import LayersClearTwoToneIcon from '@mui/icons-material/LayersClearTwoTone';
+import HexagonIcon from '@mui/icons-material/Hexagon';
 import {mymap} from "../OriginMap/OriginMap";
+
 
 
 let StateBeforeoutFullScreen = null;
@@ -111,8 +113,8 @@ export default class ToolMenu extends React.Component{
                         </tr>
                         <tr>
                             <td>
-                                <IconButton>
-                                    <ChangeHistoryIcon fontSize="medium"></ChangeHistoryIcon>
+                                <IconButton onClick={this.handleStateChanged.bind(this,"polygon")}>
+                                    <HexagonIcon fontSize="medium"></HexagonIcon>
                                 </IconButton>
                             </td>
                             <td>
