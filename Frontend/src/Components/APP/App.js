@@ -129,7 +129,7 @@ class App extends React.Component{
                             </div>
                             <div id="canvas">
                                 <div id="indexMap">
-                                    <OriginMap OSMUrl={this.state.OSMUrl}/>
+                                    <OriginMap OSMUrl={this.state.OSMUrl} coord={this.state.coord}/>
                                 </div>
                             </div>
                     </div>
@@ -141,6 +141,7 @@ class App extends React.Component{
                                      changeMapMenu={this.state.changeMapMenu}
                                      openProviderMenu={this.openProviderMenu}
                                      openToolMenu={this.openToolMenu}
+                                     getCoord={this.getCoord}
                         />
                         <div id="fullScreenMap">
                             <div id="stateDialog">
@@ -148,7 +149,7 @@ class App extends React.Component{
                             </div>
                             {Tool}
                             {MapProvider}
-                            <OriginMap OSMUrl={this.state}/>
+                            <OriginMap OSMUrl={this.state.OSMUrl} coord={this.state.coord}/>
                         </div>
                     </div>
         }

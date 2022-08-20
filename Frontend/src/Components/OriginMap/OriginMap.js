@@ -49,10 +49,10 @@ class  OriginMap  extends React.Component{
     }
 
     componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
-        console.log(this.props)
         const {OSMUrl, coord} = this.props;
-        // console.log(coord)
+        console.log(coord);
         L.tileLayer(OSMUrl).addTo(this.mymap);
+        this.mymap.setView(coord, 12);
     }
 
     render() {

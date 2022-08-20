@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import "../Navigation.css"
 import "./Search.css"
 import {TextField} from "@mui/material";
@@ -14,18 +14,20 @@ const Search = ({getCoord}) => {
     const [seconds, setSeconds] = useState(0);
     const [change, setChange] = useState(false);
     const [results, setResults] = useState([]);
+    const [cursor, setCursor] = useState(-1);
 
     const dispatch = useDispatch();
 
     useEffect(()=>{
-       if(change && seconds >= 2 && value !== ''){
+       if(change && seconds >= 1 && value !== ''){
            // console.log(`Sending API call ${value}`)
            // axios.get()
             getRecommendations(value).then((res)=>{
                 // console.log(res.data)
                 let cities = res.data.features.map(city => {
                     let name = city.place_name;
-                    let coord = city.geometry.coordinates
+                    let coord = city.geometry.coordinates;
+                    [coord[0], coord[1]] = [coord[1], coord[0]];
                     if(name.length > 50) name = name.slice(0, 53) + '...';
                     return {name, coord};
                 })
@@ -61,17 +63,43 @@ const Search = ({getCoord}) => {
   }, [focus, seconds]);
 
     const handleCoordinate = (coord) => {
-        // console.log(coord)
         getCoord(coord)
+        setResults([])
     }
+
+    const handleKeyBoard = (e) => {
+        if(cursor > 0 && e.keyCode === 38) setCursor(cursor - 1);
+        if(cursor < 4 && e.keyCode === 40) setCursor(cursor + 1);
+        if(e.keyCode !== 38 && e.keyCode !== 40) setCursor(-1);
+    }
+
+    useEffect(()=> {
+        let coord = results[cursor]?.coord;
+        if(coord !== undefined) {
+            // console.log(cursor, coord)
+            getCoord(coord)
+        }
+    },[cursor])
 
 
     return (
         <div>
-            <TextField onFocus={()=>{setFocus(true)}} onBlur={()=>{setFocus(false);setSeconds(0)}} onChange={handleInput} id="outlined-basic" variant="outlined"  size="small"/>
-            <div className={"dataResult"}>
+            <TextField
+                onFocus={()=>{setFocus(true)}}
+                onBlur={()=>{setFocus(false);setSeconds(0)}}
+                onChange={handleInput}
+                onKeyDown={handleKeyBoard}
+                id="outlined-basic"
+                variant="outlined"
+                size="small"
+            />
+            <div className={"dataResult"} >
                     {results.map((result, index) =>
-                        <a onClick={() => handleCoordinate(result.coord)} key={index} className="dataItem" target="_blank">
+                        <a
+                            onClick={() => handleCoordinate(result.coord)}
+                            key={index}
+                            className={`dataItem ${cursor === index ? 'active':''}`}
+                            target="_blank">
                             <p>{result.name} </p>
                         </a>
                     )}
