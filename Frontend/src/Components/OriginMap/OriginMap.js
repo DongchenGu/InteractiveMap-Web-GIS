@@ -118,7 +118,7 @@ function deletePoint(id){
 
 //----------------------------------------------------------------used to draw circle
 function drawCircle(){
-    console.log(store.getState().color);
+    //console.log(store.getState().color);
     color =getHexColor(store.getState().color);
     let index = idCircle++;
     tempCircle = new L.circle();
@@ -151,7 +151,7 @@ function drawCircleOnMove(e){
             mymap.addLayer(tempCircle);
         }
         //toFixed()方法用来保留两位小数（四舍五入）
-        CirclePop.setContent("绘制圆半径为："+radius.toFixed(2)+"米");
+        CirclePop.setContent("Radius of the circle is："+radius.toFixed(2)+"M");
     }else{
         radius=5000;
         if (circleI) {
@@ -160,7 +160,7 @@ function drawCircleOnMove(e){
             tempCircle.setStyle({ color: color,  fillOpacity: 0 })
             mymap.addLayer(tempCircle)
         }
-        CirclePop.setContent("绘制圆半径为："+radius+"米");;
+        CirclePop.setContent("Radius of the circle is："+radius+"M");;
     }
 }
 
@@ -241,9 +241,10 @@ function drawPolygon(){
     if(tempLines){
         removePolygon();
     }
+    color =getHexColor(store.getState().color);
     mymap.doubleClickZoom.disable();
-    lines = new L.polyline([]);
-    tempLines = new L.polyline([],{ dashArray: 5 });
+    lines = new L.polyline([],{color:color});
+    tempLines = new L.polyline([],{ dashArray: 5, color:color });
     points = [];
     geometry = [];
     mymap.on('click', onClick);    //click
@@ -268,7 +269,7 @@ function drawPolygon(){
     }
     function onDoubleClick(e) {
 
-        polygonToken = L.polygon(points,{color: 'red'});
+        polygonToken = L.polygon(points,{color: color});
         polygonToken.id = idPolygon++;
         polygonToken.color = color;
 
@@ -300,8 +301,9 @@ function removePolygon(){
     //mymap.removeLayer(tempLines);
 }
 
+function  deletePolygon(){
 
-
+}
 
 
 
