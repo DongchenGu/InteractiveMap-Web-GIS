@@ -238,6 +238,7 @@ function  getHexColor(colorObj) {
 let points, geometry,lines,tempLines,node;
 let polygonToken, polygonStack=[];
 let idPolygon=0;
+let focusedPolygon =null;
 function drawPolygon(){
     if(tempLines){
         removePolygon();
@@ -248,6 +249,7 @@ function drawPolygon(){
     tempLines = new L.polyline([],{ dashArray: 5, color:color });
     points = [];
     geometry = [];
+
     mymap.on('click', onClick);    //click
     mymap.on('dblclick', onDoubleClick);
     mymap.on('mousemove', onMove)//双击
@@ -269,14 +271,15 @@ function drawPolygon(){
         }
     }
     function onDoubleClick(e) {
+        mymap.removeLayer(tempLines);
+        mymap.removeLayer(lines);
 
         polygonToken = L.polygon(points,{color: color});
         polygonToken.id = idPolygon++;
         polygonToken.color = color;
 
         mymap.addLayer(polygonToken);
-        console.log(polygonToken);
-
+        //console.log(polygonToken);
         polygonStack.push(polygonToken);
         //geometry.push(L.polygon(points).addTo(mymap))
         points = [];
@@ -285,15 +288,23 @@ function drawPolygon(){
         mymap.off('click', onClick);
         mymap.off('dblclick', onDoubleClick);
         mymap.off('mousemove', onMove)//双击地图
-        polygonToken.on('click',()=>{console.log("点击了已经创建好的多边形")})
+        polygonToken.on('click',function (e){
+            if(CurrentStateGlobal!== "deleteItems"){
+
+            }else{
+                this.removeFrom(mymap);
+                deletePolygon(this.id);
+            }
+        })
 
         mymap.doubleClickZoom.enable();
         //isInPolygon(marker);
     }
 }
+
 function removeCircle(){
-    mymap.removeLayer(tempCircle);
-}
+     mymap.removeLayer(tempCircle);
+ }
 function removePolygon(){
     for(let ooo of geometry){
         ooo.remove();
@@ -302,8 +313,12 @@ function removePolygon(){
     //mymap.removeLayer(tempLines);
 }
 
-function  deletePolygon(){
-
+function  deletePolygon(id){
+    polygonStack.map((obj,index)=>{
+        if(obj.id ===id){
+            polygonStack.splice(index,1);
+        }
+    })
 }
 
 
@@ -350,7 +365,6 @@ function  deletePolygon(){
     useEffect(() => {
         // console.log(coord);
         //mymap.setView(coord, 12);
-
         CurrentStateGlobal = CurrentState;
 
         L.tileLayer(OSMUrl).addTo(mymap);
