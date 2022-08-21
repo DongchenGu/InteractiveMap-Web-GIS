@@ -118,7 +118,7 @@ export default class ToolMenu extends React.Component{
                                 </IconButton>
                             </td>
                             <td>
-                                <IconButton>
+                                <IconButton onClick={this.handleStateChanged.bind(this,"rectangle")}>
                                     <CropLandscapeIcon fontSize="medium"></CropLandscapeIcon>
                                 </IconButton>
                             </td>

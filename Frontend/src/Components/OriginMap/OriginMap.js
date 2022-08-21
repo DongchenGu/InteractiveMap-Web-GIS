@@ -217,7 +217,9 @@ function handleSubscribeTool(msg,data) {
         drawCircle();
     }else if(msg==="polygon") {
         drawPolygon();
-    }else if(msg==="deleteItems"){
+    }else if(msg==="rectangle") {
+        drawRectangle();
+    } else if(msg==="deleteItems"){
         //一个功能按键要能删除所有内容
         //mymap.on('click',pointClick);
     }
@@ -234,7 +236,7 @@ function  getHexColor(colorObj) {
     return `#${toHex(r)}${toHex(g)}${toHex(b)}${a === 1 ? '' : toHex(Math.floor(a * 255))}`;
 }
 
-//---------------------------------------------------------------------------used to draw
+//---------------------------------------------------------------------------used to draw Polygon
 
 let points, geometry,lines,tempLines,node;
 let polygonToken, polygonStack=[];
@@ -275,6 +277,7 @@ function drawPolygon(){
         mymap.removeLayer(tempLines);
         mymap.removeLayer(lines);
 
+
         polygonToken = L.polygon(points,{color: color});
         polygonToken.id = idPolygon++;
         polygonToken.color = color;
@@ -282,9 +285,12 @@ function drawPolygon(){
         mymap.addLayer(polygonToken);
         //console.log(polygonToken);
         polygonStack.push(polygonToken);
-        //geometry.push(L.polygon(points).addTo(mymap))
+        geometry.map((obj)=>{
+            mymap.removeLayer(obj);
+        });
         points = [];
         node=null;
+        geometry=[];
         //把前面的点击事件都取消掉
         mymap.off('click', onClick);
         mymap.off('dblclick', onDoubleClick);
@@ -321,6 +327,78 @@ function  deletePolygon(id){
         }
     })
 }
+
+
+//---------------------------------------------------------------------------used to draw rectangle
+
+let rectangle,rectangleStack=[];
+let idRectangle=0;
+let tmprect=null ;
+const latlngs=[]
+
+function drawRectangle(){
+    color =getHexColor(store.getState().color);
+    mymap.dragging.disable();//将mousemove事件移动地图禁用
+    mymap.once('mousedown', onClick);    //点击地图
+    mymap.once('mouseup',onDoubleClick);
+
+
+    function onClick(e)
+    {
+        // if (tmprect !==null){
+        //     tmprect.remove();
+        // }
+        //左上角坐标
+        latlngs[0]=[e.latlng.lat,e.latlng.lng]
+
+        //开始绘制，监听鼠标移动事件
+        mymap.on('mousemove',onMove)
+
+    }
+    function onMove(e) {
+        latlngs[1]=[e.latlng.lat,e.latlng.lng]
+        //删除临时矩形
+        if ( tmprect!==null){
+            mymap.removeLayer(tmprect);
+        }
+        //添加临时矩形
+        //tmprect =mymap.addLayer( L.rectangle(latlngs,{dashArray:5 ,fillOpacity: 0}));
+         tmprect = L.rectangle(latlngs,{dashArray:5,fillOpacity:0,color:color}).addTo(mymap);
+        //tmprect=L.rectangle(latlngs,{dashArray:5,color:color}).addTo(mymap)
+    }
+
+    function onDoubleClick(e)
+    {
+        //矩形绘制完成，移除临时矩形，并停止监听鼠标移动事件
+        tmprect.remove()
+        mymap.off('mousemove')
+        //右下角坐标
+        latlngs[1]=[e.latlng.lat,e.latlng.lng]
+        rectangle=L.rectangle(latlngs,{
+            color:color,
+            fillOpacity:0,
+            weight:2
+        })
+
+        rectangle.addTo(mymap)
+        //调整view范围
+        tmprect=null;
+        mymap.fitBounds(latlngs)
+        //存入数组
+        let index = idRectangle++;
+        rectangle.id=index;
+        rectangle.color = color;
+
+        rectangleStack.push({id:index,token:rectangle});
+        
+        mymap.dragging.enable();
+    }
+}
+
+//map.off(....) 关闭该事件
+
+//----------------------------------------------------------------------used to draw a triangle
+
 
 
 
@@ -368,6 +446,7 @@ function  deletePolygon(id){
         let token2 = PubSub.subscribe("deleteItems", handleSubscribeTool);
         let token3 = PubSub.subscribe("circle", handleSubscribeTool);
         let token4 = PubSub.subscribe("polygon", handleSubscribeTool);
+        let token5 = PubSub.subscribe("rectangle", handleSubscribeTool);
     }, []);
 
 
@@ -402,6 +481,11 @@ function  deletePolygon(id){
             if(BackFlag===false){
                 drawPolygon();
                 console.log("点击了多边形工具");
+            }else { BackFlag =false;}
+        }else if(CurrentState === "rectangle"){
+            if(BackFlag===false){
+                drawRectangle();
+                console.log("点击了矩形工具");
             }else { BackFlag =false;}
         }else if (CurrentState === "deleteItems") {
             if(BackFlag===false){
