@@ -3,7 +3,7 @@ const initialState = {
     coordinate: [51.505, -0.09]
 }
 export const naviSlice = createSlice({
-    name:"counter",
+    name:"coord",
     initialState,
     reducers:{
         update: (state, action) => {

@@ -12,6 +12,7 @@ import RedIcon from "../../images/marker-icon-2x-red.png"
 import MarkerShadow from '../../images/marker-shadow.png'
 import GreenIcon from '../../images/marker-icon-2x-green.png'
 import {useEffect,useState} from "react";
+import {useSelector} from "react-redux";
 
 import store from "../Store";
 
@@ -310,6 +311,15 @@ function  deletePolygon(){
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++React Component++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   export  default function OriginMap(props) {
+
+
+    const nav = useSelector(state => state.coord.coordinate)
+
+      useEffect(()=>{
+          console.log(nav)
+      },[nav])
+
+
     //it's used to shut down the listener of the previous event
     let previousState = null;
     const {OSMUrl, CurrentState,IsFull,coord} = props;
@@ -325,7 +335,7 @@ function  deletePolygon(){
     //ComponentDidMount
     useEffect(() => {
         CurrentStateGlobal = CurrentState;
-        mymap = L.map("originMap").setView(position, 10);
+        mymap = L.map("originMap").setView(nav, 10);
         L.tileLayer(OSMUrl).addTo(mymap);
         // if(mymap ===null){
         //     mymap = L.map("originMap").setView(position, 12);
@@ -352,6 +362,9 @@ function  deletePolygon(){
         //mymap.setView(coord, 12);
 
         CurrentStateGlobal = CurrentState;
+
+        mymap.setView(nav, 10);
+
 
         L.tileLayer(OSMUrl).addTo(mymap);
         mymap.invalidateSize(true);

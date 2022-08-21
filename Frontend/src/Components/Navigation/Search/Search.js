@@ -7,6 +7,7 @@ import {update} from "../searchSlice";
 import {useDispatch} from "react-redux";
 
 
+
 const Search = ({getCoord}) => {
 
     const [value, setValue] = useState("");
@@ -63,7 +64,10 @@ const Search = ({getCoord}) => {
   }, [focus, seconds]);
 
     const handleCoordinate = (coord) => {
-        getCoord(coord)
+        // console.log(dispatch(update(coord)))
+
+        // getCoord(coord)
+        dispatch(update(coord))
         setResults([])
     }
 
@@ -77,7 +81,8 @@ const Search = ({getCoord}) => {
         let coord = results[cursor]?.coord;
         if(coord !== undefined) {
             // console.log(cursor, coord)
-            getCoord(coord)
+            // getCoord(coord)
+            dispatch(update(coord))
         }
     },[cursor])
 
