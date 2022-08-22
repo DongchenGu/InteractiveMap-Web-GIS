@@ -90,7 +90,7 @@ function pointClick(ev) {
         if(CurrentStateGlobal !=="deleteItems"){
             if(this.getLatLng()!==focusedPoint){
                 pointStack.map((obj,index)=>{
-                    obj.pointToken.setIcon(point);
+                    obj.token.setIcon(point);
                 })
                 this.setIcon(redIcon);
             }
@@ -105,14 +105,14 @@ function pointClick(ev) {
     focusedPoint = pointToken;
     //强行向Marker对象中写入id，便于查找
     pointToken.id=index;
-    pointStack.push({id:name,pointToken:pointToken});
+    pointStack.push({id:name,token:pointToken});
     //console.log(pointStack);
     //alert(ev.latlng); // ev 是一个事件对象（本例中是 MouseEvent ）
 }
 //从pointStack中删除点
 function deletePoint(id){
     pointStack.map((obj,index)=>{
-        if(obj.pointToken.id===id){
+        if(obj.token.id===id){
             pointStack.splice(index,1);
         }
     });
@@ -136,8 +136,8 @@ function drawCircle(){
         mymap.on('mouseup', drawCircleOnmouseUp);
         //save into the stack
         tempCircle.id = index;
-        circleStack.push({id:index,circleToken:tempCircle});
-        console.log(circleStack);
+        circleStack.push({id:index,token:tempCircle});
+        //console.log(circleStack);
     });
 }
 
@@ -176,7 +176,7 @@ function drawCircleOnmouseUp(){
         if(CurrentStateGlobal!== "deleteItems"){
             if(this.id !== focusedCircle){
                 circleStack.map((obj)=>{
-                    obj.circleToken.setStyle({color: obj.circleToken.originColor});
+                    obj.token.setStyle({color: obj.token.originColor});
                 })
                 this.setStyle({color:'#ff0000'});
                 focusedCircle =this.id;
@@ -279,12 +279,13 @@ function drawPolygon(){
 
 
         polygonToken = L.polygon(points,{color: color});
-        polygonToken.id = idPolygon++;
+        let index= idPolygon++;
+        polygonToken.id = index;
         polygonToken.color = color;
 
         mymap.addLayer(polygonToken);
         //console.log(polygonToken);
-        polygonStack.push(polygonToken);
+        polygonStack.push({id:index, token:polygonToken});
         geometry.map((obj)=>{
             mymap.removeLayer(obj);
         });
@@ -343,6 +344,7 @@ function drawRectangle(){
     mymap.once('mouseup',onDoubleClick);
 
 
+
     function onClick(e)
     {
         // if (tmprect !==null){
@@ -388,11 +390,27 @@ function drawRectangle(){
         let index = idRectangle++;
         rectangle.id=index;
         rectangle.color = color;
-
         rectangleStack.push({id:index,token:rectangle});
-        
+        console.log(rectangleStack);
+
+        rectangle.on('click',function (e){
+            if(CurrentStateGlobal!=="deleteItems"){
+
+            }else {
+                deleteRectangle(this.id);
+                this.remove();
+            }
+        });
         mymap.dragging.enable();
     }
+}
+
+function  deleteRectangle(id){
+    rectangleStack.map((obj,index)=>{
+        if(obj.id===id){
+            rectangleStack.splice(index,1)
+        }
+    })
 }
 
 //map.off(....) 关闭该事件

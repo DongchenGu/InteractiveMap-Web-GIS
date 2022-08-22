@@ -160,6 +160,37 @@ export  default function Property (props){
                         </div>
 
 
+    const rectangleProperty=<div id ="largeProperty" ref={nodeRef}>
+                                <div id="firstLine">
+                                    <div id="toolName">
+                                        {CurrentState}
+                                    </div>
+                                    <div id="closeIcon">
+                                        <IconButton onClick={handleCloseToolMenu}>
+                                            <ClearIcon  fontSize="small" style={{marginTop:"auto"}}/>
+                                        </IconButton>
+                                    </div>
+                                </div>
+                                <div id="secondLine">
+                                    <div id="toolAttributes">
+                                        Property of a rectangle: &nbsp;
+                                    </div>
+                                </div>
+                                {/*<div id="secondLine">*/}
+                                {/*    <div id="toolAttributes">*/}
+                                {/*        Radius of the choosen Circle:&nbsp;{CR==="N/A"? "Not choose" : CR.toFixed(3)}*/}
+                                {/*    </div>*/}
+                                {/*</div>*/}
+                                <div  id="thirdLine">
+                                    Choose color that will use: &nbsp;
+                                    <ColorPicker setDisplayColorPicker={setDisplayColorPicker}
+                                                 setPickedColor={setPickedColor}
+                                                 displayColorPicker={displayColorPicker}
+                                                 color={color}
+                                    />
+                                </div>
+                            </div>
+
 
     if(CurrentState==="circle"){
             index= <Draggable nodeRef={nodeRef} handle='#firstLine'>
@@ -177,6 +208,13 @@ export  default function Property (props){
                 {polygonProperty}
                 </Draggable>
     }
+    if(CurrentState==="rectangle"){
+        index=<Draggable nodeRef={nodeRef} handle='#firstLine'>
+            {rectangleProperty}
+        </Draggable>
+    }
+
+
 
         return (
             <div>
