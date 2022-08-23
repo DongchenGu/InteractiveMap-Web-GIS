@@ -2,6 +2,9 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import React from "react";
 import './OriginMap.css'
+import * as PIXI from 'pixi.js';
+import 'leaflet-pixi-overlay';
+//import { pixiOverlay } from 'leaflet';
 
 import markerIcon from 'leaflet/dist/images/marker-icon.png'
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
@@ -420,6 +423,37 @@ function  deleteRectangle(id){
 
 
 
+//----------------------------------------------------------------------used to draw text
+let pixiOverlay;
+function drawText(){
+    mymap.once('mousedown', onClick);
+    function onClick(){
+        const container = new PIXI.Container()
+        const text = new PIXI.Text('我是 Pixi Text', { fill: 0xff1010 })
+        container.addChild(text)
+
+
+        const pixiOverlay = L.pixiOverlay((utils) => {
+            const container = utils.getContainer()
+            const renderer = utils.getRenderer()
+            const project = utils.latLngToLayerPoint
+            const scale = utils.getScale()
+
+            const coords = project([51.505, -0.08]) // 需要把经纬度转换为 canvas 上的坐标
+            text.x = coords.x
+            text.y = coords.y
+            text.text = '我是 Pixi Text ' + Math.floor(Math.random() * 100)
+            text.scale.set(1 / scale);
+
+            renderer.render(container)
+        }, container)
+
+        pixiOverlay.addTo(mymap);
+    }
+}
+
+
+
 //+++++++++++++++++++++++++++++++++++++++++++++++++++React Component++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   export  default function OriginMap(props) {
 
@@ -504,6 +538,11 @@ function  deleteRectangle(id){
             if(BackFlag===false){
                 drawRectangle();
                 console.log("点击了矩形工具");
+            }else { BackFlag =false;}
+        }else if(CurrentState === "inputtext"){
+            if(BackFlag===false){
+                drawText();
+                console.log("点击了文字工具");
             }else { BackFlag =false;}
         }else if (CurrentState === "deleteItems") {
             if(BackFlag===false){

@@ -137,7 +137,7 @@ export default class ToolMenu extends React.Component{
                         </tr>
                         <tr>
                             <td>
-                                <IconButton>
+                                <IconButton onClick={this.handleStateChanged.bind(this,"inputtext")}>
                                     <SpellcheckIcon fontSize="medium"></SpellcheckIcon>
                                 </IconButton>
                             </td>

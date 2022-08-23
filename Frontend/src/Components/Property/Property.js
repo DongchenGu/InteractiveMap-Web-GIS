@@ -192,6 +192,8 @@ export  default function Property (props){
                             </div>
 
 
+    
+
     if(CurrentState==="circle"){
             index= <Draggable nodeRef={nodeRef} handle='#firstLine'>
                          {circleProperty}
