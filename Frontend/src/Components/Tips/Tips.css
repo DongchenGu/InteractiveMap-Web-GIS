@@ -1,0 +1,63 @@
+#largeTextTips{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-top: 35vh;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 5px;
+    color: #01194b;
+    background-color: #faf8f8;
+    opacity: 85%;
+    z-index: 1200;
+    height: fit-content;
+    width: fit-content;
+    padding: 5px;
+}
+
+.attributesLine{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+    margin-left: 1vw;
+    margin-right: 2vw;
+    height: fit-content;
+    font:bold 15px/20px Verdana, Geneva, sans-serif;
+}
+#firstLine{
+    font:bold 15px/20px Verdana, Geneva, sans-serif;
+    display: flex;
+    flex-direction: row;
+    width:100% ;
+    height: 5vh;
+    margin-top: 0;
+    align-items: center;
+}
+
+#closeIcon{
+    -ms-flex-align: end;
+    margin-top: 0;
+}
+#toolName{
+    -ms-flex-align: start;
+    height: fit-content;
+    line-height: 5vh;
+    text-align: left;
+    width: 90%;
+
+}
+
+.cover{
+    background: #000;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    filter: alpha(opacity=30);
+    opacity: 0.8;
+    display: block;
+    z-index: 1100;
+    height: 100vw;
+}

@@ -176,11 +176,7 @@ export  default function Property (props){
                                         Property of a rectangle: &nbsp;
                                     </div>
                                 </div>
-                                {/*<div id="secondLine">*/}
-                                {/*    <div id="toolAttributes">*/}
-                                {/*        Radius of the choosen Circle:&nbsp;{CR==="N/A"? "Not choose" : CR.toFixed(3)}*/}
-                                {/*    </div>*/}
-                                {/*</div>*/}
+
                                 <div  id="thirdLine">
                                     Choose color that will use: &nbsp;
                                     <ColorPicker setDisplayColorPicker={setDisplayColorPicker}
@@ -192,7 +188,50 @@ export  default function Property (props){
                             </div>
 
 
-    
+    const inputtextProperty=<div id ="largeProperty" ref={nodeRef}>
+                                <div id="firstLine">
+                                    <div id="toolName">
+                                        TEXT
+                                    </div>
+                                    <div id="closeIcon">
+                                        <IconButton onClick={handleCloseToolMenu}>
+                                            <ClearIcon  fontSize="small" style={{marginTop:"auto"}}/>
+                                        </IconButton>
+                                    </div>
+                                </div>
+                                <div id="secondLine">
+                                    <div id="toolAttributes">
+                                        intput the Text and the attributes: &nbsp;
+                                    </div>
+                                </div>
+                                <div id="secondLine">
+                                    <div id="toolAttributes">
+                                        input your text: &nbsp;
+                                        <input type="text"/>
+                                    </div>
+                                </div>
+                                <div id="secondLine">
+                                    <div id="toolAttributes">
+                                        choose your Font Size: &nbsp;
+                                        <input type="text"/>
+                                    </div>
+                                </div>
+                                <div id="secondLine">
+                                    <div id="toolAttributes">
+                                        choose your Font Family: &nbsp;
+                                        <input type="text"/>
+                                    </div>
+                                </div>
+                                <div  id="thirdLine">
+                                    Choose the Font Color you use: &nbsp;
+                                    <ColorPicker setDisplayColorPicker={setDisplayColorPicker}
+                                                 setPickedColor={setPickedColor}
+                                                 displayColorPicker={displayColorPicker}
+                                                 color={color}
+                                    />
+                                </div>
+                            </div>
+
 
     if(CurrentState==="circle"){
             index= <Draggable nodeRef={nodeRef} handle='#firstLine'>
@@ -215,6 +254,12 @@ export  default function Property (props){
             {rectangleProperty}
         </Draggable>
     }
+    if(CurrentState==="inputtext"){
+        index=<Draggable nodeRef={nodeRef} handle='#firstLine'>
+            {inputtextProperty}
+        </Draggable>
+    }
+
 
 
 

@@ -2,7 +2,7 @@
 import './App.css';
 import Navigation from "../Navigation/Navigation";
 import OriginMap from "../OriginMap/OriginMap"
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import ReactDOM from 'react-dom';
 import Footer from '../Footer/Footer'
 import MapProviderMenu from '../MapProviderMenu/MapProviderMenu'
@@ -10,6 +10,8 @@ import ToolMenu from "../ToolMenu/ToolMenu";
 import CurrentStateDialog from '../CurrentStateDialog/CurrentStateDialog'
 import Property from '../Property/Property'
 import { FullScreen, useFullScreenHandle } from "react-full-screen"
+import Tips from "../Tips/Tips";
+
 
 
 import Title from "../Title/Title"
@@ -28,6 +30,7 @@ export  default function App(){
     const [CurrentStateDialogOpen, setCurrentStateDialogOpen] = useState(false);
     const [CurrentState, setCurrentState] = useState("outFullScreen");
     const [PropertyOpen, setPropertyOpen] = useState(true);
+    const [TipsOpen, setTipsOpen] = useState(false);
 
 
     // let state={
@@ -84,13 +87,27 @@ export  default function App(){
         setToolMenuOpen(false);
     }
     const changeCurrentState=(stateValue)=>{
-       setCurrentState(stateValue);
-       setCurrentStateDialogOpen(true);
+       if(stateValue==="inputtext"){
+           setCurrentState(stateValue);
+           setCurrentStateDialogOpen(true);
+           setTipsOpen(true);
+       }else{
+           setCurrentState(stateValue);
+           setCurrentStateDialogOpen(true);
+       }
+
+
     };
     const closeStateDialog=()=>{
         setCurrentStateDialogOpen(false);
     }
 
+    const openTips=()=>{
+        setTipsOpen(true);
+    }
+    const closeTips=()=>{
+        setTipsOpen(false);
+    }
 
 
     //设置计时器来关掉stateDialog
@@ -115,6 +132,7 @@ export  default function App(){
         let Tool= null;
         let CurrentStateDialogComponent = null;
         let PropertyDialog=null;
+        let TipsDialog = null;
         if(MapProviderMenuOpen===true){
             MapProvider=<MapProviderMenu changeProvider={changeProvider} closeProviderMenu={closeProviderMenu}/>
         }
@@ -123,7 +141,8 @@ export  default function App(){
                             changeCurrentState={changeCurrentState}
                             CurrentState={CurrentState}
                             setTimerToCloseDialog={setTimerToCloseDialog}
-                            clearTimerAboutStateDialog={clearTimerAboutStateDialog}/>
+                            clearTimerAboutStateDialog={clearTimerAboutStateDialog}
+                            openTips={openTips}/>
         }
         if(CurrentStateDialogOpen===true){
             CurrentStateDialogComponent=<CurrentStateDialog
@@ -134,7 +153,10 @@ export  default function App(){
         if(PropertyOpen===true){
             PropertyDialog= <Property CurrentState={CurrentState}
                                           closeProperty={closeProperty}/>
-
+        }
+        if(TipsOpen ===true){
+            TipsDialog =<Tips CurrentState={CurrentState}
+                              closeTips={closeTips}/>
         }
 
 
@@ -143,6 +165,7 @@ export  default function App(){
             {Tool}
             {MapProvider}
             {PropertyDialog}
+            {TipsDialog}
             <Navigation  checkFull={fullScreenSwitch}
                          IsFull={IsFull}
                          openProviderMenu={openProviderMenu}

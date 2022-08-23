@@ -25,7 +25,7 @@ export default class ToolMenu extends React.Component{
 
     constructor(props) {
         super(props);
-        const {closeToolMenu,CurrentState,changeCurrentState,setTimerToCloseDialog,clearTimerAboutStateDialog} = props;
+        const {closeToolMenu,CurrentState,changeCurrentState,setTimerToCloseDialog,clearTimerAboutStateDialog,openTips} = props;
         this.handleCloseToolMenu=()=>{
             closeToolMenu();
         };
