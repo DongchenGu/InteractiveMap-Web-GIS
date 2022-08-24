@@ -10,13 +10,17 @@ import ColorPicker from "../ColorPicker/ColorPicker"; // The default
 
 //redux
 import store from "../Store";
-import {changeColor, changeText} from "../Store/actionCreater";
+import {changeColor, changeFontSize, changeText} from "../Store/actionCreater";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Input from '@mui/material/Input';
+import Slider from '@mui/material/Slider';
+
 const ariaLabel = { 'aria-label': 'description' };
+
+
 
 let color="#000000";
 function setColor(){
@@ -33,6 +37,9 @@ export  default function Property (props){
         a: 1,
     },);
     const [text,setText]= useState("N/A")
+    const [size, setSize] = React.useState(10);
+   // let size =4;
+    const [fontFamily, setFontFamily] = React.useState("Arial");
 
     const [LL, setLL]= useState("N/A");
     const [CC,setCC] = useState("N/A"); //center of circle
@@ -199,11 +206,15 @@ export  default function Property (props){
         store.dispatch(changeText(text));
     };
 
-    const [size, setSize] = React.useState(5);
-    const [fontFamily, setFontFamily] = React.useState("Arial");
+
     const handleSizeChange = (event) => {
+        console.log("size "+event.target.value);
         setSize(event.target.value);
+        //转换一下大小，数越大，结果越小，换成scale，用户更直观一些
+        store.dispatch(changeFontSize(1/size));
     };
+
+
     const handleFontFamilyChange = (event) => {
         setFontFamily(event.target.value);
     };
@@ -242,36 +253,70 @@ export  default function Property (props){
                                         <tr>
                                             <td>
                                                 <div className="inputAttributes">
-                                                    <div>choose your Font Size: &nbsp;</div>
+                                                    <div>choose your Font Size(zoom level): &nbsp;</div>
                                                 </div>
+                                                <div id="FontSizeExplain">if you zoom the map in high level, you need to choose the large number: &nbsp;</div>
                                             </td>
                                             <td>
-                                                     <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                                                    <InputLabel id="demo-select-small">size</InputLabel>
-                                                    <Select
-                                                        labelId="demo-select-small"
-                                                        id="demo-select-small"
+                                                <div id="FontSizeExplain">
+                                                    <Slider
                                                         value={size}
-                                                        label="size"
                                                         onChange={handleSizeChange}
-                                                    >
-                                                        {/*<MenuItem value="">*/}
-                                                        {/*    <em>None</em>*/}
-                                                        {/*</MenuItem>*/}
-                                                        <MenuItem value={4}>4</MenuItem>
-                                                        <MenuItem value={5}>5</MenuItem>
-                                                        <MenuItem value={6}>6</MenuItem>
-                                                        <MenuItem value={7}>7</MenuItem>
-                                                        <MenuItem value={8}>8</MenuItem>
-                                                        <MenuItem value={9}>9</MenuItem>
-                                                        <MenuItem value={10}>10</MenuItem>
-                                                        <MenuItem value={11}>11</MenuItem>
-                                                        <MenuItem value={12}>12</MenuItem>
-                                                        <MenuItem value={13}>13</MenuItem>
-                                                        <MenuItem value={14}>14</MenuItem>
-                                                        <MenuItem value={15}>15</MenuItem>
-                                                    </Select>
-                                                </FormControl>
+                                                        size="small"
+                                                        defaultValue={10}
+                                                        aria-label="Small"
+                                                        valueLabelDisplay="auto"
+                                                        min={0.5}
+                                                        max={100}
+                                                    />
+                                                </div>
+                                                {/*     <FormControl sx={{ m: 1, minWidth: 120 }} size="small">*/}
+                                                {/*    <InputLabel id="demo-select-small">size</InputLabel>*/}
+                                                {/*    <Select*/}
+                                                {/*        labelId="demo-select-small"*/}
+                                                {/*        id="demo-select-small"*/}
+                                                {/*        value={size}*/}
+                                                {/*        label="size"*/}
+                                                {/*        onChange={handleSizeChange}*/}
+                                                {/*    >*/}
+                                                {/*        /!*<MenuItem value="">*!/*/}
+                                                {/*        /!*    <em>None</em>*!/*/}
+                                                {/*        /!*</MenuItem>*!/*/}
+                                                {/*        <MenuItem value={0.5}>0.5</MenuItem>*/}
+                                                {/*        <MenuItem value={1}>1</MenuItem>*/}
+                                                {/*        <MenuItem value={2}>2</MenuItem>*/}
+                                                {/*        <MenuItem value={3}>3</MenuItem>*/}
+                                                {/*        <MenuItem value={4}>4</MenuItem>*/}
+                                                {/*        <MenuItem value={5}>5</MenuItem>*/}
+                                                {/*        <MenuItem value={6}>6</MenuItem>*/}
+                                                {/*        <MenuItem value={7}>7</MenuItem>*/}
+                                                {/*        <MenuItem value={8}>8</MenuItem>*/}
+                                                {/*        <MenuItem value={9}>9</MenuItem>*/}
+                                                {/*        <MenuItem value={10}>10</MenuItem>*/}
+                                                {/*        <MenuItem value={11}>11</MenuItem>*/}
+                                                {/*        <MenuItem value={12}>12</MenuItem>*/}
+                                                {/*        <MenuItem value={13}>13</MenuItem>*/}
+                                                {/*        <MenuItem value={14}>14</MenuItem>*/}
+                                                {/*        <MenuItem value={15}>15</MenuItem>*/}
+                                                {/*        <MenuItem value={16}>16</MenuItem>*/}
+                                                {/*        <MenuItem value={17}>17</MenuItem>*/}
+                                                {/*        <MenuItem value={18}>18</MenuItem>*/}
+                                                {/*        <MenuItem value={19}>19</MenuItem>*/}
+                                                {/*        <MenuItem value={20}>20</MenuItem>*/}
+                                                {/*        <MenuItem value={21}>21</MenuItem>*/}
+                                                {/*        <MenuItem value={22}>22</MenuItem>*/}
+                                                {/*        <MenuItem value={23}>23</MenuItem>*/}
+                                                {/*        <MenuItem value={24}>24</MenuItem>*/}
+                                                {/*        <MenuItem value={25}>25</MenuItem>*/}
+                                                {/*        <MenuItem value={26}>26</MenuItem>*/}
+                                                {/*        <MenuItem value={26}>26</MenuItem>*/}
+                                                {/*        <MenuItem value={26}>26</MenuItem>*/}
+                                                {/*        <MenuItem value={26}>26</MenuItem>*/}
+                                                {/*        <MenuItem value={26}>26</MenuItem>*/}
+
+
+                                                {/*    </Select>*/}
+                                                {/*</FormControl>*/}
                                             </td>
                                         </tr>
 

@@ -428,24 +428,43 @@ function  deleteRectangle(id){
 //----------------------------------------------------------------------used to draw text
 
 let container;
-let text;
+let Text;
+let text
 let pixiOverlay;
-let projectedPolygon;
+
 let shape = new PIXI.Graphics();
 let map
 let zoom;
+let fontSize =null;
+let fontFamily= null;
+let style=null;
 function drawText(){
     //text = store.getState().text;
     //console.log(text);
     mymap.once('click', onClick);
     function onClick(e){
         let LL = e.latlng;
-        let prevZoom;
-        let firstDraw = true;
+        // let prevZoom;
+        // let firstDraw = true;
+        text = store.getState().text;
+        fontSize = store.getState().fontSize;
+        //console.log("FontSize"+store.getState().fontSize);
+        console.log(store.getState());
+        style = new PIXI.TextStyle({
+            fontFamily: 'Arial', // 字体
+            fontSize: fontSize, // 字号大小
+            fontStyle: 'italic', // 斜体
+            fontWeight: 'bold', //粗体
+            fill: color, // 填充颜色
+            stroke: color, // 描边颜色
+            strokeThickness: 1, // 描边宽度
+            wordWrapWidth: 440, // 每行的长度
+        });
+
 
         container = new PIXI.Container()
-        text = new PIXI.Text(store.getState().text, { fill: 0xff1010 })
-        container.addChild(text)
+        Text = new PIXI.Text(text,{fontFamily: 'Arial'})
+        container.addChild(Text)
 
         pixiOverlay = L.pixiOverlay((utils) => {
 
@@ -457,10 +476,11 @@ function drawText(){
             const scale = utils.getScale();
                 //text.scale.set(1 / scale);
                 //text.text = store.getState().text;
+            Text.scale.set(fontSize)
             const coords = project([LL.lat.toFixed(5), LL.lng.toFixed(5)]) // 需要把经纬度转换为 canvas 上的坐标
-            text.x = coords.x
-            text.y = coords.y
-            text.resolution=12;
+            Text.x = coords.x
+            Text.y = coords.y
+            Text.resolution=20;
                // text.scale.set(1 / scale);
                 //text.scale.set(1 / scale);
                 //text.text = store.getState().text;
@@ -469,7 +489,6 @@ function drawText(){
             // prevZoom = zoom;
             renderer.render(container)
         }, container)
-        console.log(store.getState().text);
         pixiOverlay.addTo(mymap);
     }
 

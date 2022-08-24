@@ -74,7 +74,7 @@
     margin-top: 0.5vh;
     margin-bottom: 0.5vh;
     padding-left: 0.5vw;
-    padding-right: 0.5vw;
+    padding-right: 1vw;
 }
 
 
@@ -95,5 +95,9 @@
 /*    color:#000000 !important;*/
 /*}*/
 
-
+#FontSizeExplain{
+    font-size: x-small;
+    padding-left: 0.5vw;
+    padding-right: 1vw;
+}
 
