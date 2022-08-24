@@ -223,10 +223,13 @@ function handleSubscribeTool(msg,data) {
     }else if(msg==="rectangle") {
         drawRectangle();
     }else if(msg==="inputtext") {
+
         drawText();
     }else if(msg==="deleteItems"){
         //一个功能按键要能删除所有内容
         //mymap.on('click',pointClick);
+    }else if(msg==="deleteTextOneByOne"){
+        deleteText();
     }
 }
 
@@ -427,22 +430,26 @@ function  deleteRectangle(id){
 
 //----------------------------------------------------------------------used to draw text
 
-let container;
+let container = new PIXI.Container();
 let Text;
 let text
 let pixiOverlay;
 
-let shape = new PIXI.Graphics();
+//let shape = new PIXI.Graphics();
 let map
 let zoom;
 let fontSize =null;
 let fontFamily= null;
 let style=null;
+let textStack = [];
+let idText=0;
+let drawTextOnClick;
+
 function drawText(){
     //text = store.getState().text;
     //console.log(text);
-    mymap.once('click', onClick);
-    function onClick(e){
+    mymap.once('click',drawTextOnClick );
+    drawTextOnClick=(e)=>{
         let LL = e.latlng;
         // let prevZoom;
         // let firstDraw = true;
@@ -451,7 +458,7 @@ function drawText(){
         fontFamily = store.getState().fontFamily;
         color = getHexColor(store.getState().color);
         //console.log("FontSize"+store.getState().fontSize);
-        console.log(store.getState());
+       // console.log(store.getState());
         style = new PIXI.TextStyle({
             fontFamily: 'Arial', // 字体
             fontSize: fontSize, // 字号大小
@@ -464,12 +471,13 @@ function drawText(){
         });
 
        // {fontFamily: fontFamily}
-        container = new PIXI.Container()
         Text = new PIXI.Text(text,{fontFamily: fontFamily, fill: color,})
         container.addChild(Text)
 
-        pixiOverlay = L.pixiOverlay((utils) => {
+        //Text.id = idText++;
 
+
+        pixiOverlay = L.pixiOverlay((utils) => {
             map = utils.getMap()
             zoom = map.getZoom()
             const container = utils.getContainer()
@@ -480,7 +488,8 @@ function drawText(){
                 //text.text = store.getState().text;
             Text.scale.set(fontSize)
             const coords = project([LL.lat.toFixed(5), LL.lng.toFixed(5)]) // 需要把经纬度转换为 canvas 上的坐标
-            Text.x = coords.x
+            Text.x = coords.x;
+            Text.sssssssssssssss= coords.x;
             Text.y = coords.y
             Text.resolution=20;
                // text.scale.set(1 / scale);
@@ -491,7 +500,12 @@ function drawText(){
             // prevZoom = zoom;
             renderer.render(container)
         }, container)
+
+        let index = idText++
+        Text.id = index;
         pixiOverlay.addTo(mymap);
+        textStack.push({id:index, tokens:Text});
+        console.log(textStack);
     }
 
     // mymap.on('zoomend', (e) => {
@@ -500,9 +514,25 @@ function drawText(){
     //     pixiOverlay.redraw(container)
     // });
 
+
 }
 
 
+function deleteText(){
+
+    let id = textStack.length-1;
+    container.removeChild( textStack.pop().tokens);
+    // textStack.map((obj,index)=>{
+    //     if(obj.id===textStack.length-1){
+    //         container.removeChild(obj.tokens);
+    //         //textStack.splice(id,1);
+    //         textStack.pop();
+    //     }
+    // })
+    console.log("已经调用到了");
+    console.log(textStack);
+    //console.log(textStack);
+}
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++React Component++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   export  default function OriginMap(props) {
@@ -550,6 +580,8 @@ function drawText(){
         let token4 = PubSub.subscribe("polygon", handleSubscribeTool);
         let token5 = PubSub.subscribe("rectangle", handleSubscribeTool);
         let token6 = PubSub.subscribe("inputtext", handleSubscribeTool);
+        let token7 = PubSub.subscribe("deleteTextOneByOne", handleSubscribeTool);
+
     }, []);
 
 
@@ -570,7 +602,8 @@ function drawText(){
             console.log("true了")
             console.log(mymap)
         }
-        //open listener for once
+        //open listener for once.
+        //在每次状态更新的时候，必须清除之前未完成的绘图点击事件，否则会有多个点击事件叠加
         if (CurrentState === "point") {
             if(BackFlag===false){
                 mymap.once('click', pointClick);
@@ -592,10 +625,11 @@ function drawText(){
             }else { BackFlag =false;}
         }else if(CurrentState === "inputtext"){
             if(BackFlag===false){
+                mymap.off('click',drawTextOnClick);//这里需要先取消事件，因为tips的引入，导致关闭tips后会更新APP的state，导致drawText被调用两次
                 drawText();
                 console.log("点击了文字工具");
             }else { BackFlag =false;}
-        }else if (CurrentState === "deleteItems") {
+        } else if (CurrentState === "deleteItems") {
             if(BackFlag===false){
                 console.log("点击了删除选项");
             }else { BackFlag =false;}

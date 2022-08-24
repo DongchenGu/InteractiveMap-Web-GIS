@@ -17,7 +17,7 @@ import AccountMenu from "../AccountMenu/AccountMenu";
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import Search from "./Search/Search";
 import {Link} from "react-router-dom";
-
+import {deleteAllText} from "../OriginMap/OriginMap"
 
 
 class Navigation extends React.Component{
@@ -38,7 +38,7 @@ class Navigation extends React.Component{
 
                 <div id="rightBar">
                     <IconButton >
-                        <DeleteTwoToneIcon/>
+                        <DeleteTwoToneIcon />
                     </IconButton>
                     <FormControlLabel control={<Switch checked={IsFull} onChange={checkFull} name="isFull"/>}   />
                     <div id="fullScreenSwitchIcon">

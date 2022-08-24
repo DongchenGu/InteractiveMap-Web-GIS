@@ -15,7 +15,7 @@ import PubSub from 'pubsub-js'
 import LayersClearTwoToneIcon from '@mui/icons-material/LayersClearTwoTone';
 import HexagonIcon from '@mui/icons-material/Hexagon';
 import {mymap} from "../OriginMap/OriginMap";
-
+import TextDecreaseIcon from '@mui/icons-material/TextDecrease';
 
 
 let StateBeforeoutFullScreen = null;
@@ -36,12 +36,17 @@ export default class ToolMenu extends React.Component{
         }
 
         this.handleStateChanged=function (toolValue,e){
-            if(this.state.CurrentState!== toolValue){
-                changeCurrentState(toolValue);
-                // console.log("这里执行了")
-                // console.log(CurrentState);
-            }else{
+            if(toolValue==="deleteTextOneByOne"){
+               // console.log("toolmenu里面选中了")
                 PubSub.publish(toolValue, 'xxxx');
+            }else{
+                if(this.state.CurrentState!== toolValue){
+                    changeCurrentState(toolValue);
+                    // console.log("这里执行了")
+                    // console.log(CurrentState);
+                }else{
+                    PubSub.publish(toolValue, 'xxxx');
+                }
             }
 
         };
@@ -142,8 +147,8 @@ export default class ToolMenu extends React.Component{
                                 </IconButton>
                             </td>
                             <td>
-                                <IconButton>
-                                    <ArrowRightAltIcon fontSize="medium"></ArrowRightAltIcon>
+                                <IconButton onClick={this.handleStateChanged.bind(this,"deleteTextOneByOne")}>
+                                    <TextDecreaseIcon fontSize="medium"></TextDecreaseIcon>
                                 </IconButton>
                             </td>
                         </tr>
