@@ -10,7 +10,7 @@
     border-radius: 10px 10px;
     color: #01194b;
     background-color: #faf8f8;
-    opacity: 70%;
+    opacity: 75%;
     position: absolute;
 
     padding: 0;
@@ -62,6 +62,22 @@
     text-align: left;
     width: fit-content;
 }
+
+.inputAttributes{
+    font: 15px/18px Verdana, Geneva, sans-serif;
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+    height: 3vh;
+    align-items: center;
+    justify-content: start;
+    margin-top: 0.5vh;
+    margin-bottom: 0.5vh;
+    padding-left: 0.5vw;
+    padding-right: 0.5vw;
+}
+
+
 #colorPicker{
     width: 12vw;
     height: auto;
@@ -78,5 +94,6 @@
 /*.MuiFormLabel-root.Mui-focused{*/
 /*    color:#000000 !important;*/
 /*}*/
+
 
 

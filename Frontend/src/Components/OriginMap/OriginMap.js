@@ -222,7 +222,9 @@ function handleSubscribeTool(msg,data) {
         drawPolygon();
     }else if(msg==="rectangle") {
         drawRectangle();
-    } else if(msg==="deleteItems"){
+    }else if(msg==="inputtext") {
+        drawText();
+    }else if(msg==="deleteItems"){
         //一个功能按键要能删除所有内容
         //mymap.on('click',pointClick);
     }
@@ -424,32 +426,59 @@ function  deleteRectangle(id){
 
 
 //----------------------------------------------------------------------used to draw text
+
+let container;
+let text;
 let pixiOverlay;
+let projectedPolygon;
+let shape = new PIXI.Graphics();
+let map
+let zoom;
 function drawText(){
-    mymap.once('mousedown', onClick);
-    function onClick(){
-        const container = new PIXI.Container()
-        const text = new PIXI.Text('我是 Pixi Text', { fill: 0xff1010 })
+    //text = store.getState().text;
+    //console.log(text);
+    mymap.once('click', onClick);
+    function onClick(e){
+        let LL = e.latlng;
+        let prevZoom;
+        let firstDraw = true;
+
+        container = new PIXI.Container()
+        text = new PIXI.Text(store.getState().text, { fill: 0xff1010 })
         container.addChild(text)
 
+        pixiOverlay = L.pixiOverlay((utils) => {
 
-        const pixiOverlay = L.pixiOverlay((utils) => {
+            map = utils.getMap()
+            zoom = map.getZoom()
             const container = utils.getContainer()
             const renderer = utils.getRenderer()
             const project = utils.latLngToLayerPoint
-            const scale = utils.getScale()
-
-            const coords = project([51.505, -0.08]) // 需要把经纬度转换为 canvas 上的坐标
+            const scale = utils.getScale();
+                //text.scale.set(1 / scale);
+                //text.text = store.getState().text;
+            const coords = project([LL.lat.toFixed(5), LL.lng.toFixed(5)]) // 需要把经纬度转换为 canvas 上的坐标
             text.x = coords.x
             text.y = coords.y
-            text.text = '我是 Pixi Text ' + Math.floor(Math.random() * 100)
-            text.scale.set(1 / scale);
-
+            text.resolution=12;
+               // text.scale.set(1 / scale);
+                //text.scale.set(1 / scale);
+                //text.text = store.getState().text;
+            //const scale =e.target.getZoom();
+            // firstDraw = false;
+            // prevZoom = zoom;
             renderer.render(container)
         }, container)
-
+        console.log(store.getState().text);
         pixiOverlay.addTo(mymap);
     }
+
+    // mymap.on('zoomend', (e) => {
+    //     //获取当前放大或者缩小的等级
+    //     let scale = e.target.getZoom();
+    //     pixiOverlay.redraw(container)
+    // });
+
 }
 
 
@@ -499,6 +528,7 @@ function drawText(){
         let token3 = PubSub.subscribe("circle", handleSubscribeTool);
         let token4 = PubSub.subscribe("polygon", handleSubscribeTool);
         let token5 = PubSub.subscribe("rectangle", handleSubscribeTool);
+        let token6 = PubSub.subscribe("inputtext", handleSubscribeTool);
     }, []);
 
 

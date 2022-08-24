@@ -10,9 +10,13 @@ import ColorPicker from "../ColorPicker/ColorPicker"; // The default
 
 //redux
 import store from "../Store";
-import {changeColor} from "../Store/actionCreater";
-
-
+import {changeColor, changeText} from "../Store/actionCreater";
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import Input from '@mui/material/Input';
+const ariaLabel = { 'aria-label': 'description' };
 
 let color="#000000";
 function setColor(){
@@ -28,7 +32,7 @@ export  default function Property (props){
         b: 0,
         a: 1,
     },);
-
+    const [text,setText]= useState("N/A")
 
     const [LL, setLL]= useState("N/A");
     const [CC,setCC] = useState("N/A"); //center of circle
@@ -187,7 +191,22 @@ export  default function Property (props){
                                 </div>
                             </div>
 
+    //----------------------------------------------------------------used for text input
+    const textRef = React.createRef();
 
+    const handleTextChange = ()=>{
+        setText(textRef.current.children[0].value);
+        store.dispatch(changeText(text));
+    };
+
+    const [size, setSize] = React.useState(5);
+    const [fontFamily, setFontFamily] = React.useState("Arial");
+    const handleSizeChange = (event) => {
+        setSize(event.target.value);
+    };
+    const handleFontFamilyChange = (event) => {
+        setFontFamily(event.target.value);
+    };
     const inputtextProperty=<div id ="largeProperty" ref={nodeRef}>
                                 <div id="firstLine">
                                     <div id="toolName">
@@ -199,36 +218,121 @@ export  default function Property (props){
                                         </IconButton>
                                     </div>
                                 </div>
-                                <div id="secondLine">
-                                    <div id="toolAttributes">
-                                        intput the Text and the attributes: &nbsp;
-                                    </div>
+                                <div className="inputAttributes">
+                                    intput the Text and the attributes: &nbsp;
                                 </div>
-                                <div id="secondLine">
-                                    <div id="toolAttributes">
-                                        input your text: &nbsp;
-                                        <input type="text"/>
-                                    </div>
-                                </div>
-                                <div id="secondLine">
-                                    <div id="toolAttributes">
-                                        choose your Font Size: &nbsp;
-                                        <input type="text"/>
-                                    </div>
-                                </div>
-                                <div id="secondLine">
-                                    <div id="toolAttributes">
-                                        choose your Font Family: &nbsp;
-                                        <input type="text"/>
-                                    </div>
-                                </div>
+
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div className="inputAttributes">
+                                                    input your text: &nbsp;
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div className="inputAttributes">
+                                                <Input placeholder="Your Text" inputProps={ariaLabel}
+                                                       ref={textRef}
+                                                       onChange={handleTextChange}
+                                                        id="text"/>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div className="inputAttributes">
+                                                    <div>choose your Font Size: &nbsp;</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                     <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                                                    <InputLabel id="demo-select-small">size</InputLabel>
+                                                    <Select
+                                                        labelId="demo-select-small"
+                                                        id="demo-select-small"
+                                                        value={size}
+                                                        label="size"
+                                                        onChange={handleSizeChange}
+                                                    >
+                                                        {/*<MenuItem value="">*/}
+                                                        {/*    <em>None</em>*/}
+                                                        {/*</MenuItem>*/}
+                                                        <MenuItem value={4}>4</MenuItem>
+                                                        <MenuItem value={5}>5</MenuItem>
+                                                        <MenuItem value={6}>6</MenuItem>
+                                                        <MenuItem value={7}>7</MenuItem>
+                                                        <MenuItem value={8}>8</MenuItem>
+                                                        <MenuItem value={9}>9</MenuItem>
+                                                        <MenuItem value={10}>10</MenuItem>
+                                                        <MenuItem value={11}>11</MenuItem>
+                                                        <MenuItem value={12}>12</MenuItem>
+                                                        <MenuItem value={13}>13</MenuItem>
+                                                        <MenuItem value={14}>14</MenuItem>
+                                                        <MenuItem value={15}>15</MenuItem>
+                                                    </Select>
+                                                </FormControl>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div className="inputAttributes">
+                                                    choose your Font Family: &nbsp;
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                                                    <InputLabel id="demo-select-small">FontFamily</InputLabel>
+                                                    <Select
+                                                        labelId="demo-select-small"
+                                                        id="demo-select-small"
+                                                        value={fontFamily}
+                                                        label="fontFamily"
+                                                        onChange={handleFontFamilyChange}
+                                                    >
+                                                        {/*<MenuItem value="">*/}
+                                                        {/*    <em>None</em>*/}
+                                                        {/*</MenuItem>*/}
+                                                        <MenuItem value={"Arial"}>Arial</MenuItem>
+                                                        <MenuItem value={"Verdana"}>Verdana</MenuItem>
+                                                        <MenuItem value={"Arial Black"}>Arial Black</MenuItem>
+                                                        <MenuItem value={"Trebuchet MS "}>Trebuchet MS </MenuItem>
+                                                        <MenuItem value={"Impact"}>Impact</MenuItem>
+                                                        <MenuItem value={"Times New Roman"}>Times New Roman</MenuItem>
+                                                        <MenuItem value={"Georgia"}>Georgia</MenuItem>
+                                                        <MenuItem value={"American Typewriter"}>American Typewriter</MenuItem>
+                                                        <MenuItem value={"Monaco"}>Monaco</MenuItem>
+                                                        <MenuItem value={"Bradley Hand"}>Bradley Hand</MenuItem>
+                                                        <MenuItem value={"Luminari "}>Luminari </MenuItem>
+                                                    </Select>
+                                                </FormControl>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div className="inputAttributes">
+                                                    Choose the Font Color you use: &nbsp;
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <ColorPicker setDisplayColorPicker={setDisplayColorPicker}
+                                                             setPickedColor={setPickedColor}
+                                                             displayColorPicker={displayColorPicker}
+                                                             color={color}
+                                                />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+
+
+
                                 <div  id="thirdLine">
-                                    Choose the Font Color you use: &nbsp;
-                                    <ColorPicker setDisplayColorPicker={setDisplayColorPicker}
-                                                 setPickedColor={setPickedColor}
-                                                 displayColorPicker={displayColorPicker}
-                                                 color={color}
-                                    />
+
+
                                 </div>
                             </div>
 
