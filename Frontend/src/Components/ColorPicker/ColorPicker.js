@@ -25,10 +25,11 @@ export default function ColorPicker(props){
         setPickedColor(color.rgb);
         };
 
+    //'36px'
     const styles = reactCSS({
         'default': {
             color: {
-                width: '36px',
+                width: '180px',
                 height: '14px',
                 borderRadius: '2px',
                 background: `rgba(${ color.r }, ${ color.g }, ${ color.b }, ${ color.a })`,

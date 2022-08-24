@@ -448,6 +448,8 @@ function drawText(){
         // let firstDraw = true;
         text = store.getState().text;
         fontSize = store.getState().fontSize;
+        fontFamily = store.getState().fontFamily;
+        color = getHexColor(store.getState().color);
         //console.log("FontSize"+store.getState().fontSize);
         console.log(store.getState());
         style = new PIXI.TextStyle({
@@ -461,9 +463,9 @@ function drawText(){
             wordWrapWidth: 440, // 每行的长度
         });
 
-
+       // {fontFamily: fontFamily}
         container = new PIXI.Container()
-        Text = new PIXI.Text(text,{fontFamily: 'Arial'})
+        Text = new PIXI.Text(text,{fontFamily: fontFamily, fill: color,})
         container.addChild(Text)
 
         pixiOverlay = L.pixiOverlay((utils) => {

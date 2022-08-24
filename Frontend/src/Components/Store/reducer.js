@@ -1,5 +1,5 @@
 // 引入需要使用的常量
-import { CHANGE_COLOR,CHANGE_TEXT,CHANGE_FONTSIZE ,CHANGE_FONTFAMILY} from "./constant.js";
+import {CHANGE_COLOR, CHANGE_TEXT, CHANGE_FONTSIZE, CHANGE_FONTFAMILY} from "./constant.js";
 
 const defaultState ={
     color : {
@@ -9,6 +9,7 @@ const defaultState ={
         a: 1,},
     text:"N/A",
     fontSize: 0.1,
+    fontFamily:"Arial",
 };
 
 function reducer(state = defaultState, action) {
@@ -31,7 +32,7 @@ function reducer(state = defaultState, action) {
         case CHANGE_FONTFAMILY:
             return {
                 ...state,
-                fontFamily  : action.payload
+                fontFamily : action.payload
             };
 
 

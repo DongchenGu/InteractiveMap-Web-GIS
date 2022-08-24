@@ -10,13 +10,14 @@ import ColorPicker from "../ColorPicker/ColorPicker"; // The default
 
 //redux
 import store from "../Store";
-import {changeColor, changeFontSize, changeText} from "../Store/actionCreater";
+import {changeColor, changeFamily, changeFontSize, changeText} from "../Store/actionCreater";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Input from '@mui/material/Input';
 import Slider from '@mui/material/Slider';
+import {CHANGE_FAMILY} from "../Store/constant";
 
 const ariaLabel = { 'aria-label': 'description' };
 
@@ -216,7 +217,10 @@ export  default function Property (props){
 
 
     const handleFontFamilyChange = (event) => {
+        console.log(event.target.value);
+        store.dispatch(changeFamily(event.target.value));
         setFontFamily(event.target.value);
+
     };
     const inputtextProperty=<div id ="largeProperty" ref={nodeRef}>
                                 <div id="firstLine">
@@ -361,7 +365,7 @@ export  default function Property (props){
                                                     Choose the Font Color you use: &nbsp;
                                                 </div>
                                             </td>
-                                            <td>
+                                            <td id="FontSizeExplain">
                                                 <ColorPicker setDisplayColorPicker={setDisplayColorPicker}
                                                              setPickedColor={setPickedColor}
                                                              displayColorPicker={displayColorPicker}
