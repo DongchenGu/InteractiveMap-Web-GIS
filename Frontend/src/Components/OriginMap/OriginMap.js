@@ -125,23 +125,26 @@ function deletePoint(id){
 function drawCircle(){
     //console.log(store.getState().color);
     color =getHexColor(store.getState().color);
-    let index = idCircle++;
+
     tempCircle = new L.circle();
     mymap.dragging.disable();//将mousemove事件移动地图禁用
-    mymap.once('mousedown', (e)=>{
-        //确定圆心
-        circleI = e.latlng
-        CirclePop=L.popup().setLatLng(e.latlng);
-        mymap.addLayer(CirclePop);
-        //监听鼠标移动事件
-        mymap.on('mousemove', drawCircleOnMove);
-        //监听鼠标弹起事件
-        mymap.on('mouseup', drawCircleOnmouseUp);
-        //save into the stack
-        tempCircle.id = index;
-        circleStack.push({id:index,token:tempCircle});
-        //console.log(circleStack);
-    });
+    mymap.once('mousedown', drawCircleOnMouseDown);
+}
+
+function drawCircleOnMouseDown(e){
+    //确定圆心
+    circleI = e.latlng
+    CirclePop=L.popup().setLatLng(e.latlng);
+    mymap.addLayer(CirclePop);
+    //监听鼠标移动事件
+    mymap.on('mousemove', drawCircleOnMove);
+    //监听鼠标弹起事件
+    mymap.on('mouseup', drawCircleOnmouseUp);
+    let index = idCircle++;
+    //save into the stack
+    tempCircle.id = index;
+    circleStack.push({id:index,token:tempCircle});
+    //console.log(circleStack);
 }
 
 function drawCircleOnMove(e){
@@ -261,61 +264,62 @@ function drawPolygon(){
     points = [];
     geometry = [];
 
-    mymap.on('click', onClick);    //click
-    mymap.on('dblclick', onDoubleClick);
-    mymap.on('mousemove', onMove)//双击
+    mymap.on('click', drawPolygonOnClick);    //click
+    mymap.on('dblclick', drawPolygonOnDoubleClick);
+    mymap.on('mousemove', drawPolygonOnMove)
 
-    function onClick(e) {
-        points.push([e.latlng.lat, e.latlng.lng])
-        lines.addLatLng(e.latlng)
-        mymap.addLayer(tempLines)
-        mymap.addLayer(lines)
-        node=L.circle(e.latlng, { color: '#ff0000', fillColor: 'ff0000', fillOpacity: 1 }).setRadius(2);
-        mymap.addLayer(node)
-        geometry.push(node)
+}
+
+function drawPolygonOnClick(e) {
+    points.push([e.latlng.lat, e.latlng.lng])
+    lines.addLatLng(e.latlng)
+    mymap.addLayer(tempLines)
+    mymap.addLayer(lines)
+    node=L.circle(e.latlng, { color: '#ff0000', fillColor: 'ff0000', fillOpacity: 1 }).setRadius(2);
+    mymap.addLayer(node)
+    geometry.push(node)
+}
+function drawPolygonOnMove(e) {
+    if (points.length > 0) {
+        L.ls = [points[points.length - 1], [e.latlng.lat, e.latlng.lng], points[0]]
+        tempLines.setLatLngs(L.ls)
+        //mymap.addLayer(tempLines)
     }
-    function onMove(e) {
-        if (points.length > 0) {
-            L.ls = [points[points.length - 1], [e.latlng.lat, e.latlng.lng], points[0]]
-            tempLines.setLatLngs(L.ls)
-            //mymap.addLayer(tempLines)
+}
+function drawPolygonOnDoubleClick(e) {
+    mymap.removeLayer(tempLines);
+    mymap.removeLayer(lines);
+
+
+    polygonToken = L.polygon(points,{color: color});
+    let index= idPolygon++;
+    polygonToken.id = index;
+    polygonToken.color = color;
+
+    mymap.addLayer(polygonToken);
+    //console.log(polygonToken);
+    polygonStack.push({id:index, token:polygonToken});
+    geometry.map((obj)=>{
+        mymap.removeLayer(obj);
+    });
+    points = [];
+    node=null;
+    geometry=[];
+    //把前面的点击事件都取消掉
+    mymap.off('click', drawPolygonOnClick);
+    mymap.off('dblclick', drawPolygonOnDoubleClick);
+    mymap.off('mousemove', drawPolygonOnMove)//双击地图
+    polygonToken.on('click',function (e){
+        if(CurrentStateGlobal!== "deleteItems"){
+
+        }else{
+            this.removeFrom(mymap);
+            deletePolygon(this.id);
         }
-    }
-    function onDoubleClick(e) {
-        mymap.removeLayer(tempLines);
-        mymap.removeLayer(lines);
+    })
 
-
-        polygonToken = L.polygon(points,{color: color});
-        let index= idPolygon++;
-        polygonToken.id = index;
-        polygonToken.color = color;
-
-        mymap.addLayer(polygonToken);
-        //console.log(polygonToken);
-        polygonStack.push({id:index, token:polygonToken});
-        geometry.map((obj)=>{
-            mymap.removeLayer(obj);
-        });
-        points = [];
-        node=null;
-        geometry=[];
-        //把前面的点击事件都取消掉
-        mymap.off('click', onClick);
-        mymap.off('dblclick', onDoubleClick);
-        mymap.off('mousemove', onMove)//双击地图
-        polygonToken.on('click',function (e){
-            if(CurrentStateGlobal!== "deleteItems"){
-
-            }else{
-                this.removeFrom(mymap);
-                deletePolygon(this.id);
-            }
-        })
-
-        mymap.doubleClickZoom.enable();
-        //isInPolygon(marker);
-    }
+    mymap.doubleClickZoom.enable();
+    //isInPolygon(marker);
 }
 
 function removeCircle(){
@@ -348,71 +352,70 @@ const latlngs=[]
 function drawRectangle(){
     color =getHexColor(store.getState().color);
     mymap.dragging.disable();//将mousemove事件移动地图禁用
-    mymap.once('mousedown', onClick);    //点击地图
-    mymap.once('mouseup',onDoubleClick);
+    mymap.once('mousedown', drawRectangleOnClick);    //点击地图
+    mymap.once('mouseup',drawRectangleOnDoubleClick);
 
 
-
-    function onClick(e)
-    {
-        // if (tmprect !==null){
-        //     tmprect.remove();
-        // }
-        //左上角坐标
-        latlngs[0]=[e.latlng.lat,e.latlng.lng]
-
-        //开始绘制，监听鼠标移动事件
-        mymap.on('mousemove',onMove)
-
-    }
-    function onMove(e) {
-        latlngs[1]=[e.latlng.lat,e.latlng.lng]
-        //删除临时矩形
-        if ( tmprect!==null){
-            mymap.removeLayer(tmprect);
-        }
-        //添加临时矩形
-        //tmprect =mymap.addLayer( L.rectangle(latlngs,{dashArray:5 ,fillOpacity: 0}));
-         tmprect = L.rectangle(latlngs,{dashArray:5,fillOpacity:0,color:color}).addTo(mymap);
-        //tmprect=L.rectangle(latlngs,{dashArray:5,color:color}).addTo(mymap)
-    }
-
-    function onDoubleClick(e)
-    {
-        //矩形绘制完成，移除临时矩形，并停止监听鼠标移动事件
-        tmprect.remove()
-        mymap.off('mousemove')
-        //右下角坐标
-        latlngs[1]=[e.latlng.lat,e.latlng.lng]
-        rectangle=L.rectangle(latlngs,{
-            color:color,
-            fillOpacity:0,
-            weight:2
-        })
-
-        rectangle.addTo(mymap)
-        //调整view范围
-        tmprect=null;
-        mymap.fitBounds(latlngs)
-        //存入数组
-        let index = idRectangle++;
-        rectangle.id=index;
-        rectangle.color = color;
-        rectangleStack.push({id:index,token:rectangle});
-        console.log(rectangleStack);
-
-        rectangle.on('click',function (e){
-            if(CurrentStateGlobal!=="deleteItems"){
-
-            }else {
-                deleteRectangle(this.id);
-                this.remove();
-            }
-        });
-        mymap.dragging.enable();
-    }
 }
 
+function drawRectangleOnClick(e) {
+    // if (tmprect !==null){
+    //     tmprect.remove();
+    // }
+    //左上角坐标
+    latlngs[0]=[e.latlng.lat,e.latlng.lng]
+
+    //开始绘制，监听鼠标移动事件
+    mymap.on('mousemove',drawRectangleOnMove)
+
+}
+function drawRectangleOnMove(e) {
+    latlngs[1]=[e.latlng.lat,e.latlng.lng]
+    //删除临时矩形
+    if ( tmprect!==null){
+        mymap.removeLayer(tmprect);
+    }
+    //添加临时矩形
+    //tmprect =mymap.addLayer( L.rectangle(latlngs,{dashArray:5 ,fillOpacity: 0}));
+    tmprect = L.rectangle(latlngs,{dashArray:5,fillOpacity:0,color:color}).addTo(mymap);
+    //tmprect=L.rectangle(latlngs,{dashArray:5,color:color}).addTo(mymap)
+}
+
+
+function drawRectangleOnDoubleClick(e)
+{
+    //矩形绘制完成，移除临时矩形，并停止监听鼠标移动事件
+    tmprect.remove()
+    mymap.off('mousemove')
+    //右下角坐标
+    latlngs[1]=[e.latlng.lat,e.latlng.lng]
+    rectangle=L.rectangle(latlngs,{
+        color:color,
+        fillOpacity:0,
+        weight:2
+    })
+
+    rectangle.addTo(mymap)
+    //调整view范围
+    tmprect=null;
+    mymap.fitBounds(latlngs)
+    //存入数组
+    let index = idRectangle++;
+    rectangle.id=index;
+    rectangle.color = color;
+    rectangleStack.push({id:index,token:rectangle});
+    console.log(rectangleStack);
+
+    rectangle.on('click',function (e){
+        if(CurrentStateGlobal!=="deleteItems"){
+
+        }else {
+            deleteRectangle(this.id);
+            this.remove();
+        }
+    });
+    mymap.dragging.enable();
+}
 function  deleteRectangle(id){
     rectangleStack.map((obj,index)=>{
         if(obj.id===id){
@@ -420,6 +423,7 @@ function  deleteRectangle(id){
         }
     })
 }
+
 
 //map.off(....) 关闭该事件
 
@@ -445,76 +449,76 @@ let textStack = [];
 let idText=0;
 let drawTextOnClick;
 
+drawTextOnClick=(e)=>{
+    let LL = e.latlng;
+    // let prevZoom;
+    // let firstDraw = true;
+    text = store.getState().text;
+    fontSize = store.getState().fontSize;
+    fontFamily = store.getState().fontFamily;
+    color = getHexColor(store.getState().color);
+    //console.log("FontSize"+store.getState().fontSize);
+    // console.log(store.getState());
+    style = new PIXI.TextStyle({
+        fontFamily: 'Arial', // 字体
+        fontSize: fontSize, // 字号大小
+        fontStyle: 'italic', // 斜体
+        fontWeight: 'bold', //粗体
+        fill: color, // 填充颜色
+        stroke: color, // 描边颜色
+        strokeThickness: 1, // 描边宽度
+        wordWrapWidth: 440, // 每行的长度
+    });
+
+    // {fontFamily: fontFamily}
+    Text = new PIXI.Text(text,{fontFamily: fontFamily, fill: color,})
+    container.addChild(Text)
+
+    //Text.id = idText++;
+
+
+    pixiOverlay = L.pixiOverlay((utils) => {
+        map = utils.getMap()
+        zoom = map.getZoom()
+        const container = utils.getContainer()
+        const renderer = utils.getRenderer()
+        const project = utils.latLngToLayerPoint
+        const scale = utils.getScale();
+        //text.scale.set(1 / scale);
+        //text.text = store.getState().text;
+        Text.scale.set(fontSize)
+        const coords = project([LL.lat.toFixed(5), LL.lng.toFixed(5)]) // 需要把经纬度转换为 canvas 上的坐标
+        Text.x = coords.x;
+        Text.sssssssssssssss= coords.x;
+        Text.y = coords.y
+        Text.resolution=20;
+        // text.scale.set(1 / scale);
+        //text.scale.set(1 / scale);
+        //text.text = store.getState().text;
+        //const scale =e.target.getZoom();
+        // firstDraw = false;
+        // prevZoom = zoom;
+        renderer.render(container)
+    }, container)
+
+    let index = idText++
+    Text.id = index;
+    pixiOverlay.addTo(mymap);
+    textStack.push({id:index, tokens:Text});
+    console.log(textStack);
+}
+
 function drawText(){
     //text = store.getState().text;
     //console.log(text);
     mymap.once('click',drawTextOnClick );
-    drawTextOnClick=(e)=>{
-        let LL = e.latlng;
-        // let prevZoom;
-        // let firstDraw = true;
-        text = store.getState().text;
-        fontSize = store.getState().fontSize;
-        fontFamily = store.getState().fontFamily;
-        color = getHexColor(store.getState().color);
-        //console.log("FontSize"+store.getState().fontSize);
-       // console.log(store.getState());
-        style = new PIXI.TextStyle({
-            fontFamily: 'Arial', // 字体
-            fontSize: fontSize, // 字号大小
-            fontStyle: 'italic', // 斜体
-            fontWeight: 'bold', //粗体
-            fill: color, // 填充颜色
-            stroke: color, // 描边颜色
-            strokeThickness: 1, // 描边宽度
-            wordWrapWidth: 440, // 每行的长度
-        });
 
-       // {fontFamily: fontFamily}
-        Text = new PIXI.Text(text,{fontFamily: fontFamily, fill: color,})
-        container.addChild(Text)
-
-        //Text.id = idText++;
-
-
-        pixiOverlay = L.pixiOverlay((utils) => {
-            map = utils.getMap()
-            zoom = map.getZoom()
-            const container = utils.getContainer()
-            const renderer = utils.getRenderer()
-            const project = utils.latLngToLayerPoint
-            const scale = utils.getScale();
-                //text.scale.set(1 / scale);
-                //text.text = store.getState().text;
-            Text.scale.set(fontSize)
-            const coords = project([LL.lat.toFixed(5), LL.lng.toFixed(5)]) // 需要把经纬度转换为 canvas 上的坐标
-            Text.x = coords.x;
-            Text.sssssssssssssss= coords.x;
-            Text.y = coords.y
-            Text.resolution=20;
-               // text.scale.set(1 / scale);
-                //text.scale.set(1 / scale);
-                //text.text = store.getState().text;
-            //const scale =e.target.getZoom();
-            // firstDraw = false;
-            // prevZoom = zoom;
-            renderer.render(container)
-        }, container)
-
-        let index = idText++
-        Text.id = index;
-        pixiOverlay.addTo(mymap);
-        textStack.push({id:index, tokens:Text});
-        console.log(textStack);
-    }
 
     // mymap.on('zoomend', (e) => {
     //     //获取当前放大或者缩小的等级
     //     let scale = e.target.getZoom();
     //     pixiOverlay.redraw(container)
     // });
-
-
 }
 
 
@@ -533,6 +537,27 @@ function deleteText(){
     console.log(textStack);
     //console.log(textStack);
 }
+
+
+
+//------------------------------------------------------------------clear ALL Listener
+function clearAllToolListener(){
+    //在每次状态更新的时候，必须清除之前未完成的绘图点击事件，否则会有多个点击事件叠加
+    mymap.off('click', pointClick);
+    mymap.off('mousedown', drawCircleOnMouseDown);
+
+    mymap.off('click', drawPolygonOnClick);    //click
+    mymap.off('dblclick', drawPolygonOnDoubleClick);
+    mymap.off('mousemove', drawPolygonOnMove)
+
+    mymap.off('mousedown', drawRectangleOnClick);    //点击地图
+    mymap.off('mouseup',drawRectangleOnDoubleClick);
+
+    mymap.off('click',drawTextOnClick);
+}
+
+
+
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++React Component++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   export  default function OriginMap(props) {
@@ -606,31 +631,37 @@ function deleteText(){
         //在每次状态更新的时候，必须清除之前未完成的绘图点击事件，否则会有多个点击事件叠加
         if (CurrentState === "point") {
             if(BackFlag===false){
+                clearAllToolListener();
                 mymap.once('click', pointClick);
             }else { BackFlag =false;}
         } else if (CurrentState === "circle") {
             if(BackFlag===false){
+                clearAllToolListener();
                 drawCircle();
                 console.log("点击了圆形tool");
             }else { BackFlag =false;}
         }else if(CurrentState === "polygon"){
             if(BackFlag===false){
+                clearAllToolListener();
                 drawPolygon();
                 console.log("点击了多边形工具");
             }else { BackFlag =false;}
         }else if(CurrentState === "rectangle"){
             if(BackFlag===false){
+                clearAllToolListener();
                 drawRectangle();
                 console.log("点击了矩形工具");
             }else { BackFlag =false;}
         }else if(CurrentState === "inputtext"){
             if(BackFlag===false){
-                mymap.off('click',drawTextOnClick);//这里需要先取消事件，因为tips的引入，导致关闭tips后会更新APP的state，导致drawText被调用两次
+                clearAllToolListener();
+                //mymap.off('click',drawTextOnClick);//这里需要先取消事件，因为tips的引入，导致关闭tips后会更新APP的state，导致drawText被调用两次
                 drawText();
                 console.log("点击了文字工具");
             }else { BackFlag =false;}
         } else if (CurrentState === "deleteItems") {
             if(BackFlag===false){
+                clearAllToolListener();
                 console.log("点击了删除选项");
             }else { BackFlag =false;}
         }
