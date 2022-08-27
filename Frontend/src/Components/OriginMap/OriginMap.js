@@ -434,7 +434,7 @@ function  deleteRectangle(id){
 
 //----------------------------------------------------------------------used to draw text
 
-let container = new PIXI.Container();
+let container;
 let Text;
 let text
 let pixiOverlay;
@@ -472,6 +472,7 @@ drawTextOnClick=(e)=>{
 
     // {fontFamily: fontFamily}
     Text = new PIXI.Text(text,{fontFamily: fontFamily, fill: color,})
+    container = new PIXI.Container();
     container.addChild(Text)
 
     //Text.id = idText++;
@@ -489,7 +490,7 @@ drawTextOnClick=(e)=>{
         Text.scale.set(fontSize)
         const coords = project([LL.lat.toFixed(5), LL.lng.toFixed(5)]) // 需要把经纬度转换为 canvas 上的坐标
         Text.x = coords.x;
-        Text.sssssssssssssss= coords.x;
+        //Text.sssssssssssssss= coords.x;
         Text.y = coords.y
         Text.resolution=20;
         // text.scale.set(1 / scale);
@@ -502,15 +503,14 @@ drawTextOnClick=(e)=>{
     }, container)
 
     let index = idText++
-    Text.id = index;
+    pixiOverlay.id = index;
     pixiOverlay.addTo(mymap);
-    textStack.push({id:index, tokens:Text});
+    textStack.push({id:index, tokens:pixiOverlay});
     console.log(textStack);
 }
 
 function drawText(){
     //text = store.getState().text;
-    //console.log(text);
     mymap.once('click',drawTextOnClick );
 
 
@@ -523,9 +523,9 @@ function drawText(){
 
 
 function deleteText(){
-
-    let id = textStack.length-1;
-    container.removeChild( textStack.pop().tokens);
+    //let id = textStack.length-1;
+    //container.removeChild( );
+    textStack.pop().tokens.remove();
     // textStack.map((obj,index)=>{
     //     if(obj.id===textStack.length-1){
     //         container.removeChild(obj.tokens);
@@ -533,9 +533,7 @@ function deleteText(){
     //         textStack.pop();
     //     }
     // })
-    console.log("已经调用到了");
     console.log(textStack);
-    //console.log(textStack);
 }
 
 

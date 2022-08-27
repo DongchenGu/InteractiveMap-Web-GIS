@@ -203,8 +203,10 @@ export  default function Property (props){
     const textRef = React.createRef();
 
     const handleTextChange = ()=>{
+        //console.log(textRef.current.children[0].value)
         setText(textRef.current.children[0].value);
-        store.dispatch(changeText(text));
+       // console.log(text)这里changeText里面不能直接用text，因为setText是异步的
+        store.dispatch(changeText(textRef.current.children[0].value));
     };
 
 
@@ -289,34 +291,6 @@ export  default function Property (props){
                                                 {/*        <MenuItem value={0.5}>0.5</MenuItem>*/}
                                                 {/*        <MenuItem value={1}>1</MenuItem>*/}
                                                 {/*        <MenuItem value={2}>2</MenuItem>*/}
-                                                {/*        <MenuItem value={3}>3</MenuItem>*/}
-                                                {/*        <MenuItem value={4}>4</MenuItem>*/}
-                                                {/*        <MenuItem value={5}>5</MenuItem>*/}
-                                                {/*        <MenuItem value={6}>6</MenuItem>*/}
-                                                {/*        <MenuItem value={7}>7</MenuItem>*/}
-                                                {/*        <MenuItem value={8}>8</MenuItem>*/}
-                                                {/*        <MenuItem value={9}>9</MenuItem>*/}
-                                                {/*        <MenuItem value={10}>10</MenuItem>*/}
-                                                {/*        <MenuItem value={11}>11</MenuItem>*/}
-                                                {/*        <MenuItem value={12}>12</MenuItem>*/}
-                                                {/*        <MenuItem value={13}>13</MenuItem>*/}
-                                                {/*        <MenuItem value={14}>14</MenuItem>*/}
-                                                {/*        <MenuItem value={15}>15</MenuItem>*/}
-                                                {/*        <MenuItem value={16}>16</MenuItem>*/}
-                                                {/*        <MenuItem value={17}>17</MenuItem>*/}
-                                                {/*        <MenuItem value={18}>18</MenuItem>*/}
-                                                {/*        <MenuItem value={19}>19</MenuItem>*/}
-                                                {/*        <MenuItem value={20}>20</MenuItem>*/}
-                                                {/*        <MenuItem value={21}>21</MenuItem>*/}
-                                                {/*        <MenuItem value={22}>22</MenuItem>*/}
-                                                {/*        <MenuItem value={23}>23</MenuItem>*/}
-                                                {/*        <MenuItem value={24}>24</MenuItem>*/}
-                                                {/*        <MenuItem value={25}>25</MenuItem>*/}
-                                                {/*        <MenuItem value={26}>26</MenuItem>*/}
-                                                {/*        <MenuItem value={26}>26</MenuItem>*/}
-                                                {/*        <MenuItem value={26}>26</MenuItem>*/}
-                                                {/*        <MenuItem value={26}>26</MenuItem>*/}
-                                                {/*        <MenuItem value={26}>26</MenuItem>*/}
 
 
                                                 {/*    </Select>*/}
