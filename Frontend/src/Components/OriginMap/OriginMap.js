@@ -537,6 +537,49 @@ function deleteText(){
 }
 
 
+//-------------------------------------------------------------------------------------------------used to draw line
+
+function drawLine(){
+
+    var points = [],geometry=[]
+    var lines = new L.polyline(points)
+    var tempLines = new L.polyline([])
+    mymap.on('click', onClick);    //点击地图
+    mymap.on('dblclick', onDoubleClick);
+
+
+    //map.off(....) 关闭该事件
+
+    function onClick(e) {
+
+        points.push([e.latlng.lat, e.latlng.lng])
+        lines.addLatLng(e.latlng)
+        mymap.addLayer(lines)
+        const node=L.circle(e.latlng, { color: '#ff0000', fillColor: 'ff0000', fillOpacity: 1 })
+        mymap.addLayer(node)
+        geometry.push(node)
+        mymap.on('mousemove', onMove)//双击地图
+
+    }
+    function onMove(e) {
+        if (points.length > 0) {
+            L.ls = [points[points.length - 1], [e.latlng.lat, e.latlng.lng]]
+            tempLines.setLatLngs(L.ls)  //ls
+            map.addLayer(tempLines)
+        }
+    }
+
+    function onDoubleClick(e) {
+        geometry.push(L.polyline(points).addTo(mymap))
+        points = []
+        lines.remove();
+        mymap.off('mousemove')
+        tempLines.remove();
+    }
+
+}
+
+
 
 //------------------------------------------------------------------clear ALL Listener
 function clearAllToolListener(){
