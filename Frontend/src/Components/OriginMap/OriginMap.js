@@ -226,13 +226,14 @@ function handleSubscribeTool(msg,data) {
     }else if(msg==="rectangle") {
         drawRectangle();
     }else if(msg==="inputtext") {
-
         drawText();
     }else if(msg==="deleteItems"){
         //一个功能按键要能删除所有内容
         //mymap.on('click',pointClick);
     }else if(msg==="deleteTextOneByOne"){
         deleteText();
+    }else if(msg==="lines"){
+        drawLine();
     }
 }
 
@@ -539,46 +540,46 @@ function deleteText(){
 
 //-------------------------------------------------------------------------------------------------used to draw line
 
+let DLPoints=[],DLGeometry=[];
+let DLLines;
+let DLTempLines;
+
 function drawLine(){
-
-    var points = [],geometry=[]
-    var lines = new L.polyline(points)
-    var tempLines = new L.polyline([])
-    mymap.on('click', onClick);    //点击地图
-    mymap.on('dblclick', onDoubleClick);
-
+    //var points = [],geometry=[]
+    DLLines = new L.polyline([DLPoints])
+    DLTempLines = new L.polyline([])
+    mymap.on('click', drawLineOnClick);    //点击地图
+    mymap.on('dblclick', drawLineOnDoubleClick);
 
     //map.off(....) 关闭该事件
-
-    function onClick(e) {
-
-        points.push([e.latlng.lat, e.latlng.lng])
-        lines.addLatLng(e.latlng)
-        mymap.addLayer(lines)
-        const node=L.circle(e.latlng, { color: '#ff0000', fillColor: 'ff0000', fillOpacity: 1 })
-        mymap.addLayer(node)
-        geometry.push(node)
-        mymap.on('mousemove', onMove)//双击地图
-
-    }
-    function onMove(e) {
-        if (points.length > 0) {
-            L.ls = [points[points.length - 1], [e.latlng.lat, e.latlng.lng]]
-            tempLines.setLatLngs(L.ls)  //ls
-            map.addLayer(tempLines)
-        }
-    }
-
-    function onDoubleClick(e) {
-        geometry.push(L.polyline(points).addTo(mymap))
-        points = []
-        lines.remove();
-        mymap.off('mousemove')
-        tempLines.remove();
-    }
-
 }
 
+function  drawLineOnClick(e){
+        DLPoints.push([e.latlng.lat, e.latlng.lng])
+        DLLines.addLatLng(e.latlng)
+        mymap.addLayer(DLLines)
+        const node=L.circle(e.latlng, { color: '#ff0000', fillColor: 'ff0000', fillOpacity: 1 }).setRadius(2);
+        mymap.addLayer(node)
+        DLGeometry.push(node)
+        mymap.on('mousemove', drawLineOnMove)//双击地图
+}
+function  drawLineOnMove(e){
+    if (DLPoints.length > 0) {
+        L.ls = [DLPoints[DLPoints.length - 1], [e.latlng.lat, e.latlng.lng]]
+        DLTempLines.setLatLngs(L.ls)  //ls
+        mymap.addLayer(DLTempLines)
+    }
+}
+function drawLineOnDoubleClick(e){
+    //DLGeometry.push(L.polyline(points).addTo(mymap))
+    mymap.off('click', drawLineOnClick);    //点击地图
+    mymap.off('dblclick', drawLineOnDoubleClick);
+    mymap.off('mousemove',drawLineOnMove);
+    L.polyline(DLPoints).addTo(mymap);
+    DLPoints = []
+    DLLines.remove();
+    DLTempLines.remove();
+}
 
 
 //------------------------------------------------------------------clear ALL Listener
@@ -595,6 +596,10 @@ function clearAllToolListener(){
     mymap.off('mouseup',drawRectangleOnDoubleClick);
 
     mymap.off('click',drawTextOnClick);
+
+
+    mymap.off('click', drawLineOnClick);    //点击地图
+    mymap.off('dblclick', drawLineOnDoubleClick);
 }
 
 
@@ -647,6 +652,7 @@ function clearAllToolListener(){
         let token5 = PubSub.subscribe("rectangle", handleSubscribeTool);
         let token6 = PubSub.subscribe("inputtext", handleSubscribeTool);
         let token7 = PubSub.subscribe("deleteTextOneByOne", handleSubscribeTool);
+        let token8 = PubSub.subscribe("lines", handleSubscribeTool);
 
     }, []);
 
@@ -700,7 +706,13 @@ function clearAllToolListener(){
                 drawText();
                 console.log("点击了文字工具");
             }else { BackFlag =false;}
-        } else if (CurrentState === "deleteItems") {
+        }else if(CurrentState === "lines"){
+            if(BackFlag===false){
+                clearAllToolListener();
+                drawLine();
+                console.log("点击了折线选项");
+            }else { BackFlag =false;}
+        }else if(CurrentState === "deleteItems") {
             if(BackFlag===false){
                 clearAllToolListener();
                 console.log("点击了删除选项");

@@ -16,7 +16,7 @@ import LayersClearTwoToneIcon from '@mui/icons-material/LayersClearTwoTone';
 import HexagonIcon from '@mui/icons-material/Hexagon';
 import {mymap} from "../OriginMap/OriginMap";
 import TextDecreaseIcon from '@mui/icons-material/TextDecrease';
-
+import TimelineOutlinedIcon from '@mui/icons-material/TimelineOutlined';
 
 let StateBeforeoutFullScreen = null;
 
@@ -130,8 +130,8 @@ export default class ToolMenu extends React.Component{
                         </tr>
                         <tr>
                             <td>
-                                <IconButton>
-                                    <ShowChartIcon fontSize="medium"></ShowChartIcon>
+                                <IconButton onClick={this.handleStateChanged.bind(this,"lines")}>
+                                    <TimelineOutlinedIcon fontSize="medium"></TimelineOutlinedIcon>
                                 </IconButton>
                             </td>
                             <td>
