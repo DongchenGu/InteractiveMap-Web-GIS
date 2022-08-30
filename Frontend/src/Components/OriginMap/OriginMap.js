@@ -19,6 +19,9 @@ import {useSelector} from "react-redux";
 
 import store from "../Store";
 
+
+
+
 //from redux
 let color = null;
 
@@ -356,7 +359,6 @@ function drawRectangle(){
     mymap.once('mousedown', drawRectangleOnClick);    //点击地图
     mymap.once('mouseup',drawRectangleOnDoubleClick);
 
-
 }
 
 function drawRectangleOnClick(e) {
@@ -522,7 +524,6 @@ function drawText(){
     // });
 }
 
-
 function deleteText(){
     //let id = textStack.length-1;
     //container.removeChild( );
@@ -538,6 +539,152 @@ function deleteText(){
 }
 
 
+//---------------------------------------------------------------------------------paint Tool
+let PTpixiOverlay;
+let PTcontainer;
+let PTcanvas;
+let ctx;
+
+// 绘画模式
+let mode = 'add'
+// 初始坐标
+let lastPoint = { x: 0, y: 0 };
+// 是否按下去
+let drawing = false;
+
+// function paint(){
+//     mymap.dragging.disable();
+//     mymap.on('mousedown',paintTool);
+// }
+function paint(){
+    mymap.on('click',paintOnClick );
+}
+
+function paintOnClick(e){//CanvasLayer
+
+    let LL = e.latlng;
+    // 创建一个pixi舞台
+    let app = new PIXI.Application({ width: 400, height: 300, backgroundColor: 0xcccccc });
+    PTcontainer = new PIXI.Container();
+    //PTcontainer.appendChild(app);
+
+
+
+
+
+    PTpixiOverlay = L.pixiOverlay((utils) => {
+        map = utils.getMap()
+        zoom = map.getZoom()
+        const container = utils.getContainer()
+        const renderer = utils.getRenderer()
+        const project = utils.latLngToLayerPoint
+        const scale = utils.getScale();
+
+
+        // 创建绘制画布
+        PTcanvas = document.createElement('canvas')
+        PTcanvas.width = app.renderer.width
+        PTcanvas.height = app.renderer.height
+        PTcanvas.style.background = '#aaaaaa'
+        ctx = PTcanvas.getContext('2d')
+        //PTcontainer.appendChild(PTcanvas);
+
+
+
+        // 创建交互展示画布
+        let tx = PIXI.Texture.from(PTcanvas) // 重点在于这里，将原生canvas作为材质使用，每次绘画都要实时调用 tx.update()方法进行更新
+        let sp = new PIXI.Sprite(tx)
+        sp.name = 'preview'
+        sp.width = app.renderer.width
+        sp.height = app.renderer.height
+        sp.hitArea = new PIXI.Rectangle(0, 0, app.renderer.width, app.renderer.height)
+        sp.zIndex = 2
+        sp.interactive = true
+        app.stage.addChild(sp);
+
+
+        // document.getElementById('add').onclick = () => mode = 'add'
+        // document.getElementById('del').onclick = () => mode = 'del'
+
+        // 交互行为
+        sp.on('mousedown', drawStart);
+        sp.on('mouseup', drawEnd);
+        sp.on('mouseout', drawEnd);
+        sp.on('mousemove', drawMove);
+
+        function drawStart(event) {
+            let
+                r = Math.random() * 1,
+                g = Math.random() * 1,
+                b = Math.random() * 1,
+                a = Math.random() * 1
+
+            if (mode === 'add') {
+                ctx.lineWidth = 7;
+                ctx.globalCompositeOperation = "source-over"
+            } else {
+                ctx.lineWidth = 21;
+                ctx.globalCompositeOperation = "destination-out"
+            }
+
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.strokeStyle = `rgba(${r * 255},${g * 255},${b * 255},1)`
+
+            let { x, y } = event.data.getLocalPosition(this.parent); //获取鼠标移动的位置
+            lastPoint = { x, y };
+
+            drawing = true;
+        }
+
+        function drawMove(event) {
+            if (drawing === true) {
+                let { x, y } = event.data.getLocalPosition(this.parent); //获取鼠标移动的位置
+
+                ctx.beginPath();
+                ctx.moveTo(lastPoint.x, lastPoint.y);
+                ctx.lineTo(x, y);
+                ctx.stroke()
+                tx.update()
+
+                // 更新坐标点
+                lastPoint = { x, y };
+            }
+        }
+
+        function drawEnd() {
+            drawing = false;
+        }
+
+
+
+
+
+
+        app.scale.set(1/scale);
+        const coords = project([LL.lat.toFixed(5), LL.lng.toFixed(5)]) // 需要把经纬度转换为 canvas 上的坐标
+        app.x = coords.x;
+        app.y = coords.y
+        app.resolution=20;
+        renderer.render(container)
+    }, container)
+
+    PTpixiOverlay.addTo(mymap);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //-------------------------------------------------------------------------------------------------used to draw line
 
 let DLPoints=[],DLGeometry=[];
@@ -546,8 +693,9 @@ let DLTempLines;
 
 function drawLine(){
     //var points = [],geometry=[]
-    DLLines = new L.polyline([DLPoints])
-    DLTempLines = new L.polyline([])
+    color= getHexColor(store.getState().color);
+    DLLines = new L.polyline([DLPoints],{color:color})
+    DLTempLines = new L.polyline([],{color:color})
     mymap.on('click', drawLineOnClick);    //点击地图
     mymap.on('dblclick', drawLineOnDoubleClick);
 
@@ -575,7 +723,7 @@ function drawLineOnDoubleClick(e){
     mymap.off('click', drawLineOnClick);    //点击地图
     mymap.off('dblclick', drawLineOnDoubleClick);
     mymap.off('mousemove',drawLineOnMove);
-    L.polyline(DLPoints).addTo(mymap);
+    L.polyline(DLPoints,{color:color}).addTo(mymap);
     DLPoints = []
     DLLines.remove();
     DLTempLines.remove();
@@ -712,7 +860,13 @@ function clearAllToolListener(){
                 drawLine();
                 console.log("点击了折线选项");
             }else { BackFlag =false;}
-        }else if(CurrentState === "deleteItems") {
+        }else if(CurrentState === "paint"){
+            if(BackFlag===false){
+                clearAllToolListener();
+                paint();
+                console.log("点击了绘图选项");
+            }else { BackFlag =false;}
+        } else if(CurrentState === "deleteItems") {
             if(BackFlag===false){
                 clearAllToolListener();
                 console.log("点击了删除选项");

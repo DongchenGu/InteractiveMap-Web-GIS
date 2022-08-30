@@ -29,7 +29,7 @@ export default function ColorPicker(props){
     const styles = reactCSS({
         'default': {
             color: {
-                width: '180px',
+                width: '100%',
                 height: '14px',
                 borderRadius: '2px',
                 background: `rgba(${ color.r }, ${ color.g }, ${ color.b }, ${ color.a })`,

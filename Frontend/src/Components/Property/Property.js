@@ -99,12 +99,9 @@ export  default function Property (props){
                                 </div>
                             </div>
                             <div id="secondLine">
-                                <div id="toolAttributes">
                                     Longitude/latitude:
                                     { (LL ==="N/A" )?  "You have not chose a POINT": LL.lng.toFixed(5)+","+LL.lat.toFixed(5)
                                     }
-                                </div>
-
                             </div>
                         </div>
 
@@ -132,11 +129,13 @@ export  default function Property (props){
 
                             <div  id="thirdLine">
                                 Choose color that will use: &nbsp;
-                                <ColorPicker setDisplayColorPicker={setDisplayColorPicker}
-                                             setPickedColor={setPickedColor}
-                                             displayColorPicker={displayColorPicker}
-                                             color={color}
-                                             />
+                                <div id="ColorPicker">
+                                    <ColorPicker setDisplayColorPicker={setDisplayColorPicker}
+                                                 setPickedColor={setPickedColor}
+                                                 displayColorPicker={displayColorPicker}
+                                                 color={color}
+                                    />
+                                </div>
                             </div>
                         </div>
 
@@ -163,11 +162,13 @@ export  default function Property (props){
                             {/*</div>*/}
                             <div  id="thirdLine">
                                 Choose color that will use: &nbsp;
-                                <ColorPicker setDisplayColorPicker={setDisplayColorPicker}
-                                             setPickedColor={setPickedColor}
-                                             displayColorPicker={displayColorPicker}
-                                             color={color}
-                                />
+                                <div id="ColorPicker">
+                                    <ColorPicker setDisplayColorPicker={setDisplayColorPicker}
+                                                 setPickedColor={setPickedColor}
+                                                 displayColorPicker={displayColorPicker}
+                                                 color={color}
+                                    />
+                                </div>
                             </div>
                         </div>
 
@@ -191,13 +192,48 @@ export  default function Property (props){
 
                                 <div  id="thirdLine">
                                     Choose color that will use: &nbsp;
+                                    <div id="ColorPicker">
+                                        <ColorPicker setDisplayColorPicker={setDisplayColorPicker}
+                                                     setPickedColor={setPickedColor}
+                                                     displayColorPicker={displayColorPicker}
+                                                     color={color}
+                                        />
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+    const LinesProperty=<div id ="largeProperty" ref={nodeRef}>
+                            <div id="firstLine">
+                                <div id="toolName">
+                                    {CurrentState}
+                                </div>
+                                <div id="closeIcon">
+                                    <IconButton onClick={handleCloseToolMenu}>
+                                        <ClearIcon  fontSize="small" style={{marginTop:"auto"}}/>
+                                    </IconButton>
+                                </div>
+                            </div>
+                            <div id="secondLine">
+                                <div id="toolAttributes">
+                                    property of drawing Lines:
+                                </div>
+                            </div>
+
+                            <div  id="thirdLine">
+                                Choose color that will use: &nbsp;
+
+                                <div id="ColorPicker">
                                     <ColorPicker setDisplayColorPicker={setDisplayColorPicker}
                                                  setPickedColor={setPickedColor}
                                                  displayColorPicker={displayColorPicker}
                                                  color={color}
                                     />
                                 </div>
+
                             </div>
+                        </div>
 
     //----------------------------------------------------------------used for text input
     const textRef = React.createRef();
@@ -359,7 +395,7 @@ export  default function Property (props){
                                 </div>
                             </div>
 
-
+//----------------------------------------------------------------------used to Switch to different property
     if(CurrentState==="circle"){
             index= <Draggable nodeRef={nodeRef} handle='#firstLine'>
                          {circleProperty}
@@ -384,6 +420,12 @@ export  default function Property (props){
     if(CurrentState==="inputtext"){
         index=<Draggable nodeRef={nodeRef} handle='#firstLine'>
             {inputtextProperty}
+        </Draggable>
+    }
+
+    if(CurrentState==="lines"){
+        index=<Draggable nodeRef={nodeRef} handle='#firstLine'>
+            {LinesProperty}
         </Draggable>
     }
 

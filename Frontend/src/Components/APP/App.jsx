@@ -11,7 +11,7 @@ import CurrentStateDialog from '../CurrentStateDialog/CurrentStateDialog'
 import Property from '../Property/Property'
 import { FullScreen, useFullScreenHandle } from "react-full-screen"
 import Tips from "../Tips/Tips";
-
+import Canvas from "../Canvas/Canvas.js"
 
 
 import Title from "../Title/Title"
@@ -133,6 +133,7 @@ export  default function App(){
         let CurrentStateDialogComponent = null;
         let PropertyDialog=null;
         let TipsDialog = null;
+        let CanvasDialog=null;
         if(MapProviderMenuOpen===true){
             MapProvider=<MapProviderMenu changeProvider={changeProvider} closeProviderMenu={closeProviderMenu}/>
         }
@@ -158,6 +159,9 @@ export  default function App(){
             TipsDialog =<Tips CurrentState={CurrentState}
                               closeTips={closeTips}/>
         }
+        if(CurrentState==="paint"){
+            CanvasDialog=<Canvas/>
+        }
 
 
 
@@ -166,6 +170,7 @@ export  default function App(){
             {MapProvider}
             {PropertyDialog}
             {TipsDialog}
+            {CanvasDialog}
             <Navigation  checkFull={fullScreenSwitch}
                          IsFull={IsFull}
                          openProviderMenu={openProviderMenu}

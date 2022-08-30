@@ -18,6 +18,7 @@ import {mymap} from "../OriginMap/OriginMap";
 import TextDecreaseIcon from '@mui/icons-material/TextDecrease';
 import TimelineOutlinedIcon from '@mui/icons-material/TimelineOutlined';
 
+import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
 let StateBeforeoutFullScreen = null;
 
 export default class ToolMenu extends React.Component{
@@ -154,6 +155,13 @@ export default class ToolMenu extends React.Component{
                         </tr>
 
                         <tr>
+
+                            <td>
+                                <IconButton onClick={this.handleStateChanged.bind(this,"paint")}>
+                                    <ModeEditOutlineOutlinedIcon fontSize="medium"></ModeEditOutlineOutlinedIcon>
+                                </IconButton>
+
+                            </td>
                             <td>
                                 <IconButton onClick={this.handleStateChanged.bind(this,"deleteItems")}>
                                     <LayersClearTwoToneIcon fontSize="medium"></LayersClearTwoToneIcon>
