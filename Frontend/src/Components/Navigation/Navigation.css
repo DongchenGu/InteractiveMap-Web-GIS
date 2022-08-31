@@ -3,7 +3,7 @@
     height: 7vh;
     width: 84%;
     position: absolute;
-    z-index: 990;
+    z-index: 1050;
     font-size: calc(5px + 2vmin);
     color: #3580ee;
     margin-top: 5vh;

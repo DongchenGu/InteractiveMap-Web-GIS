@@ -10,7 +10,7 @@ import ColorPicker from "../ColorPicker/ColorPicker"; // The default
 
 //redux
 import store from "../Store";
-import {changeColor, changeFamily, changeFontSize, changeText} from "../Store/actionCreater";
+import {changeColor, changeFamily, changeFontSize, changeLineWidth, changeText} from "../Store/actionCreater";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -47,6 +47,7 @@ export  default function Property (props){
     const [CR, setCR] = useState("N/A");
     const nodeRef = React.useRef(null);
 
+    const [lineWidth, setLineWidth] = useState(5)
 
     const setPickedColor=(co)=>{
         setColor(co);
@@ -247,7 +248,7 @@ export  default function Property (props){
 
 
     const handleSizeChange = (event) => {
-        console.log("size "+event.target.value);
+        //console.log("size "+event.target.value);
         setSize(event.target.value);
         //转换一下大小，数越大，结果越小，换成scale，用户更直观一些
         store.dispatch(changeFontSize(1/size));
@@ -395,6 +396,110 @@ export  default function Property (props){
                                 </div>
                             </div>
 
+//-------------------------------------------------------------------------------used for paint property
+
+    const handleLineWidthChange = (event) => {
+        store.dispatch(changeLineWidth(event.target.value));
+        setLineWidth(event.target.value);
+    };
+
+
+
+
+const paintProperty = <div id ="largeProperty" ref={nodeRef}>
+                            <div id="firstLine">
+                                <div id="toolName">
+                                    Paint
+                                </div>
+                                <div id="closeIcon">
+                                    <IconButton onClick={handleCloseToolMenu}>
+                                        <ClearIcon  fontSize="small" style={{marginTop:"auto"}}/>
+                                    </IconButton>
+                                </div>
+                            </div>
+                            <div className="inputAttributes">
+                                intput the Text and the attributes: &nbsp;
+                            </div>
+
+                            <table>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <div className="inputAttributes">
+                                            <div>choose your Pen Point Size(zoom level): &nbsp;</div>
+                                        </div>
+                                        <div id="FontSizeExplain">if you zoom the map in high level, you need to choose the large number: &nbsp;</div>
+                                    </td>
+                                    <td>
+                                        <div id="FontSizeExplain">
+                                            <Slider
+                                                value={lineWidth}
+                                                onChange={handleLineWidthChange}
+                                                size="small"
+                                                defaultValue={5}
+                                                aria-label="Small"
+                                                valueLabelDisplay="auto"
+                                                min={1}
+                                                max={20}
+                                            />
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div className="inputAttributes">
+                                            choose your Pen Style: &nbsp;
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                                            <InputLabel id="demo-select-small">FontFamily</InputLabel>
+                                            <Select
+                                                labelId="demo-select-small"
+                                                id="demo-select-small"
+                                                value={fontFamily}
+                                                label="fontFamily"
+                                                onChange={handleFontFamilyChange}
+                                            >
+                                                {/*<MenuItem value="">*/}
+                                                {/*    <em>None</em>*/}
+                                                {/*</MenuItem>*/}
+                                                <MenuItem value={"Arial"}>Arial</MenuItem>
+                                                <MenuItem value={"Verdana"}>Verdana</MenuItem>
+                                                <MenuItem value={"Arial Black"}>Arial Black</MenuItem>
+                                                <MenuItem value={"Trebuchet MS "}>Trebuchet MS </MenuItem>
+                                                <MenuItem value={"Impact"}>Impact</MenuItem>
+                                                <MenuItem value={"Times New Roman"}>Times New Roman</MenuItem>
+                                                <MenuItem value={"Georgia"}>Georgia</MenuItem>
+                                                <MenuItem value={"American Typewriter"}>American Typewriter</MenuItem>
+                                                <MenuItem value={"Monaco"}>Monaco</MenuItem>
+                                                <MenuItem value={"Bradley Hand"}>Bradley Hand</MenuItem>
+                                                <MenuItem value={"Luminari "}>Luminari </MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div className="inputAttributes">
+                                            Choose the Pen Color: &nbsp;
+                                        </div>
+                                    </td>
+                                    <td id="FontSizeExplain">
+                                        <ColorPicker setDisplayColorPicker={setDisplayColorPicker}
+                                                     setPickedColor={setPickedColor}
+                                                     displayColorPicker={displayColorPicker}
+                                                     color={color}
+                                        />
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                    </div>
+
+
 //----------------------------------------------------------------------used to Switch to different property
     if(CurrentState==="circle"){
             index= <Draggable nodeRef={nodeRef} handle='#firstLine'>
@@ -422,7 +527,11 @@ export  default function Property (props){
             {inputtextProperty}
         </Draggable>
     }
-
+    if(CurrentState==="paint"){
+        index=<Draggable nodeRef={nodeRef} handle='#firstLine'>
+            {paintProperty}
+        </Draggable>
+    }
     if(CurrentState==="lines"){
         index=<Draggable nodeRef={nodeRef} handle='#firstLine'>
             {LinesProperty}

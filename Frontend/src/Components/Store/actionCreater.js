@@ -1,5 +1,5 @@
 // 引入需要使用的 常量
-import {CHANGE_COLOR, CHANGE_TEXT, CHANGE_FONTSIZE, CHANGE_FONTFAMILY} from "./constant.js";
+import {CHANGE_COLOR, CHANGE_TEXT, CHANGE_FONTSIZE, CHANGE_FONTFAMILY,CHANGE_LINEWIDTH} from "./constant.js";
 
 
 //改变颜色
@@ -27,5 +27,12 @@ export const changeFamily = (fontFamily)=>{
     return{
         type: CHANGE_FONTFAMILY,
         payload:fontFamily,
+    }
+};
+
+export const changeLineWidth = (lineWidth)=>{
+    return{
+        type: CHANGE_LINEWIDTH,
+        payload:lineWidth,
     }
 };

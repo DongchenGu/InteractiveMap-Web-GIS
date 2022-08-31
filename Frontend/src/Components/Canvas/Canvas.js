@@ -1,7 +1,7 @@
 import "./Canvas.css"
 import React, {useEffect} from "react";
 import * as PIXI from 'pixi.js';
-
+import store from "../Store";
 
 let canvas
 let context
@@ -9,6 +9,8 @@ let eraser
 let brush
 let reSetCanvas
 let save
+let activeColor;
+
 
 let penDetail
 let aColorBtn
@@ -27,6 +29,14 @@ let lWidth = 2;
 let opacity = 1;
 let strokeColor = 'rgba(0,0,0,1)';
 let radius = 5;
+
+
+//translate color from rgba to hex
+const toHex = (n: number) => `${n > 15 ? '' : 0}${n.toString(16)}`;
+function  getHexColor(colorObj) {
+    const { r, g, b, a = 1 } = colorObj;
+    return `#${toHex(r)}${toHex(g)}${toHex(b)}${a === 1 ? '' : toHex(Math.floor(a * 255))}`;
+}
 
 
 function autoSetSize(){
@@ -54,6 +64,8 @@ function listenToUser() {
 
     if(document.body.ontouchstart !== undefined){
         canvas.ontouchstart = function (e) {
+            getColor();
+            getLinWidth();
             painting = true;
             let x1 = e.touches[0].clientX;
             let y1 = e.touches[0].clientY;
@@ -96,6 +108,8 @@ function listenToUser() {
     }else{
         // 鼠标按下事件
         canvas.onmousedown = function(e){
+            getColor();
+            getLinWidth();
             painting = true;
             let x1 = e.clientX;
             let y1 = e.clientY;
@@ -209,7 +223,7 @@ function canvasDraw(){
     // 添加新的绘制到历史记录
     canvasHistory.push(canvas.toDataURL());
     if(step > 0){
-        undo.classList.add('active');
+       // undo.classList.add('active');
     }
 }
 
@@ -243,7 +257,18 @@ function canvasRedo(){
     }
 }
 
+function getColor(){
+                 activeColor = getHexColor(store.getState().color);
+                context.fillStyle = activeColor;
+                context.strokeStyle = activeColor;
 
+            ifPop = false;
+}
+
+//get Line width from redux
+function getLinWidth(){
+    lWidth= store.getState().lineWidth;
+}
 
 export default function Canvas(){
 
