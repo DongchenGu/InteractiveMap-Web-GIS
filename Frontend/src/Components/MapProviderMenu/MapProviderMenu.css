@@ -2,11 +2,12 @@
     margin-top: 0vh;
     font-size: small;
     color: #000100;
+
 }
 #largeMapProviderMenu{
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: start ;
     margin-top: 16vh;
     margin-left: 83.4vw;
     margin-right: 2vw;
@@ -21,6 +22,7 @@
     font:bold 20px/24px Verdana, Geneva, sans-serif;
     padding-left: 1vh;
 
+
 }
 #div1{
     display: flex;
@@ -30,4 +32,16 @@
 #div2{
     padding-top: 2vh;
     padding-bottom: 1vh;
+}
+#closeIcon{
+    -ms-flex-align: end;
+    margin-top: 0;
+}
+#Name{
+    -ms-flex-align: start;
+    height: fit-content;
+    line-height: 5vh;
+    text-align: left;
+    width: 90%;
+
 }

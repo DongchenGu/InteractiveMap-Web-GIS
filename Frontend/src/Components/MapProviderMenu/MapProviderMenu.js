@@ -7,6 +7,8 @@ import FormLabel from '@mui/material/FormLabel';
 import "./MapProviderMenu.css"
 import ClearIcon from '@mui/icons-material/Clear';
 import IconButton from '@mui/material/IconButton';
+import Draggable from 'react-draggable';
+
 
 export  default class MapProviderMenu extends  React.Component{
 
@@ -23,42 +25,86 @@ export  default class MapProviderMenu extends  React.Component{
     render() {
         return(
             <div id="largeMapProviderMenu">
-                <div id="div1">
-                    <div id="div2">MapProviders</div>
-                    <IconButton onClick={this.handleClearMenu}  >
-                        <ClearIcon fontSize="medium" style={{marginLeft:"3vw",marginTop:"auto"}}/>
-                    </IconButton>
+                <div id="firstLine">
+                    <div id="Name">MapProviders</div>
+                    <div id="closeIcon">
+                        <IconButton onClick={this.handleClearMenu}  >
+                            <ClearIcon fontSize="medium" style={{marginLeft:"3vw",marginTop:"auto"}}/>
+                        </IconButton>
+                    </div>
+
 
                 </div>
             <div id="MapProviderMenu">
-                <FormControl>
+                <FormControl >
                     {/*<FormLabel id="demo-radio-buttons-group-label">MapProviders</FormLabel>*/}
                     <RadioGroup
                         aria-labelledby="demo-radio-buttons-group-label"
                         defaultValue="female"
                         name="radio-buttons-group"
+
                     >
                         <FormControlLabel value="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png"
-                                          control={<Radio onClick={this.handleClick}/>} label="Stadia.AlidadeSmooth" />
+                                          control={<Radio onClick={this.handleClick} size="small" sx={{
+                                              '& .MuiSvgIcon-root': {
+                                                  fontSize: 16,
+                                              },
+                                          }}/>} label="Stadia.AlidadeSmooth" style={{fontSize:"13"}}/>
                         <FormControlLabel value="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
-                                          control={<Radio onClick={this.handleClick}/>} label="OpenStreetMap.Hot" />
+                                          control={<Radio onClick={this.handleClick} size="small"sx={{
+                                              '& .MuiSvgIcon-root': {
+                                                  fontSize: 16,
+                                              },
+                                          }}/>} label="OpenStreetMap.Hot" style={{fontSize:"13"}}/>
                         <FormControlLabel value="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
-                                          control={<Radio onClick={this.handleClick}/>} label="Stadia.AlidadeSmoothDark" />
+                                          control={<Radio onClick={this.handleClick} size="small" sx={{
+                                              '& .MuiSvgIcon-root': {
+                                                  fontSize: 16,
+                                              },
+                                          }}/>} label="Stadia.AlidadeSmoothDark" style={{fontSize:"13"}}/>
                         <FormControlLabel value="https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png"
-                                          control={<Radio onClick={this.handleClick}/>} label="Stadia.OSMBright" />
+                                          control={<Radio onClick={this.handleClick} size="small" sx={{
+                                              '& .MuiSvgIcon-root': {
+                                                  fontSize: 16,
+                                              },
+                                          }}/>} label="Stadia.OSMBright" style={{fontSize:"13"}}/>
                         <FormControlLabel value="https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png"
-                                          control={<Radio onClick={this.handleClick}/>} label="Stadia.Outdoors" />
+                                          control={<Radio onClick={this.handleClick} size="small" sx={{
+                                              '& .MuiSvgIcon-root': {
+                                                  fontSize: 16,
+                                              },
+                                          }}/>} label="Stadia.Outdoors" style={{fontSize:"13"}}/>
                         <FormControlLabel value="https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}{r}.png"
-                                          control={<Radio onClick={this.handleClick}/>} label="Stamen.Toner" />
+                                          control={<Radio onClick={this.handleClick} size="small" sx={{
+                                              '& .MuiSvgIcon-root': {
+                                                  fontSize: 16,
+                                              },
+                                          }}/>} label="Stamen.Toner" style={{fontSize:"13"}}/>
                         <FormControlLabel value="https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.png"
-                                          control={<Radio onClick={this.handleClick}/>} label="Stamen.TonerLite" />
+                                          control={<Radio onClick={this.handleClick} size="small" sx={{
+                                              '& .MuiSvgIcon-root': {
+                                                  fontSize: 16,
+                                              },
+                                          }}/>} label="Stamen.TonerLite" style={{fontSize:"13"}}/>
 
                         <FormControlLabel value="https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}"
-                                          control={<Radio onClick={this.handleClick}/>} label="Esri.WorldTopoMap" />
+                                          control={<Radio onClick={this.handleClick} size="small" sx={{
+                                              '& .MuiSvgIcon-root': {
+                                                  fontSize: 16,
+                                              },
+                                          }}/>} label="Esri.WorldTopoMap" style={{fontSize:"13"}}/>
                         <FormControlLabel value="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-                                          control={<Radio onClick={this.handleClick}/>} label="Esri.WorldImagery" />
+                                          control={<Radio onClick={this.handleClick} size="small" sx={{
+                                              '& .MuiSvgIcon-root': {
+                                                  fontSize: 16,
+                                              },
+                                          }}/>} label="Esri.WorldImagery" style={{fontSize:"13"}}/>
                         <FormControlLabel value="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
-                                          control={<Radio onClick={this.handleClick}/>} label="CartoDB.Voyager" />
+                                          control={<Radio onClick={this.handleClick} size="small" sx={{
+                                              '& .MuiSvgIcon-root': {
+                                                  fontSize: 16,
+                                              },
+                                          }}/>} label="CartoDB.Voyager" style={{fontSize:"13"}}/>
 
                     </RadioGroup>
                 </FormControl>

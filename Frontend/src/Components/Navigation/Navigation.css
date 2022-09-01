@@ -1,6 +1,10 @@
 #navigation {
     background-color: #def8f8;
-    height: 7vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 6vh;
+    /*max-height: 60px;*/
     width: 84%;
     position: absolute;
     z-index: 1050;
@@ -9,14 +13,14 @@
     margin-top: 5vh;
     margin-left: 8%;
     margin-right: 8%;
-    padding-top: 0.4vh;
-    padding-bottom: 0.4vh;
+    /*padding-top: 0.4vh;*/
+    /*padding-bottom: 0.4vh;*/
     border: 2px solid #def8f8;
     border-radius: 10pt/10pt;
     opacity: 90%;
 }
 #Nbutton1{
-    height: 5vh;
+    /*height: 5vh;*/
 }
 
 
@@ -35,15 +39,18 @@
     height: 5vh;
     display: flex;
     flex-direction: row;
-    float: right;
-    margin-top: 0.5vh;
-    margin-bottom: 0.5vh;
+    margin-right: 0;
+    margin-left: auto;
+    /*margin-top: 0.5vh;*/
+    /*margin-bottom: 0.5vh;*/
 }
 #leftBar{
     display: flex;
     flex-direction: row;
-    margin-top: 0.5vh;
-    margin-bottom: 0.5vh;
+    /*margin-top: 0.5vh;*/
+    /*margin-bottom: 0.5vh;*/
+    height: 100%;
+    margin-left: 0;
     float: left;
 }
 #menu{
@@ -66,7 +73,9 @@
 #login{
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    margin-top: auto;
+    margin-bottom: auto;
+
     font-size: 0.875rem;
     color: #1976d2;
     font-weight: 500;

@@ -44,7 +44,7 @@
     align-items: center;
     width:fit-content ;
     height: 4vh;
-    margin-top: 1vh;
+    margin-top: 0;
     padding: 1vh;
 }
 
@@ -60,7 +60,6 @@
 #toolAttributes{
     -ms-flex-align: start;
     height: fit-content;
-    line-height: 4vh;
     text-align: left;
     width: fit-content;
 }

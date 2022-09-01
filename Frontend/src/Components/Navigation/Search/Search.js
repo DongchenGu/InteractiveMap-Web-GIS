@@ -88,7 +88,7 @@ const Search = ({getCoord}) => {
 
 
     return (
-        <div>
+         <div style={{marginTop:"auto",marginBottom:"auto"}}>
             <TextField
                 onFocus={()=>{setFocus(true)}}
                 onBlur={()=>{setFocus(false);setSeconds(0)}}

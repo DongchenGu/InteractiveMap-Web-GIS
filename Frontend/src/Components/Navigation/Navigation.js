@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import {SvgIcon, TextField, Typography} from "@mui/material";
 import Icon from '@mui/material/Icon';
 
+
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 
@@ -51,8 +52,9 @@ class Navigation extends React.Component{
                         <NMenu openProviderMenu={openProviderMenu}
                                openToolMenu={openToolMenu}
                                openProperty={openProperty}/>
+
                     </div>
-                    <Link to={"/auth"} id={"login"}>LOGIN</Link>
+                        <Link to={"/auth"} id={"login"}>LOGIN</Link>
 
 
 
