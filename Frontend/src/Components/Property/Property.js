@@ -18,6 +18,13 @@ import Select from '@mui/material/Select';
 import Input from '@mui/material/Input';
 import Slider from '@mui/material/Slider';
 import {CHANGE_FAMILY} from "../Store/constant";
+import {canvasUndo,canvasRedo,resetCanvas} from "../Canvas/Canvas"
+import SpellcheckIcon from "@mui/icons-material/Spellcheck";
+
+import UndoIcon from '@mui/icons-material/Undo';
+import RedoIcon from '@mui/icons-material/Redo';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+
 
 const ariaLabel = { 'aria-label': 'description' };
 
@@ -493,6 +500,23 @@ const paintProperty = <div id ="largeProperty" ref={nodeRef}>
                                                      displayColorPicker={displayColorPicker}
                                                      color={color}
                                         />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+
+                                    </td>
+                                    <td>
+                                        <IconButton onClick={canvasUndo}>
+                                            <UndoIcon fontSize="medium"></UndoIcon>
+                                        </IconButton>
+                                        <IconButton onClick={canvasRedo}>
+                                            <RedoIcon fontSize="medium"></RedoIcon>
+                                        </IconButton>
+
+                                        <IconButton onClick={resetCanvas}>
+                                            <DeleteOutlineIcon fontSize="medium"></DeleteOutlineIcon>
+                                        </IconButton>
                                     </td>
                                 </tr>
                                 </tbody>

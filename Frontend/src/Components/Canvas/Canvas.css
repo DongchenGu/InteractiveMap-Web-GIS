@@ -13,8 +13,16 @@
     /*opacity: 50%;*/
     /*background:rgba(0,0,0,0);*/
     position: absolute;
-    background-color: white;
+    /*background-color: white;*/
     background-color:transparent;
     /*pointer-events: none;*/
     padding: 0;
+}
+#RedoUndo{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    margin-top: 85vh;
+    margin-left: 90vw;
 }

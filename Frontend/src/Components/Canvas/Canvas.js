@@ -1,8 +1,12 @@
 import "./Canvas.css"
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import * as PIXI from 'pixi.js';
 import store from "../Store";
 
+
+
+
+let im;
 let canvas
 let context
 let eraser
@@ -10,18 +14,8 @@ let brush
 let reSetCanvas
 let save
 let activeColor;
+let changeFlag = false;
 
-
-let penDetail
-let aColorBtn
-let undo
-let redo
-
-
-let range1
-let range2
-let showOpacity
-let closeBtn
 let eraserEnabled = false;
 let activeBgColor = '#fff';
 let ifPop = false;
@@ -36,6 +30,18 @@ const toHex = (n: number) => `${n > 15 ? '' : 0}${n.toString(16)}`;
 function  getHexColor(colorObj) {
     const { r, g, b, a = 1 } = colorObj;
     return `#${toHex(r)}${toHex(g)}${toHex(b)}${a === 1 ? '' : toHex(Math.floor(a * 255))}`;
+}
+
+
+// undo and redo
+let canvasHistory = [];
+let step = -1;
+
+
+// reset canvas bgColor
+function setCanvasBg(color) {
+    context.fillStyle = color;
+    context.fillRect(0, 0, canvas.width, canvas.height);
 }
 
 
@@ -106,7 +112,7 @@ function listenToUser() {
             canvasDraw();
         }
     }else{
-        // 鼠标按下事件
+        // mousedown
         canvas.onmousedown = function(e){
             getColor();
             getLinWidth();
@@ -129,7 +135,7 @@ function listenToUser() {
             }
         }
 
-        // 鼠标移动事件
+        // mouseMove
         canvas.onmousemove = function(e){
             let x1 = lastPoint['x'];
             let y1 = lastPoint['y'];
@@ -148,7 +154,7 @@ function listenToUser() {
             }
         }
 
-        // 鼠标松开事件
+        // mouseUp
         canvas.onmouseup = function(){
             painting = false;
             canvasDraw();
@@ -198,8 +204,6 @@ function moveHandler(x1,y1,x2,y2){
 function drawLine(x1,y1,x2,y2){
     context.beginPath();
     context.lineWidth = lWidth;
-    // context.strokeStyle = strokeColor;
-    // context.globalAlpha = opacity;
     // 设置线条末端样式。
     context.lineCap = "round";
     // 设定线条与线条间接合处的样式
@@ -210,35 +214,31 @@ function drawLine(x1,y1,x2,y2){
     context.closePath();
 }
 
-// 实现撤销和重做的功能
-let canvasHistory = [];
-let step = -1;
 
 // 绘制方法
-function canvasDraw(){
+function canvasDraw() {
     step++;
-    if(step < canvasHistory.length){
+    if (step < canvasHistory.length) {
         canvasHistory.length = step;  // 截断数组
     }
+
     // 添加新的绘制到历史记录
     canvasHistory.push(canvas.toDataURL());
-    if(step > 0){
-       // undo.classList.add('active');
-    }
-}
 
+}
 // 撤销方法
 function canvasUndo(){
     if(step > 0){
+        //console.log(canvasHistory);
         step--;
+
         let canvasPic = new Image();
         canvasPic.src = canvasHistory[step];
-        canvasPic.onload = function () { context.drawImage(canvasPic, 0, 0); }
-        undo.classList.add('active');
-        redo.classList.add('active');
+        canvasPic.onload = function () {
+            context.clearRect(0,0,canvas.width,canvas.height);
+            context.drawImage(canvasPic, 0, 0); }
     }else{
-        undo.classList.remove('active');
-        alert('不能再继续撤销了');
+        alert('No more withdraw!');
     }
 }
 // 重做方法
@@ -250,12 +250,17 @@ function canvasRedo(){
         canvasPic.onload = function () {
             context.drawImage(canvasPic, 0, 0);
         }
-        // redo.classList.add('active');
     }else {
-        redo.classList.remove('active')
-        alert('已经是最新的记录了');
+        alert('it\'s already the latest!');
     }
 }
+
+function resetCanvas(){
+    context.clearRect(0,0,canvas.width,canvas.height);
+    canvasHistory = [];
+}
+
+
 
 function getColor(){
                  activeColor = getHexColor(store.getState().color);
@@ -265,19 +270,26 @@ function getColor(){
             ifPop = false;
 }
 
+
 //get Line width from redux
 function getLinWidth(){
     lWidth= store.getState().lineWidth;
 }
 
 export default function Canvas(){
-
     useEffect(()=>{
         canvas = document.getElementById('largeCanvas');
         context = canvas.getContext('2d');
         autoSetSize();
         listenToUser()
+
+
     })
+
+    useEffect(()=>{
+
+    },[])
+
 
     return(
         <canvas id="largeCanvas" >
@@ -286,3 +298,4 @@ export default function Canvas(){
 
     )
 }
+export {canvasUndo,canvasRedo,resetCanvas};
