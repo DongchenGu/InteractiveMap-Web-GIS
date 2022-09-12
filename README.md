@@ -44,7 +44,7 @@ use two key point to draw a rectangle onto the map
 
 # How to build
 - for the front end：get into the Front dir
-`
-use "npm start"
-`
+```
+npm start
+```
 
