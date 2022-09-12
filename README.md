@@ -13,7 +13,7 @@ search the citys by the name.
 - Use html5 canvas to create the brush tool, so users could make rough sketch with the map as the background.  
 - All the tools, menu and maps are integrated by React framework, and use Redux to transfer the state between different Components.  
 
-# Main Function
+# How to use
 - Point Mark  
 put point marker on the map
 ![point](https://user-images.githubusercontent.com/53630148/189499258-bc1cd8ba-1140-4582-89ad-6d7698b6ee3b.gif)
@@ -43,5 +43,8 @@ use two key point to draw a rectangle onto the map
 ![rectangle](https://user-images.githubusercontent.com/53630148/189499592-7ae7bd2d-a91b-4f42-a6e7-a884cce8d20c.gif)
 
 # How to build
-- get into the Front dir
-- use "npm start"
+- for the front end：get into the Front dir
+`
+use "npm start"
+`
+
