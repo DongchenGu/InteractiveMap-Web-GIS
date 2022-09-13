@@ -1,6 +1,6 @@
 import "./Canvas.css"
 import React, {useEffect, useState} from "react";
-import * as PIXI from 'pixi.js';
+//import * as PIXI from 'pixi.js';
 import store from "../Store";
 
 

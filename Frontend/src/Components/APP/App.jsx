@@ -9,14 +9,14 @@ import MapProviderMenu from '../MapProviderMenu/MapProviderMenu'
 import ToolMenu from "../ToolMenu/ToolMenu";
 import CurrentStateDialog from '../CurrentStateDialog/CurrentStateDialog'
 import Property from '../Property/Property'
-import { FullScreen, useFullScreenHandle } from "react-full-screen"
+//import { FullScreen, useFullScreenHandle } from "react-full-screen"
 import Tips from "../Tips/Tips";
 import Canvas from "../Canvas/Canvas.js"
 
 
 import Title from "../Title/Title"
 import NMenu from "../NMenu/NMenu";
-import Draggable from 'react-draggable'; // The default
+//import Draggable from 'react-draggable'; // The default
 
 
 export  default function App(){

@@ -7,7 +7,7 @@ import FormLabel from '@mui/material/FormLabel';
 import "./MapProviderMenu.css"
 import ClearIcon from '@mui/icons-material/Clear';
 import IconButton from '@mui/material/IconButton';
-import Draggable from 'react-draggable';
+//import Draggable from 'react-draggable';
 
 
 export  default class MapProviderMenu extends  React.Component{
