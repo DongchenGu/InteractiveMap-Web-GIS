@@ -43,7 +43,13 @@ use two key point to draw a rectangle onto the map
 ![rectangle](https://user-images.githubusercontent.com/53630148/189499592-7ae7bd2d-a91b-4f42-a6e7-a884cce8d20c.gif)
 
 # How to build
-- for the front end：get into the Front dir
+- for the front end:
+```
+cd .\Frontend\
+```
+```
+npm install
+```
 ```
 npm start
 ```
