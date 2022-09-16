@@ -6,9 +6,7 @@
 # Description
 Front End Part is based on React, leaflet, PIXIjs and Html5.  
 Back End Part is based on SpringBoot and MongoDB.  
-- The web system provides interactive maps, where itineraries and events can be marked directly on the map, we provide some different styles of map for the user! and various 2D interactive markers are provided. 
-Users can add point Markers, rectangles, polygons, lines, circles, text and even paint on the Map. User can sign up and sign in with their username and password, 
-search the citys by the name.  
+- Designed a Web Application based on React, JavaScript, SpringBoot and MongoDB, it’s a GIS platform, it provides interactive maps, where itineraries and events can be marked directly on the map, we provide some different styles of map for the user! Various 2D interactive markers are provided, users can add point Markers, rectangles, polygons, lines, circles, text and user can even make map as a Canvas using brush tool to draw draft, it’s easy to use especially on the mobile device with a touching screen. What's more, users can sign up and sign in with their username and password and search the citys by the name.
 - The map is based on Leaflet which is famous in the GIS area. Leaflet itself can't support any text on it, that’s an issue. I use PIXIjs to draw text, and innovatively integrate the text layer onto the leaflet map, so that the functions of the interactive map has been expanded.  
 - Use html5 canvas to create the brush tool, so users could make rough sketch with the map as the background.  
 - All the tools, menu and maps are integrated by React framework, and use Redux to transfer the state between different Components.  
