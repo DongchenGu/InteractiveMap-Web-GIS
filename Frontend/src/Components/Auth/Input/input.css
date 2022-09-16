@@ -17,3 +17,10 @@
 /*.MuiFormLabel-root.Mui-focused{*/
 /*  color:#000000 !important;*/
 /*}*/
+#note{
+  font-family: "Arial", sans-serif;
+  size: 0.12rem;
+  margin-left: auto;
+  margin-right: auto;
+  letter-spacing:2px
+}

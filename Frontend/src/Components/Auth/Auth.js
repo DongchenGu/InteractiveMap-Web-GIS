@@ -5,14 +5,16 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import ReactCSSTransitionGroup from 'react-transition-group'; // ES6
 import axios from "axios";
+import {  useNavigate } from "react-router-dom";
+import Qs from 'qs';
 
 
 
-const Register_URL='/register';
-const Login_URL = '/auth';
+const Register_URL='http://localhost:8080/register';
+const Login_URL = 'http://localhost:8080/login';
 let isQualified = false;
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
-const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
+const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{5,24}$/;
 
 function CheckMail(emailAddress){
 
@@ -22,6 +24,7 @@ function CheckMail(emailAddress){
 
 
 const Auth = () => {
+    const navigate = useNavigate();
     const [ErrMsg, setErrMsg] = useState("null");
     const [success,setSuccess]= useState(false);
     //true:login status, false: sign up status
@@ -54,11 +57,12 @@ const Auth = () => {
                 isQualified = true;
             }
 
+            isQualified = true;
             if(isQualified=== true){
                 try {
                     const response = await axios.post(Register_URL,
-                        JSON.stringify(authInfo),
-                        {headers:{'Content-Type':'application/json'},withCredentials: true},
+                        authInfo,
+                        {headers:{'Content-Type':'application/json'}},
                         );
                     console.log(response.data);
                     console.log(response.accessToken);
@@ -77,23 +81,30 @@ const Auth = () => {
             }
 
         }else{
+            //从这里开始是登录
             const emailResult = CheckMail(authInfo.email);
             if(emailResult===false){
                 alert("Please input the valid Email Address!");
                 return;
             }
             try {
-                const response = await axios.post(Login_URL,
-                    JSON.stringify(authInfo),
-                    {
-                        headers:{'Content-Type':'application/json'},
-                        withCredentials: true,
-                    },
-                    );
-                console.log(JSON.stringify(response?.data));
-                const accessToken = response?.data?.accessToken;
-                const roles = response?.data?.roles;
-                setSuccess(true);
+                 await axios.post(
+                    Login_URL,
+                    authInfo,
+                     {headers:{'Content-Type':'application/json'}}
+
+                    ).then(response => {
+                        if(response.data==='success'){
+                            setSuccess(true);
+                        }else if(response.data ==='wrong-password'){
+                            alert("Sorry Wrong Password!");
+                        }else if (response.data ==='user-not-exist'){
+                            alert("User not exist! Please Sign Up!");
+                        }
+                    //console.log(response);
+                   // console.log(res.data);
+                });
+                //console.log(JSON.stringify(response?.data));
             }catch (err){
                 if(!err?.response){
                     setErrMsg("no server response");
@@ -119,8 +130,22 @@ const Auth = () => {
         confirm_password:""
     })
 
-
     }
+
+    useEffect(()=>{
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+    },[])
+
+    const BackToHome=()=>{
+        navigate("/home", { state: {  }});
+    }
+    useEffect(()=>{
+        if(success ===true){
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            navigate("/home", { state: {  }});
+        }
+    })
+
 
    return (
        <div className={"ct"}>
