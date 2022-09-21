@@ -1,5 +1,6 @@
 // 引入需要使用的常量
-import {CHANGE_COLOR, CHANGE_TEXT, CHANGE_FONTSIZE, CHANGE_FONTFAMILY,CHANGE_LINEWIDTH} from "./constant.js";
+import {CHANGE_COLOR, CHANGE_TEXT, CHANGE_FONTSIZE, CHANGE_FONTFAMILY,CHANGE_LINEWIDTH,
+    USER_EMAIL,USER_NAME,USER_PASSWORD,USER_TOKEN} from "./constant.js";
 
 const defaultState ={
     color : {
@@ -11,10 +12,35 @@ const defaultState ={
     fontSize: 0.1,
     fontFamily:"Arial",
     lineWidth: 5,
+    user_email: null,
+    user_name: null,
+    user_password: null,
+    user_token:null
 };
 
 function reducer(state = defaultState, action) {
     switch (action.type) {
+        case USER_EMAIL:
+            return {
+                ...state,
+                user_email : action.payload
+            };
+        case USER_NAME:
+            return {
+                ...state,
+                user_name : action.payload
+            };
+        case USER_PASSWORD:
+            return {
+                ...state,
+                user_password : action.payload
+            };
+        case USER_TOKEN:
+            return {
+                ...state,
+                user_token : action.payload
+            };
+
         case CHANGE_COLOR:
             return {
                 ...state,

@@ -22,6 +22,16 @@ function CheckMail(emailAddress){
     var bChk=reg.test(emailAddress);
     return bChk; }
 
+const setAxiosToken =(token)=>{
+    if(token){
+        // token存在设置header,因为后续每个请求都需要
+        axios.defaults.headers.common['Authorization'] = token ;
+    }else{
+        // 没有token就移除
+        delete axios.defaults.headers.common['Authorization'];
+    }
+}
+
 
 const Auth = () => {
     const navigate = useNavigate();
@@ -94,12 +104,20 @@ const Auth = () => {
                      {headers:{'Content-Type':'application/json'}}
 
                     ).then(response => {
-                        if(response.data==='success'){
+                        if(response.data.hasOwnProperty("token")){
+                            console.log("-----------------")
+                            console.log(response.data);
+                            localStorage.setItem("user", JSON.stringify(response.data.user));
+                            localStorage.setItem("user_token", response.data.token);
+                            //给axios设置token
+                            setAxiosToken(response.data.token);
                             setSuccess(true);
-                        }else if(response.data ==='wrong-password'){
-                            alert("Sorry Wrong Password!");
-                        }else if (response.data ==='user-not-exist'){
-                            alert("User not exist! Please Sign Up!");
+                        }else if (response.data.hasOwnProperty('errMsg')){
+                            if(response.data.errMsg==='wrong-password'){
+                                alert("Sorry Wrong Password!");
+                            }else if(response.data.errMsg==='user-not-exist'){
+                                alert("User not exist! Please Sign Up!");
+                            }
                         }
                     //console.log(response);
                    // console.log(res.data);
@@ -116,7 +134,7 @@ const Auth = () => {
                     setErrMsg("login Failed");
                 }
             }
-            console.log(authInfo)
+            //console.log(authInfo)
         }
     }
 
@@ -132,9 +150,7 @@ const Auth = () => {
 
     }
 
-    useEffect(()=>{
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-    },[])
+
 
     const BackToHome=()=>{
         navigate("/home", { state: {  }});
@@ -183,3 +199,4 @@ const Auth = () => {
 }
 
 export default Auth;
+export {setAxiosToken};

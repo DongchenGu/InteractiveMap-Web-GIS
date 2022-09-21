@@ -12,11 +12,19 @@ import Property from '../Property/Property'
 //import { FullScreen, useFullScreenHandle } from "react-full-screen"
 import Tips from "../Tips/Tips";
 import Canvas from "../Canvas/Canvas.js"
+import {setAxiosToken} from '../Auth/Auth'
+
 
 
 import Title from "../Title/Title"
 import NMenu from "../NMenu/NMenu";
+import store from "../Store";
+import {changeColor, user_email, user_password, user_token} from "../Store/actionCreater";
+import {Provider} from "react-redux";
 //import Draggable from 'react-draggable'; // The default
+
+let currentUser = null;
+let token = null;
 
 
 export  default function App(){
@@ -32,6 +40,11 @@ export  default function App(){
     const [PropertyOpen, setPropertyOpen] = useState(true);
     const [TipsOpen, setTipsOpen] = useState(false);
 
+
+    const getCoord = (coord) => {
+        // console.log(coord)
+        this.setState({...this.state, coord:coord})
+    }
 
     // let state={
     //     isFull: false,
@@ -164,19 +177,24 @@ export  default function App(){
         }
 
 
-
+        //让导航条根据用户是否登录来显示不同按钮
+        //通过检测redux中是否用用户信息来检测用户是否已经登录
         Index = <div>
             {Tool}
             {MapProvider}
             {PropertyDialog}
             {TipsDialog}
             {CanvasDialog}
-            <Navigation  checkFull={fullScreenSwitch}
-                         IsFull={IsFull}
-                         openProviderMenu={openProviderMenu}
-                         openToolMenu={openToolMenu}
-                         openProperty={openProperty}
-            />
+
+                <Navigation  checkFull={fullScreenSwitch}
+                             IsFull={IsFull}
+                             openProviderMenu={openProviderMenu}
+                             openToolMenu={openToolMenu}
+                             openProperty={openProperty}
+                             getCoord={getCoord}
+                />
+
+
             {IsFull===false? <div id="Describe">
                                 <Title/>
                             </div> : null}
@@ -195,6 +213,23 @@ export  default function App(){
 
         </div>
 
+        useEffect(()=>{
+            if(localStorage.getItem("user")){
+                console.log("User exist, already login")
+                currentUser=JSON.parse(localStorage.getItem("user"));
+                token = localStorage.getItem("user_token");
+
+                console.log(JSON.parse(localStorage.getItem("user")));
+                store.dispatch(user_email(currentUser.email));
+                store.dispatch(user_password(currentUser.password));
+                store.dispatch(user_token(token));
+                //设置axios的header
+                setAxiosToken(token);
+                //localStorage.clear();
+            }else{
+                console.log("not login");
+            }
+        },[]);
 
 
 

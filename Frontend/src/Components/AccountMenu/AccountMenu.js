@@ -11,16 +11,45 @@ import Tooltip from '@mui/material/Tooltip';
 import PersonAdd from '@mui/icons-material/PersonAdd';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
+import {useEffect, useState} from "react";
+import store from "../Store";
+import {user_email, user_password, user_token} from "../Store/actionCreater";
+import {setAxiosToken} from "../Auth/Auth";
 
-export default function AccountMenu() {
+
+
+export default function AccountMenu(props) {
+    const {email} = props;
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
+
+
+
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
+        //console.log(event.currentTarget);
     };
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    // useEffect(()=>{
+    //     store.subscribe(()=>{
+    //         setEmail(store.getState().user_email);
+    //     })
+    // },[])
+
+    const handleLogOut=(e)=>{
+        //清除localStorage
+        localStorage.clear();
+        //清除redux中的用户信息
+        store.dispatch(user_email(null));
+        store.dispatch(user_password(null));
+        store.dispatch(user_token(null));
+        //取消axios中的token请求头
+        setAxiosToken(null);
+    };
+
     return (
         <React.Fragment>
             <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
@@ -43,7 +72,7 @@ export default function AccountMenu() {
                 id="account-menu"
                 open={open}
                 onClose={handleClose}
-                onClick={handleClose}
+
                 PaperProps={{
                     elevation: 0,
                     sx: {
@@ -73,11 +102,11 @@ export default function AccountMenu() {
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
+                {/*<MenuItem>*/}
+                {/*    <Avatar /> Profile*/}
+                {/*</MenuItem>*/}
                 <MenuItem>
-                    <Avatar /> Profile
-                </MenuItem>
-                <MenuItem>
-                    <Avatar /> My account
+                    <Avatar /> {email}
                 </MenuItem>
                 <Divider />
                 <MenuItem>
@@ -92,7 +121,7 @@ export default function AccountMenu() {
                     </ListItemIcon>
                     Settings
                 </MenuItem>
-                <MenuItem>
+                <MenuItem onClick={handleLogOut}>
                     <ListItemIcon>
                         <Logout fontSize="small" />
                     </ListItemIcon>
