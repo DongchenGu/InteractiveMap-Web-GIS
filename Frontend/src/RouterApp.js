@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Container, createTheme, ThemeProvider} from "@material-ui/core";
 import { BrowserRouter } from 'react-router-dom'
 
@@ -10,6 +10,8 @@ import "./RouterApp.css"
 import { useRoutes} from 'react-router-dom';
 // import "./App.css"
 import routes from './Components/Routes/Route';
+import Waiting from "./Components/Waiting/Waiting";
+import store from "./Components/Store";
 
 
 const theme = createTheme({
@@ -26,11 +28,19 @@ const theme = createTheme({
 
 function RouterApp(){
     const element = useRoutes(routes);
+    const [waitingFlag,setWaitingFlag] = useState(false);
+
+    useEffect(()=>{
+        store.subscribe(()=>{
+            setWaitingFlag(store.getState().waiting_flag);
+        })
+    },[])
 
     // const user = JSON.parse(localStorage.getItem('profile'))
     return(
-                    <ThemeProvider theme={theme}>
-                              {element}
+                    <ThemeProvider theme={theme} >
+                        {waitingFlag ===true?     <Waiting/> : <div></div>}
+                            {element}
                         <Footer/>
                     </ThemeProvider>
     )

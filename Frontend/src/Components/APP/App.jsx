@@ -19,7 +19,7 @@ import {setAxiosToken} from '../Auth/Auth'
 import Title from "../Title/Title"
 import NMenu from "../NMenu/NMenu";
 import store from "../Store";
-import {changeColor, user_email, user_password, user_token} from "../Store/actionCreater";
+import {changeColor, setWaitingFlag, user_email, user_password, user_token} from "../Store/actionCreater";
 import {Provider} from "react-redux";
 //import Draggable from 'react-draggable'; // The default
 
@@ -229,6 +229,12 @@ export  default function App(){
             }else{
                 console.log("not login");
             }
+
+            //延时关闭等待页面
+            setTimeout(()=>{
+                //关闭等待页面
+                store.dispatch(setWaitingFlag(false));
+            },2000)
         },[]);
 
 

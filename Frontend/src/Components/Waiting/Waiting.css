@@ -1,0 +1,185 @@
+#waiting-cover{
+    background: #000;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    filter: alpha(opacity=30);
+    opacity: 0.8;
+    display: block;
+    z-index: 1100;
+    height: 100%;
+
+}
+#waiting-text{
+    display: block;
+    height: auto;
+    font-family: "Arial Narrow", serif;
+    font-size:x-large;
+    margin-top: calc(15% + 250px);
+    margin-left: 50%;
+    color: #ffff;
+
+}
+
+
+
+/*控制旋转*/
+@keyframes rotate{
+    from{
+        transform:rotate(0deg)
+    }
+    to{
+        transform:rotate(360deg)
+    }
+}
+
+#loading1{
+    position: absolute;
+    margin-left: 45%;
+    margin-top: 15%;
+    /*left: 50%;*/
+    /*top: 50%;*/
+    /*transform: translate(-50%, -50%);*/
+}
+#loading1 .gear1{
+    position: relative;
+    width: 130px;
+    height: 130px;
+    animation: rotate 5s infinite linear
+}
+
+#loading1 .gear1> div{
+    border-radius: 10px;
+    position: absolute;
+    background: #ffffff;
+    width: 130px;
+    height: 130px;
+    top: 0;
+    left: 0;
+}
+#loading1 .gear1 div:first-child{
+    transform: rotate(120deg);
+}
+#loading1 .gear1 div:nth-child(2){
+    transform: rotate(240deg);
+}
+#loading1 .gear1 div:nth-child(3){
+
+}
+#loading1 .gear1:after{
+    position: absolute;
+    content: '';
+    background: #000;
+    opacity: 0.8;
+    width: 75px;
+    height: 75px;
+    border-radius: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+
+/*第二个齿轮*/
+@keyframes rotate2{
+    from{
+        transform:rotate(0deg)
+    }
+    to{
+        transform:rotate(-360deg)
+    }
+}
+#loading2{
+    position: absolute;
+    margin-left: calc(45% + 150px);
+    margin-top: calc(15% + 88px);
+    /*left: 50%;*/
+    /*top: 50%;*/
+    /*transform: translate(-50%, -50%);*/
+}
+#loading2 .gear2{
+    position: relative;
+    width: 80px;
+    height: 80px;
+    animation: rotate2 5s infinite linear
+}
+
+#loading2 .gear2> div{
+    border-radius: 5px;
+    position: absolute;
+    background: #ffffff;
+    width: 80px;
+    height: 80px;
+    top: 0;
+    left: 0;
+}
+#loading2 .gear2 div:first-child{
+    transform: rotate(120deg);
+}
+#loading2 .gear2 div:nth-child(2){
+    transform: rotate(240deg);
+}
+#loading2 .gear2 div:nth-child(3){
+
+}
+#loading2 .gear2:after{
+    position: absolute;
+    content: '';
+    background: #000;
+    opacity: 0.8;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/*第三个齿轮*/
+#loading3{
+    position: absolute;
+    margin-left: calc(45% + 125px);
+    margin-top: calc(15% + 180px);
+    /*left: 50%;*/
+    /*top: 50%;*/
+    /*transform: translate(-50%, -50%);*/
+}
+#loading3 .gear3{
+    position: relative;
+    width: 50px;
+    height: 50px;
+    animation: rotate 5s infinite linear
+}
+
+#loading3 .gear3> div{
+    border-radius: 2px;
+    position: absolute;
+    background: #ffffff;
+    width: 50px;
+    height: 50px;
+    top: 0;
+    left: 0;
+}
+#loading3 .gear3 div:first-child{
+    transform: rotate(120deg);
+}
+#loading3 .gear3 div:nth-child(2){
+    transform: rotate(240deg);
+}
+#loading3 .gear3 div:nth-child(3){
+
+}
+#loading3 .gear3:after{
+    position: absolute;
+    content: '';
+    background: #000;
+    opacity: 0.8;
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

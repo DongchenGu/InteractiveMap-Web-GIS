@@ -1,6 +1,7 @@
 // 引入需要使用的常量
 import {CHANGE_COLOR, CHANGE_TEXT, CHANGE_FONTSIZE, CHANGE_FONTFAMILY,CHANGE_LINEWIDTH,
-    USER_EMAIL,USER_NAME,USER_PASSWORD,USER_TOKEN} from "./constant.js";
+    USER_EMAIL,USER_NAME,USER_PASSWORD,USER_TOKEN,WaitingFlag} from "./constant.js";
+
 
 const defaultState ={
     color : {
@@ -15,11 +16,18 @@ const defaultState ={
     user_email: null,
     user_name: null,
     user_password: null,
-    user_token:null
+    user_token:null,
+    waiting_flag:false
 };
 
 function reducer(state = defaultState, action) {
     switch (action.type) {
+        case WaitingFlag:
+            return {
+                ...state,
+                waiting_flag : action.payload
+            };
+
         case USER_EMAIL:
             return {
                 ...state,

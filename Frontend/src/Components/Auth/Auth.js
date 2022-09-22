@@ -7,6 +7,8 @@ import ReactCSSTransitionGroup from 'react-transition-group'; // ES6
 import axios from "axios";
 import {  useNavigate } from "react-router-dom";
 import Qs from 'qs';
+import store from "../Store";
+import {setWaitingFlag} from "../Store/actionCreater";
 
 
 
@@ -97,6 +99,8 @@ const Auth = () => {
                 alert("Please input the valid Email Address!");
                 return;
             }
+            //设置进入等待页面
+            store.dispatch(setWaitingFlag(true));
             try {
                  await axios.post(
                     Login_URL,
@@ -124,6 +128,8 @@ const Auth = () => {
                 });
                 //console.log(JSON.stringify(response?.data));
             }catch (err){
+                //关闭等待页面
+                store.dispatch(setWaitingFlag(false));
                 if(!err?.response){
                     setErrMsg("no server response");
                 }else if(err.response?.status ===400){

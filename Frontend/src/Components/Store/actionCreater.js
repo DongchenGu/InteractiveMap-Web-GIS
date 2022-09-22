@@ -1,6 +1,13 @@
 // 引入需要使用的 常量
 import {CHANGE_COLOR, CHANGE_TEXT, CHANGE_FONTSIZE, CHANGE_FONTFAMILY,
-    CHANGE_LINEWIDTH,USER_EMAIL,USER_NAME,USER_PASSWORD,USER_TOKEN} from "./constant.js";
+    CHANGE_LINEWIDTH,USER_EMAIL,USER_NAME,USER_PASSWORD,USER_TOKEN,WaitingFlag} from "./constant.js";
+export const setWaitingFlag = (flag) => {
+    return {
+        type: WaitingFlag,
+        payload:flag,
+    };
+};
+
 
 export const user_email = (email) => {
     return {
