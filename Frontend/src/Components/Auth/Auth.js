@@ -12,6 +12,7 @@ import {setWaitingFlag} from "../Store/actionCreater";
 
 
 
+
 const Register_URL='http://localhost:8080/register';
 const Login_URL = 'http://localhost:8080/login';
 let isQualified = false;
@@ -67,9 +68,11 @@ const Auth = () => {
                 return;
             }else{
                 isQualified = true;
+
+                //设置进入等待页面
+                store.dispatch(setWaitingFlag(true));
             }
 
-            isQualified = true;
             if(isQualified=== true){
                 try {
                     const response = await axios.post(Register_URL,
@@ -82,6 +85,11 @@ const Auth = () => {
                     //clear input fields
 
                 }catch (err){
+                    //延时关闭等待页面
+                    setTimeout(()=>{
+                        store.dispatch(setWaitingFlag(false));
+                    },1000);
+
                     if (!err?.response){
                         setErrMsg("no Server Response");
                     }else if(err.response?.status===409){
@@ -165,6 +173,11 @@ const Auth = () => {
         if(success ===true){
             // eslint-disable-next-line react-hooks/rules-of-hooks
             navigate("/home", { state: {  }});
+        }else {
+            //延时关闭等待页面,注册完成后这个组件更新，进入登录页面，先关闭等待页面
+            setTimeout(()=>{
+                store.dispatch(setWaitingFlag(false));
+            },1000);
         }
     })
 

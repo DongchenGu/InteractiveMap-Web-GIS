@@ -10,7 +10,7 @@ const defaultState ={
         b: 0,
         a: 1,},
     text:"N/A",
-    fontSize: 0.1,
+    fontSize: 10,
     fontFamily:"Arial",
     lineWidth: 5,
     user_email: null,

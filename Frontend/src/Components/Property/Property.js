@@ -256,9 +256,13 @@ export  default function Property (props){
 
     const handleSizeChange = (event) => {
         //console.log("size "+event.target.value);
-        setSize(event.target.value);
+        if(event.target.value===200){
+            setSize(400);
+        }else {
+            setSize(event.target.value);
+        }
         //转换一下大小，数越大，结果越小，换成scale，用户更直观一些
-        store.dispatch(changeFontSize(1/size));
+        store.dispatch(changeFontSize(size));
     };
 
 
@@ -317,7 +321,7 @@ export  default function Property (props){
                                                         aria-label="Small"
                                                         valueLabelDisplay="auto"
                                                         min={0.5}
-                                                        max={100}
+                                                        max={200}
                                                     />
                                                 </div>
                                                 {/*     <FormControl sx={{ m: 1, minWidth: 120 }} size="small">*/}

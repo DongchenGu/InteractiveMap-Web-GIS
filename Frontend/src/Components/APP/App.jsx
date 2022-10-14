@@ -21,6 +21,7 @@ import NMenu from "../NMenu/NMenu";
 import store from "../Store";
 import {changeColor, setWaitingFlag, user_email, user_password, user_token} from "../Store/actionCreater";
 import {Provider} from "react-redux";
+import PubSub from "pubsub-js";
 //import Draggable from 'react-draggable'; // The default
 
 let currentUser = null;
@@ -120,6 +121,7 @@ export  default function App(){
     }
     const closeTips=()=>{
         setTipsOpen(false);
+        PubSub.publish("inputtext", 'xxxx');
     }
 
 

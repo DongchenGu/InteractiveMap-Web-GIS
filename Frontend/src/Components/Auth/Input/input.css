@@ -9,8 +9,8 @@
 
 }
 
-.MuiInputBase-input{
-}
+/*.MuiInputBase-input{*/
+/*}*/
 /*.MuiInputBase-root{*/
 /*  color: white !important;*/
 /*}*/
@@ -22,5 +22,6 @@
   size: 0.12rem;
   margin-left: auto;
   margin-right: auto;
-  letter-spacing:2px
+  letter-spacing:2px;
+  color: white;
 }

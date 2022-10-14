@@ -1,15 +1,15 @@
 #App {
   display: flex;
-  width: 100vw;
+  width: 100%;
   flex-direction: column;
   justify-content: center;
   position: relative;
   overflow-x: hidden;
   margin-left: 0;
 }
-::-webkit-scrollbar {
-  display: none;
-}
+/*::-webkit-scrollbar {*/
+/*  display: none;*/
+/*}*/
 
 #Describe {
   min-height: 80vh;
@@ -28,7 +28,7 @@
   width: 100%;
   padding-top: 4vh;
   padding-bottom: 4vh;
-  padding-left: 11.5%;
+  padding-left: 12%;
   padding-right: 12%;
 }
 

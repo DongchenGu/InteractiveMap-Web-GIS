@@ -34,8 +34,9 @@ const Input = ({type, placeholder, authInfo, setAuthInfo}) => {
                label={placeholder}
                variant="filled"
                className={"input"}
-               color="yellow"
+
                margin="normal"
+               inputProps={{ style: { color: "white" } }}
 
            />
            <div id="note">{note=== true? PWDnotes:""}</div>

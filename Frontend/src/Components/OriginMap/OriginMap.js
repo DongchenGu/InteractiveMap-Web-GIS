@@ -455,6 +455,8 @@ let drawTextOnClick;
 
 drawTextOnClick=(e)=>{
     let LL = e.latlng;
+    let latitude = LL.lat.toFixed(10);
+    let longitude = LL.lng.toFixed(10);
     // let prevZoom;
     // let firstDraw = true;
     text = store.getState().text;
@@ -475,12 +477,13 @@ drawTextOnClick=(e)=>{
     });
 
     // {fontFamily: fontFamily}
-    Text = new PIXI.Text(text,{fontFamily: fontFamily, fill: color,})
+    Text = new PIXI.Text(text,{fontFamily: fontFamily, fill: color,align:"center"})
     container = new PIXI.Container();
     container.addChild(Text)
 
     //Text.id = idText++;
-
+// console.log("文字输出的位置");
+//     console.log(LL.lat.toFixed(5));
 
     pixiOverlay = L.pixiOverlay((utils) => {
         map = utils.getMap()
@@ -491,11 +494,14 @@ drawTextOnClick=(e)=>{
         const scale = utils.getScale();
         //text.scale.set(1 / scale);
         //text.text = store.getState().text;
-        Text.scale.set(fontSize)
-        const coords = project([LL.lat.toFixed(5), LL.lng.toFixed(5)]) // 需要把经纬度转换为 canvas 上的坐标
-        Text.x = coords.x;
+        Text.scale.set(1/fontSize)
+        const coords = project([latitude, longitude]) // 需要把经纬度转换为 canvas 上的坐标
+        Text.x = coords.x-(2/fontSize);
+        console.log("文字输出的位置");
+        console.log(fontSize);
+        console.log(coords);
         //Text.sssssssssssssss= coords.x;
-        Text.y = coords.y
+        Text.y = coords.y-(6/fontSize);
         Text.resolution=20;
         // text.scale.set(1 / scale);
         //text.scale.set(1 / scale);
@@ -829,7 +835,6 @@ function clearAllToolListener(){
         }
 
 
-
         L.tileLayer(OSMUrl).addTo(mymap);
         mymap.invalidateSize(true);
         //这里当处于非全屏模式，并且绘制了内容的时候，将BackFlag置为TRUE，防止回到全屏模式下的-重新恢复之前的state的时候-自动绘图
@@ -867,7 +872,7 @@ function clearAllToolListener(){
             if(BackFlag===false){
                 clearAllToolListener();
                 //mymap.off('click',drawTextOnClick);//这里需要先取消事件，因为tips的引入，导致关闭tips后会更新APP的state，导致drawText被调用两次
-                drawText();
+                //drawText(); 这里没必要调用，因为点击事件会被tips弹窗截获
                 console.log("点击了文字工具");
             }else { BackFlag =false;}
         }else if(CurrentState === "lines"){
@@ -897,4 +902,5 @@ function clearAllToolListener(){
     );
 }
 
+export {drawText};
 

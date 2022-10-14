@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {Container, createTheme, ThemeProvider} from "@material-ui/core";
-import { BrowserRouter } from 'react-router-dom'
+// import {Container, createTheme, ThemeProvider} from "@material-ui/core";
+// import { BrowserRouter } from 'react-router-dom'
 
 //import App from "./Components/APP/App"
 import Footer from "./Components/Footer/Footer"
@@ -12,12 +12,13 @@ import { useRoutes} from 'react-router-dom';
 import routes from './Components/Routes/Route';
 import Waiting from "./Components/Waiting/Waiting";
 import store from "./Components/Store";
+import {createTheme, ThemeProvider} from "@mui/material";
 
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#eb1745',
+      main: '#0044ff',
     },
     secondary: {
       main: '#0044ff',
@@ -38,11 +39,13 @@ function RouterApp(){
 
     // const user = JSON.parse(localStorage.getItem('profile'))
     return(
+        <div>
                     <ThemeProvider theme={theme} >
                         {waitingFlag ===true?     <Waiting/> : <div></div>}
                             {element}
                         <Footer/>
                     </ThemeProvider>
+        </div>
     )
     /*<Container maxWidth="xl"></Container>*/
 }
