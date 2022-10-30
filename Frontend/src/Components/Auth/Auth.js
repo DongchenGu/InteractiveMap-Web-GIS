@@ -28,10 +28,10 @@ function CheckMail(emailAddress){
 const setAxiosToken =(token)=>{
     if(token){
         // token存在设置header,因为后续每个请求都需要
-        axios.defaults.headers.common['Authorization'] = token ;
+        axios.defaults.headers.token = token ;
     }else{
         // 没有token就移除
-        delete axios.defaults.headers.common['Authorization'];
+        delete axios.defaults.headers.common['token'];
     }
 }
 
@@ -122,7 +122,7 @@ const Auth = () => {
                             localStorage.setItem("user", JSON.stringify(response.data.user));
                             localStorage.setItem("user_token", response.data.token);
                             //给axios设置token
-                            setAxiosToken(response.data.token);
+                            //setAxiosToken(response.data.token);
                             setSuccess(true);
                         }else if (response.data.hasOwnProperty('errMsg')){
                             if(response.data.errMsg==='wrong-password'){
@@ -172,6 +172,7 @@ const Auth = () => {
     useEffect(()=>{
         if(success ===true){
             // eslint-disable-next-line react-hooks/rules-of-hooks
+
             navigate("/home", { state: {  }});
         }else {
             //延时关闭等待页面,注册完成后这个组件更新，进入登录页面，先关闭等待页面
@@ -218,4 +219,4 @@ const Auth = () => {
 }
 
 export default Auth;
-export {setAxiosToken};
+export {setAxiosToken,CheckMail};

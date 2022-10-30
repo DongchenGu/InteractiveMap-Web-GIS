@@ -13,12 +13,16 @@ import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import {useEffect, useState} from "react";
 import store from "../Store";
-import {user_email, user_password, user_token} from "../Store/actionCreater";
+import {user_email, user_name, user_password, user_token} from "../Store/actionCreater";
 import {setAxiosToken} from "../Auth/Auth";
+
+
+import {useNavigate} from "react-router-dom";
 
 
 
 export default function AccountMenu(props) {
+    const navigate = useNavigate();
     const {email} = props;
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -38,11 +42,15 @@ export default function AccountMenu(props) {
     //         setEmail(store.getState().user_email);
     //     })
     // },[])
-
+    const handleMainProfile=(e)=>{
+        //console.log("得得得");
+        navigate("/mainProfile", { state: {  }});
+    };
     const handleLogOut=(e)=>{
         //清除localStorage
         localStorage.clear();
         //清除redux中的用户信息
+        store.dispatch(user_name(null));
         store.dispatch(user_email(null));
         store.dispatch(user_password(null));
         store.dispatch(user_token(null));
@@ -105,7 +113,7 @@ export default function AccountMenu(props) {
                 {/*<MenuItem>*/}
                 {/*    <Avatar /> Profile*/}
                 {/*</MenuItem>*/}
-                <MenuItem>
+                <MenuItem onClick={handleMainProfile}>
                     <Avatar /> {email}
                 </MenuItem>
                 <Divider />

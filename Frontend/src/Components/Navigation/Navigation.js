@@ -71,6 +71,10 @@ export default  function  Navigation(props){
                                openProperty={openProperty}/>
 
                     </div>
+                    <div id="menu">
+                        <Button variant="text">Login</Button>
+                    </div>
+
                     {email===null? <Link to={"/auth"} id={"login"}>LOGIN</Link> : <div id={"login"}>LOGOUT</div>}
 
 

@@ -19,7 +19,7 @@ import {setAxiosToken} from '../Auth/Auth'
 import Title from "../Title/Title"
 import NMenu from "../NMenu/NMenu";
 import store from "../Store";
-import {changeColor, setWaitingFlag, user_email, user_password, user_token} from "../Store/actionCreater";
+import {changeColor, setWaitingFlag, user_email, user_password,user_name, user_token} from "../Store/actionCreater";
 import {Provider} from "react-redux";
 import PubSub from "pubsub-js";
 //import Draggable from 'react-draggable'; // The default
@@ -223,8 +223,11 @@ export  default function App(){
 
                 console.log(JSON.parse(localStorage.getItem("user")));
                 store.dispatch(user_email(currentUser.email));
-                store.dispatch(user_password(currentUser.password));
-                store.dispatch(user_token(token));
+                store.dispatch(user_password(null));
+                store.dispatch(user_name(currentUser.username));
+                if(store.getState().user_token==null){
+                    store.dispatch(user_token(token));
+                }
                 //设置axios的header
                 setAxiosToken(token);
                 //localStorage.clear();

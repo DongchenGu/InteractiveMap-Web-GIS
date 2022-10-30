@@ -4,12 +4,12 @@
   flex-direction: column;
   justify-content: center;
   position: relative;
-  overflow-x: hidden;
+  /*overflow-x: hidden;*/
   margin-left: 0;
 }
-/*::-webkit-scrollbar {*/
-/*  display: none;*/
-/*}*/
+::-webkit-scrollbar {
+  display: none;
+}
 
 #Describe {
   min-height: 80vh;

@@ -1,7 +1,8 @@
 *{
-    margin: 0;
+    margin-right: 0;
+    margin-left: 0;
     padding: 0;
-    box-sizing: border-box;
+    /*box-sizing: border-box;*/
 }
 
 .animate-route{
