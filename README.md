@@ -11,7 +11,9 @@ Back End Part is based on SpringBoot and MongoDB.
 - Use html5 canvas to create the brush tool, so users could make rough sketch with the map as the background.  
 - All the tools, menu and maps are integrated by React framework, and use Redux to transfer the state between different Components.  
 
-# How to use
+# How to use  
+- Login  
+![Animation](https://user-images.githubusercontent.com/53630148/199585774-c3be35d7-97fb-4178-82c0-290faf9dc742.gif)  
 - Point Mark  
 put point marker on the map
 ![point](https://user-images.githubusercontent.com/53630148/189499258-bc1cd8ba-1140-4582-89ad-6d7698b6ee3b.gif)
