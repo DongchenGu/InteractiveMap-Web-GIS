@@ -28,7 +28,7 @@
 
     border-radius: 10pt/10pt;
     opacity: 90%;
-    animation-duration: 2s;
+    animation-duration: 1s;
     animation-name: changeColor;
     animation-fill-mode:forwards;
 }

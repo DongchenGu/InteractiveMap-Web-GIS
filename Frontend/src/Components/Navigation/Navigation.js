@@ -17,20 +17,34 @@ import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import AccountMenu from "../AccountMenu/AccountMenu";
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import Search from "./Search/Search";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {deleteAllText} from "../OriginMap/OriginMap"
 
-import {user_email, user_password, user_token} from "../Store/actionCreater";
+import {user_email, user_name, user_password, user_token} from "../Store/actionCreater";
 import store from "../Store";
+import {setAxiosToken} from "../Auth/Auth";
 
 
 
 export default  function  Navigation(props){
     const logo ="./Logo1.png";
     const [email,setEmail]= useState(null);
-
+    const navigate = useNavigate();
     const {IsFull,checkFull,openProviderMenu,openToolMenu,openProperty,getCoord} =props;
 
+    const handleLogOut=(e)=>{
+        //清除localStorage
+        localStorage.clear();
+        //清除redux中的用户信息
+        store.dispatch(user_name(null));
+        store.dispatch(user_email(null));
+        store.dispatch(user_password(null));
+        store.dispatch(user_token(null));
+
+    };
+    const handleLogIn =(e)=>{
+        navigate("/auth",{state: { }});
+    };
     useEffect(()=>{
         store.subscribe(() => {
             setEmail(store.getState().user_email);
@@ -72,10 +86,12 @@ export default  function  Navigation(props){
 
                     </div>
                     <div id="menu">
-                        <Button variant="text">Login</Button>
+                        {email===null?  <Button variant="text" onClick={handleLogIn}>LOGIN</Button>:
+                                        <Button variant="text" onClick={handleLogOut}>LOGOUT</Button>}
+
                     </div>
 
-                    {email===null? <Link to={"/auth"} id={"login"}>LOGIN</Link> : <div id={"login"}>LOGOUT</div>}
+                    {/*{email===null? <Link to={"/auth"} id={"login"}>LOGIN</Link> : <div id={"login"}>LOGOUT</div>}*/}
 
 
 
