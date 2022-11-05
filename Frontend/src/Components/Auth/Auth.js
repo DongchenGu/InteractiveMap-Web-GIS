@@ -9,6 +9,7 @@ import {  useNavigate } from "react-router-dom";
 import Qs from 'qs';
 import store from "../Store";
 import {setWaitingFlag} from "../Store/actionCreater";
+import {createTheme,ThemeProvider} from "@mui/material/styles";
 
 
 
@@ -50,6 +51,21 @@ const Auth = () => {
         confirm_password:""
     })
 
+    const theme = createTheme({
+        status: {
+            danger: '#e53e3e',
+        },
+        palette: {
+            white: {
+                main: '#ffffff',
+                darker: '#b7b7b7',
+            },
+            neutral: {
+                main: '#64748B',
+                contrastText: '#fff',
+            },
+        },
+    });
 
 
 
@@ -195,14 +211,16 @@ const Auth = () => {
                    <Input type={"password"} placeholder={"password"} authInfo={authInfo} setAuthInfo={setAuthInfo}/>
                    {islogging? <div/>:(<Input type={"password"} placeholder={"confirm_password"} authInfo={authInfo} setAuthInfo={setAuthInfo}/>)}
                    <Typography align='center' >
-                      <Button onClick={handleSubmit}
-                        color='primary'
-                        size='large'
-                        type='submit'
-                        variant='contained'
-                       >
-                          {islogging? "Log in":"Sign Up"}
-                      </Button>
+                       <ThemeProvider theme={theme}>
+                          <Button onClick={handleSubmit}
+                            color='white'
+                            size='large'
+                            type='submit'
+                            variant='outlined'
+                           >
+                              {islogging? "Log in":"Sign Up"}
+                          </Button>
+                           </ThemeProvider>
                     </Typography>
 
                 </div>

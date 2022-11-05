@@ -23,7 +23,7 @@
     width: 30px;
     height: 30px;
     display:block;
-    background: url("../../images/facebook.png") center/cover;
+    background: url("../../images/Facebook.png") center/cover;
 }
 #shareOnTwitter{
     width: 30px;
@@ -31,7 +31,12 @@
     display:block;
     background: url("../../images/Twitter.png") center/cover;
 }
-
+#shareOnReddit{
+    width: 30px;
+    height: 30px;
+    display:block;
+    background: url("../../images/Reddit.png") center/cover;
+}
 
 
 #footerLogo{
@@ -97,7 +102,7 @@
 .th2{
     display: table-row-group;
     height: 20px;
-    font-size: 15px;
+    font-size: 18px;
 }
 .tr2{
     display: table-row-group;
@@ -110,9 +115,14 @@
     /*border: solid 1px red;*/
     table-layout: fixed;
     color: azure;
+    height: 15px;
 }
 .link{
     color: azure;
+    font-size: small;
+}
+.importantLink{
+    font-size: large;
 }
 
 

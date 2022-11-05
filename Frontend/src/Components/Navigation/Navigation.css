@@ -6,7 +6,7 @@
     height: 6vh;
     /*max-height: 60px;*/
     width: 84%;
-    position: absolute;
+    position: fixed;
     z-index: 1050;
     font-size: calc(5px + 2vmin);
     color: #3580ee;
@@ -60,8 +60,10 @@
 }
 
 #fullScreenSwitchIcon{
-    margin-left: -3vh;
+    margin-left: 0px;
     display: flex;
+    width: auto;
+    font-size: medium;
     flex-direction: column;
     justify-content: center;
 }

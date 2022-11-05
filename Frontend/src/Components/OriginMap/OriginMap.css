@@ -1,6 +1,7 @@
 .originMap{
     height: calc(100% - 8vh);
     width: 100%;
+    z-index: 0;
 }
 .originMapFull{
     height: 90vh;

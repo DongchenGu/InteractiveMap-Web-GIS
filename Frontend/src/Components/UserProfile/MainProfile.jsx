@@ -18,6 +18,13 @@ import {setWaitingFlag, user_email, user_name, user_password, user_token} from "
 import axios from "axios";
 import {setAxiosToken} from "../Auth/Auth";
 import {instance} from "../axios/request";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
+//导入截图
+import ScreenShot from "js-web-screen-shot";
+
 
 const UpdateProfile_URL = 'http://localhost:8080/updateProfile';
 const ariaLabel = { 'aria-label': 'description' };
@@ -44,6 +51,21 @@ function CheckUserName(username){
 
 
 export default function MainProfile(props){
+    const theme = createTheme({
+        status: {
+            danger: '#e53e3e',
+        },
+        palette: {
+            white: {
+                main: '#ffffff',
+                darker: '#b7b7b7',
+            },
+            neutral: {
+                main: '#64748B',
+                contrastText: '#fff',
+            },
+        },
+    });
     const navigate = useNavigate();
     const [ErrMsg, setErrMsg] = useState("null");
     const [userInfo, setUserInfo] = useState({
@@ -65,8 +87,14 @@ export default function MainProfile(props){
         store.dispatch(user_name(null));
         store.dispatch(user_password(null));
         store.dispatch(user_token(null));
+        //跳转回到home页面
+        navigate("/home",{ state:{ }});
 
     };
+    const backHome=(e)=>{
+        //跳转回到home页面
+        navigate("/home",{ state:{ }});
+    }
     //将页面切换到userProfile的修改页面
     const handleEditProfile=(e)=>{
         setProfileState("edit");
@@ -75,6 +103,41 @@ export default function MainProfile(props){
     const handleCancel=(e)=>{
         setProfileState("show");
     }
+
+    const handleScreenShot=(e)=>{
+        new ScreenShot({enableWebRtc: true, completeCallback: callback,closeCallback: closeFn});
+        // downloadImage(sessionStorage.getItem("screenShotImg"));
+    }
+    const closeFn=()=>{
+
+    }
+    const callback=(base64)=>{
+        downloadImage(base64);
+    }
+    const downloadImage=(base64)=>{
+        //拿到base64后下载图片
+        var byteCharacters = atob(
+            base64.replace(/^data:image\/(png|jpeg|jpg);base64,/, "")
+        );
+        var byteNumbers = new Array(byteCharacters.length);
+        for (var i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        var byteArray = new Uint8Array(byteNumbers);
+        var blob = new Blob([byteArray], {
+            type: undefined,
+        });
+        var aLink = document.createElement("a");
+        aLink.download = "ScreenShot.jpg"; //这里写保存时的图片名称
+        aLink.href = URL.createObjectURL(blob);
+        aLink.click();
+
+    }
+
+
+
+
+
     //向服务器提交修改
     const handleSubmitEditting=async (e) => {
         //console.log(userInfo);
@@ -149,14 +212,19 @@ export default function MainProfile(props){
         setUserInfo({...userInfo,[target]:e.target.value});
         //console.log(e);
     }
+    //组件第一次加载时候需要做
     useEffect(()=>{
         let tempOB = store.getState();
+        if(tempOB.user_email===null){
+            navigate("/home", {state : { }})
+        }
         // let user_email =tempOB.user_name;
         // if(user_email===null){
         //     user_email = "set your name!";
         // }
         setUserInfo({email:tempOB.user_email,username: tempOB.user_name, password: null})
         //axios.defaults.headers.common['token'] = tempOB.token ;
+
     },[])
 
     //分两种情况，显示profile和修改profile
@@ -164,7 +232,7 @@ export default function MainProfile(props){
                             <div id="userPhoto">
                                 <img src={userPhoto} id="round_icon" alt="" onClick={handlePhotoClick}/>
                             </div>
-                            <table>
+                            <table id="profileTable">
                                 <tbody>
                                 <tr>
                                     <td id="UserName"><div >{userInfo.username}</div></td>
@@ -220,7 +288,25 @@ export default function MainProfile(props){
 
 
                     <div id="rightBar">
+                        <ThemeProvider theme={theme}>
 
+                            <IconButton onClick={handleScreenShot}>
+                                <AddAPhotoIcon />
+                            </IconButton>
+                            <IconButton  style={{marginRight:'1vw'}}>
+                                <DeleteTwoToneIcon />
+                            </IconButton>
+
+                            <div id="AccountMenu">
+                                <AccountMenu email={userInfo.email}/>
+                            </div>
+                            <div id="menu">
+                                <Button variant="text"  color="white" onClick={backHome}>HOME</Button>
+                            </div>
+                            <div id="menu">
+                                    <Button variant="text"  color="white" onClick={handleLogOut}>LOGOUT</Button>
+                            </div>
+                        </ThemeProvider>
                     </div>
                 </div>
             {profileState === "show"? showProfile : editProfile}

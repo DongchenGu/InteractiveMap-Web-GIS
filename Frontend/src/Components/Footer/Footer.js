@@ -4,12 +4,15 @@ import {tileLayer} from "leaflet/dist/leaflet-src.esm";
 
 export  default  class Footer extends  React.Component{
 
-    url="https://leafletjs.cn/index.html";
+    url="https://github.com/NorbertFeltchenheimer/InteractiveMap-Web-GIS";
     shareOnFacebook= ()=>{
         window.open(`http://www.facebook.com/sharer.php?kid_directed_site=0&u=${this.url}`, `_blank`, `width=600, height=450, toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, top=100,left=350`)
     }
     shareOnTwitter= ()=>{
         window.open(`https://twitter.com/share?url=${this.url}`, `_blank`, `width=600, height=450, toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, top=100,left=350`)
+    }
+    shareOnReddit= ()=>{
+        window.open(`http://www.reddit.com/submit?url=${this.url}`, `_blank`, `width=600, height=450, toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, top=100,left=350`)
     }
 
     render() {
@@ -31,7 +34,7 @@ export  default  class Footer extends  React.Component{
                                 <button onClick={this.shareOnTwitter} id="shareOnTwitter"></button>
                             </div>
                             <div className='tdIcon'>
-                                <button onClick={this.shareOnTwitter} id="shareOnTwitter"></button>
+                                <button onClick={this.shareOnReddit} id="shareOnReddit"></button>
                             </div>
                         </div>
                 </div>
@@ -49,9 +52,19 @@ export  default  class Footer extends  React.Component{
                     </div>
                     <div className="tr2">
                         <div className='td2'></div>
+                        <div className='td2'><a href="https://github.com/NorbertFeltchenheimer/InteractiveMap-Web-GIS" className="importantLink">GitHub</a></div>
+                        <div className='td2'></div>
+                        <div className='td2'><a href="https://github.com/facebook/react/" className="link">React</a></div>
+                        <div className='td2'></div>
+                        <div className='tdIcon'></div>
+                        <div className='tdIcon'></div>
+                        <div className='tdIcon'></div>
+                    </div>
+                    <div className="tr2">
                         <div className='td2'></div>
                         <div className='td2'></div>
-                        <div className='td2'><a href="https://github.com/Leaflet/Leaflet" className="link">leafLet</a></div>
+                        <div className='td2'></div>
+                        <div className='td2'><a href="https://github.com/Leaflet/Leaflet" className="link">Leaflet</a></div>
                         <div className='td2'></div>
                         <div className='tdIcon'></div>
                         <div className='tdIcon'></div>
@@ -71,17 +84,7 @@ export  default  class Footer extends  React.Component{
                         <div className='td2'></div>
                         <div className='td2'></div>
                         <div className='td2'></div>
-                        <div className='td2'><a href="https://github.com/Leaflet/Leaflet" className="link">W3cSchool</a></div>
-                        <div className='td2'></div>
-                        <div className='tdIcon'></div>
-                        <div className='tdIcon'></div>
-                        <div className='tdIcon'></div>
-                    </div>
-                    <div className="tr2">
-                        <div className='td2'></div>
-                        <div className='td2'></div>
-                        <div className='td2'></div>
-                        <div className='td2'><a href="https://github.com/Leaflet/Leaflet" className="link">W3cSchool</a></div>
+                        <div className='td2'><a href="https://github.com/pixijs/pixijs" className="link">PiXiJS</a></div>
                         <div className='td2'></div>
                         <div className='tdIcon'></div>
                         <div className='tdIcon'></div>

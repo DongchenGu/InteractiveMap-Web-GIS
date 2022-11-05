@@ -23,7 +23,9 @@ import {deleteAllText} from "../OriginMap/OriginMap"
 import {user_email, user_name, user_password, user_token} from "../Store/actionCreater";
 import store from "../Store";
 import {setAxiosToken} from "../Auth/Auth";
-
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
+//导入截图
+import ScreenShot from "js-web-screen-shot";
 
 
 export default  function  Navigation(props){
@@ -45,6 +47,39 @@ export default  function  Navigation(props){
     const handleLogIn =(e)=>{
         navigate("/auth",{state: { }});
     };
+    const handleScreenShot=(e)=>{
+        new ScreenShot({enableWebRtc: true, completeCallback: callback,closeCallback: closeFn});
+        // downloadImage(sessionStorage.getItem("screenShotImg"));
+    }
+    const closeFn=()=>{
+
+    }
+    const callback=(base64)=>{
+        downloadImage(base64);
+    }
+    const downloadImage=(base64)=>{
+            var byteCharacters = atob(
+                base64.replace(/^data:image\/(png|jpeg|jpg);base64,/, "")
+            );
+            var byteNumbers = new Array(byteCharacters.length);
+            for (var i = 0; i < byteCharacters.length; i++) {
+                byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+            var byteArray = new Uint8Array(byteNumbers);
+            var blob = new Blob([byteArray], {
+                type: undefined,
+            });
+            var aLink = document.createElement("a");
+            aLink.download = "ScreenShot.jpg"; //这里写保存时的图片名称
+            aLink.href = URL.createObjectURL(blob);
+            aLink.click();
+
+
+    }
+
+
+
+
     useEffect(()=>{
         store.subscribe(() => {
             setEmail(store.getState().user_email);
@@ -67,13 +102,21 @@ export default  function  Navigation(props){
 
 
                 <div id="rightBar">
+
+                    <IconButton onClick={handleScreenShot}>
+                        <AddAPhotoIcon />
+                    </IconButton>
                     <IconButton >
                         <DeleteTwoToneIcon />
                     </IconButton>
-                    <FormControlLabel control={<Switch checked={IsFull} onChange={checkFull} name="isFull"/>}   />
+
                     <div id="fullScreenSwitchIcon">
-                        <OpenInFullIcon style={{fontSize:"x-large"}}/>
+                        Full Screen
                     </div>
+                    <FormControlLabel control={<Switch checked={IsFull} onChange={checkFull} name="isFull"/>}  style={{marginLeft:'0.08vw',marginRight:'0.3vw'}} />
+                    {/*<div id="fullScreenSwitchIcon">*/}
+                    {/*    <OpenInFullIcon style={{fontSize:"x-large"}}/>*/}
+                    {/*</div>*/}
                     {email===null? <div></div> :
                         <div id="AccountMenu">
                             <AccountMenu email={email}/>

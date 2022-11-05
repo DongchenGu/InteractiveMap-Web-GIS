@@ -54,13 +54,15 @@ export default function AccountMenu(props) {
         store.dispatch(user_email(null));
         store.dispatch(user_password(null));
         store.dispatch(user_token(null));
-        //取消axios中的token请求头
-        setAxiosToken(null);
+        // //取消axios中的token请求头
+        // setAxiosToken(null);
+        navigate("/home",{ state:{ }});
+
     };
 
     return (
         <React.Fragment>
-            <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+            <Box sx={{ display: 'flex', flexDirection:'row', alignItems: 'center', textAlign: 'center', marginLeft:'-1.8vw',marginRight:0 }}>
 
                 <Tooltip title="Account settings">
                     <IconButton
