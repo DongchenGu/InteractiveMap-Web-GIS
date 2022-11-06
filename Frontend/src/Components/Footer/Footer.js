@@ -1,6 +1,8 @@
 import React from "react";
 import './Footer.css'
 import {tileLayer} from "leaflet/dist/leaflet-src.esm";
+import Button from '@mui/material/Button';
+
 
 export  default  class Footer extends  React.Component{
 
@@ -43,7 +45,7 @@ export  default  class Footer extends  React.Component{
                     <div className='th2'>
                         <div className='td2'></div>
                         <div className='td2'>Open Source Map Marker </div>
-                        <div className='td2'>Links</div>
+                        <div className='td2'><a href="https://www.gnu.org/licenses/gpl-3.0.en.html" className="link" style={{fontSize:'18px'}}>GPL 3.0 License</a></div>
                         <div className='td2'>API Reference</div>
                         <div className='td2'></div>
                         <div className='tdIcon'></div>
@@ -90,6 +92,55 @@ export  default  class Footer extends  React.Component{
                         <div className='tdIcon'></div>
                         <div className='tdIcon'></div>
                     </div>
+                    <div className="tr2">
+                        <div className='td2'></div>
+                        <div className='td2'></div>
+                        <div className='td2'></div>
+                        <div className='td2'><a href="https://github.com/pixijs/pixijs" className="link">PiXiJS</a></div>
+                        <div className='td2'></div>
+                        <div className='tdIcon'></div>
+                        <div className='tdIcon'></div>
+                        <div className='tdIcon'></div>
+                    </div>
+                    <div className="tr2">
+                        <div className='td2'></div>
+                        <div className='td2' style={{fontSize:'15px'}}>Terms-></div>
+                        <div className='td2'></div>
+                        <div className='td2'></div>
+                        <div className='td2'></div>
+                        <div className='tdIcon'></div>
+                        <div className='tdIcon'></div>
+                        <div className='tdIcon'></div>
+                    </div>
+                </div>
+                <div id="Copyright">
+                    <div>
+                        &lt;InteractiveMap Web GIS&gt;
+                    </div>
+                    <div>
+                        Copyright (C) &lt;2022&gt;  &lt;DongchenGu&gt;
+                    </div>
+                    <br />
+                        <div>
+                            we provide some different styles of map for the user! Various 2D interactive markers are provided,
+                            users can add point Markers, rectangles, polygons, lines, circles,
+                            text and user can even make map as a Canvas using brush tool to draw drafts.
+                        </div>
+                    <br/>
+                        <div>
+                            This program is free software: you can redistribute it and/or modify
+                            it under the terms of the GNU General Public License as published by
+                            the Free Software Foundation, version 3.
+                        </div>
+                    <br/>
+                        <div>
+                            This program is distributed in the hope that it will be useful,
+                            but WITHOUT ANY WARRANTY; without even the implied warranty of
+                            MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                            GNU General Public License for more details.
+                        </div>
+                    <br/>
+                    along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;
                 </div>
 
                 <div id="endBar"> TERMS AND CONDITIONS   PRIVACY POLICY &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ＠2022</div>

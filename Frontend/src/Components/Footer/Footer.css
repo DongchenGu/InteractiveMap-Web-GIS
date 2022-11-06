@@ -1,3 +1,12 @@
+a:link { text-decoration: none;color: #ffffff
+}
+a:active { text-decoration:blink}
+a:hover { text-decoration:underline;color: #afafaf}
+a:visited { text-decoration: none;color: #ffffff}
+
+
+
+
 
 .footerTable{
     color: azure;
@@ -123,6 +132,7 @@
 }
 .importantLink{
     font-size: large;
+    color: azure;
 }
 
 
@@ -141,8 +151,17 @@
 #endMenu{
   margin-top: -8vh;
   width: 100vw;
-  height: 60vh;
+  height: 82vh;
   background-color: #131313;
   overflow-x: hidden;
    margin-left: 0px;
+}
+
+#Copyright{
+    font-size: x-small;
+    color: white;
+
+    height: auto;
+    margin-left: 24%;
+    margin-right: 45%;
 }
