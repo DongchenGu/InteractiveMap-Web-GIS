@@ -72,15 +72,47 @@
     padding-top: 14vh;
     padding-left: 4vw;
     padding-right: 4vw;
-    width: 30vw;
+    width: 28vw;
     height: auto;
+
 }
-#userPhoto{
+#outSideUserPhoto{
     margin-top: 0;
     margin-bottom: 0;
-    height: 22vw;
-    width: auto;
+    position: relative;
+    display: block;
+    min-width: 150px;
+    min-height: 150px;
 }
+#userPhotoFrame{
+    margin-bottom: 0;
+    align-items: center;
+    width: 19vw;
+    height: 19vw;
+    min-width: 150px;
+    min-height: 150px;
+    border: 2px solid #000100;
+    background-color: #ffffff;
+    border-radius: 50%;
+    overflow: hidden;
+}
+#editUserPhoto {
+    background-color: white;
+    width: 6vh;
+    height: 6vh;
+    position: absolute;
+    right: 1vw;
+    bottom: 2.5vw;
+    border-radius:50%;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /*z-index: 3;*/
+}
+
+
+
 #UserName{
     font-size: xxx-large;
 }
@@ -101,12 +133,13 @@
     height: auto;
 }
 
-#round_icon{
-    width: 20vw;
-    height: 20vw;
-    display: flex;
-    border-radius: 50%;
+#image{
+    /*width: 20vw;*/
+    /*height: 20vw;*/
+    /*display: flex;*/
+    /*border-radius: 50%;*/
     align-items: center;
     justify-content: center;
+
     overflow: hidden;
 }

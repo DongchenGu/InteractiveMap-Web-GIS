@@ -1,0 +1,43 @@
+#PhotoDialogCover{
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #b2b2b2;
+    width: 100vw;
+    height: 100vh;
+    opacity: 80%;
+    display: block;
+}
+
+#PhotoDialogFrame{
+    margin-left: auto;
+    margin-right: auto;
+    height: 20vh;
+    width: auto;
+    background-color: #ffffff;
+    position: absolute;
+    top: 20vh;
+    left: 30vw;
+    right: 30vw;
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    opacity: 80%;
+}
+#PhotoDialogHeader{
+    height: auto;
+    margin:0;
+    width: 100%;
+}
+#PhotoDialogTitle{
+    float: left;
+    width: auto;
+    height: 4.5vh;
+    line-height:4.5vh;
+    margin-left: 0.5vh;
+
+}
+#PhotoDialogClose{
+    float:right;
+
+}

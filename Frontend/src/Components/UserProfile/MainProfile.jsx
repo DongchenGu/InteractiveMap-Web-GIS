@@ -24,6 +24,11 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 //导入截图
 import ScreenShot from "js-web-screen-shot";
+import EditIcon from '@mui/icons-material/Edit';
+import PhotoProcessing from "../AlertDialog/PhotoProcessing";
+import {getTableSortLabelUtilityClass} from "@mui/material";
+
+
 
 
 const UpdateProfile_URL = 'http://localhost:8080/updateProfile';
@@ -134,8 +139,14 @@ export default function MainProfile(props){
 
     }
 
-
-
+    const [PhotoProcessingVisible, setPhotoProcessingVisible] =useState(false);
+    const hidePhotoProcessing = ()=>{
+        setPhotoProcessingVisible(false);
+    }
+    const handlePhotoProcessing=()=>{
+        console.log('编辑图片')
+        setPhotoProcessingVisible(true);
+    }
 
 
     //向服务器提交修改
@@ -228,10 +239,7 @@ export default function MainProfile(props){
     },[])
 
     //分两种情况，显示profile和修改profile
-    const showProfile= <div id="profile">
-                            <div id="userPhoto">
-                                <img src={userPhoto} id="round_icon" alt="" onClick={handlePhotoClick}/>
-                            </div>
+    const showProfile= <div >
                             <table id="profileTable">
                                 <tbody>
                                 <tr>
@@ -242,14 +250,17 @@ export default function MainProfile(props){
                                 </tr>
                                 </tbody>
                             </table>
-                            <Button variant="outlined" color="inherit" onClick={handleEditProfile}>Edit Profile</Button>
+                            <div style={{width:"100%"}}>
+                                <Button variant="outlined" color="inherit" onClick={handleEditProfile}>Edit Profile</Button>
+                            </div>
+
 
                         </div>
 
-    const editProfile=<div id="profile">
-                            <div id="userPhoto">
-                                <img src={userPhoto} id="round_icon" alt="" onClick={handlePhotoClick}/>
-                            </div>
+    const editProfile=<div >
+                            {/*<div id="userPhoto">*/}
+                            {/*    <img src={userPhoto} id="round_icon" alt="" onClick={handlePhotoClick}/>*/}
+                            {/*</div>*/}
                             <table id="profileTable">
                                 <tbody>
                                 <tr>
@@ -273,13 +284,17 @@ export default function MainProfile(props){
                                 </tr>
                                 </tbody>
                             </table>
-                            <Button variant="outlined" color="inherit" onClick={handleSubmitEditting}>Submit</Button>
-                            <Button variant="outlined" color="inherit" onClick={handleCancel}
-                                style={{marginTop:"2vh"}}>Cancel</Button>
+                             <div style={{display:"flex",flexDirection:"column"}}>
+                                <Button variant="outlined" color="inherit" onClick={handleSubmitEditting} >Submit</Button>
+                                <Button variant="outlined" color="inherit" onClick={handleCancel}
+                                    style={{marginTop:"1vh"}}>Cancel</Button>
+                             </div>
                       </div>
 
     return(
-        <div id="mainProfile">
+        <div>
+
+            <div id="mainProfile">
                 <div id="navigationProfile">
 
                     <div id="leftBar">
@@ -304,17 +319,37 @@ export default function MainProfile(props){
                                 <Button variant="text"  color="white" onClick={backHome}>HOME</Button>
                             </div>
                             <div id="menu">
-                                    <Button variant="text"  color="white" onClick={handleLogOut}>LOGOUT</Button>
+                                <Button variant="text"  color="white" onClick={handleLogOut}>LOGOUT</Button>
                             </div>
                         </ThemeProvider>
                     </div>
                 </div>
-            {profileState === "show"? showProfile : editProfile}
-            <div id="content">
+                <div id="profile">
+                    <div id="outSideUserPhoto">
+                        <div id="userPhotoFrame">
+                            {/*<div id="userPhoto">*/}
+
+                            {/*</div>*/}
+                            {/*<img src={userPhoto} id="image" alt="" onClick={handlePhotoClick}/>*/}
+                        </div>
+                        <div id="editUserPhoto">
+                            <IconButton onClick={handlePhotoProcessing}>
+                                <EditIcon />
+                            </IconButton>
+                        </div>
+                    </div>
+
+                    {PhotoProcessingVisible===true? <PhotoProcessing hidePhotoProcessing={hidePhotoProcessing}/>: null}
+                    {profileState === "show"? showProfile : editProfile}
+                </div>
+
+                <div id="content">
+
+                </div>
 
             </div>
-
         </div>
+
     )
 
 }
