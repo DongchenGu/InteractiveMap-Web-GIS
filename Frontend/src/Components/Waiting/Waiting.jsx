@@ -50,6 +50,13 @@ export  default  function Waiting(){
     useEffect(()=>{
         stopwheel();
     },[])
+    useEffect(()=>{
+        return () => {
+            startwheel();
+        }
+    },[])
+
+
 
     return(
         <div id="waiting-cover">

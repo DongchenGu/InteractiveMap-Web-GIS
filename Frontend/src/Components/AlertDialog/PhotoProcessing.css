@@ -12,16 +12,16 @@
 #PhotoDialogFrame{
     margin-left: auto;
     margin-right: auto;
-    height: 20vh;
+    height: auto;
     width: auto;
     background-color: #ffffff;
     position: absolute;
-    top: 20vh;
-    left: 30vw;
-    right: 30vw;
+    top: 10vh;
+    left: 20vw;
+
     display: flex;
     flex-direction: column;
-    border-radius: 5px;
+    border-radius: 10px;
     opacity: 80%;
 }
 #PhotoDialogHeader{
@@ -40,4 +40,84 @@
 #PhotoDialogClose{
     float:right;
 
+}
+#ModeChoosing{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-bottom: 0.5vw;
+    padding-right: 1vw;
+}
+#ModeProcessing{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: auto;
+}
+
+#uploadModel{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1vw;
+}
+#uploadBackground{
+    position: relative;
+    height: 8vh;
+    width: 14vw;
+    border: 0.8vh dashed black;
+    border-radius: 10px;
+    line-height:6vh;
+    background: url("../../images/upload.png") center/cover no-repeat;
+    background-size: 35%;
+
+}
+#RealUpload{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: #ffffff;
+    opacity: 0;
+}
+#ReactCropFrame{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+#ReactCropProps{
+    height: 100%;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+.RCline{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+.RCfirstLine{
+    width: 8vw;
+    min-width: 30px;
+}
+.RCsecondLine{
+    width: 12vw;
+}
+.RCinputSlide{
+    width: 10vw;
+    height: 5px;
+}
+#savePhotoButton{
+    justify-self: flex-end;
 }
