@@ -57,7 +57,7 @@ function CheckUserName(username){
 
 
 export default function MainProfile(props){
-    console.log(store.getState().user_photo)
+    //console.log(store.getState().user_photo)
 
 
     const theme = createTheme({
@@ -240,12 +240,6 @@ export default function MainProfile(props){
         // }
         setUserInfo({email:tempOB.user_email,username: tempOB.user_name, password: null})
         //axios.defaults.headers.common['token'] = tempOB.token ;
-        setTimeout(()=>{
-            if(store.getState().user_photo===null){
-                alert('Please upload your user Avatar!');
-            }
-        },2000)
-
 
     },[])
 
@@ -337,7 +331,7 @@ export default function MainProfile(props){
                 </div>
                 <div id="profile">
                     <div id="outSideUserPhoto">
-                        <div id="userPhotoFrame" style={store.getState().user_photo=== null? {}:{background:`url(${store.getState().user_photo})center / cover`}}>
+                        <div id="userPhotoFrame" style={store.getState().user_photo=== null? {}:{background:`url(${store.getState().user_photo}) center/cover`}}>
 
                         </div>
                         <div id="editUserPhoto">

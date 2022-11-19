@@ -41,7 +41,7 @@ export default function  PhotoProcessing(props){
 
     const editor = createRef();
     const { hidePhotoProcessing} = props;
-    const [mode, setMode]=useState(null);
+    const [mode, setMode]=useState("new");
     //设置标志，时候进入图片剪切模块
     //const [cropFlag,setCropflag] = useState(false);
     const [imgSrc, setImgSrc] = useState(null);
@@ -62,7 +62,7 @@ export default function  PhotoProcessing(props){
 
     //刚挂载
     useEffect(()=>{
-
+        setImgSrc(store.getState().user_photo);
     },[])
 
     //撤销在根节点下创建的node
@@ -154,17 +154,55 @@ export default function  PhotoProcessing(props){
         reader.onload = function(e) {
             //图片路径设置为读取的图片
             // img.src = e.target.result;
-            //console.log(e.target.result);
+            // console.log("原始图像");
+            // console.log(e.target.result);
 
+            //压缩图片
+            let img = new Image();
+            img.src = e.target.result;
+            let OriginCanvas = document.createElement("canvas");
+            let OringinContext = OriginCanvas.getContext('2d');
+
+            img.onload=function () {
+                // 图片原始尺寸
+                var originWidth = img.width;
+                var originHeight = img.height;
+                // 最大尺寸限制
+                var maxWidth = 700, maxHeight = 700;
+                // 目标尺寸
+                var targetWidth = originWidth, targetHeight = originHeight;
+                // 图片尺寸超过500 500的限制
+                if (originWidth > maxWidth || originHeight > maxHeight) {
+                    if (originWidth / originHeight > maxWidth / maxHeight) {
+                        // 更宽，按照宽度限定尺寸
+                        targetWidth = maxWidth;
+                        targetHeight = Math.round(maxWidth * (originHeight / originWidth));
+                    } else {
+                        targetHeight = maxHeight;
+                        targetWidth = Math.round(maxHeight * (originWidth / originHeight));
+                    }
+                }
+                    OriginCanvas.width=targetWidth;
+                    OriginCanvas.height =targetHeight;
+
+                    OringinContext.drawImage(img, 0, 0, targetWidth, targetHeight);
+                    // console.log("压缩后的图像");
+                    // console.log(OriginCanvas.toDataURL('image/jpg'))
+                    //保存图片的base64编码
+                    setImgSrc(OriginCanvas.toDataURL('image/jpg'));
+                    //把图片传送到剪切图片的模块
+                    setMode("crop");
+
+            }
             //保存图片的base64编码
-            setImgSrc(e.target.result);
+            //         setImgSrc(e.target.result);
+            //         //把图片传送到剪切图片的模块
+            //         setMode("crop");
+
             // console.log(document.getElementsByClassName('file-box'));
             // document.getElementsByClassName('file-box')[i].style.background = "url("+e.target.result+")no-repeat";//回显图片
             // document.getElementsByClassName('file-box')[i].style.backgroundSize = '200px 160px';
-            //把图片传送到剪切图片的模块
-            setMode("crop");
-            // console.log('reader',reader);
-            // console.log(imgSrc);
+
         };
             reader.readAsDataURL(file);
 
@@ -297,6 +335,10 @@ export default function  PhotoProcessing(props){
 
     </div>
 
+
+
+
+
     return createPortal(
         <div>
                 <div id="PhotoDialogCover">
@@ -317,39 +359,50 @@ export default function  PhotoProcessing(props){
                 </div>
 
                 <div id="ModeChoosing">
+
                     <FormControl>
-                        {/*<FormLabel id="demo-form-control-label-placement">Label placement</FormLabel>*/}
                         <RadioGroup
                             row
-                            aria-labelledby="demo-form-control-label-placement"
-                            name="position"
-                            defaultValue="top"
+                            aria-labelledby="demo-row-radio-buttons-group-label"
+                            name="row-radio-buttons-group"
                         >
-                            <FormControlLabel value="current" control={<Radio onChange={handleModeChoosing}/>} label="Use Current Photo" />
-                            <FormControlLabel value="new" control={<Radio onChange={handleModeChoosing}/>} label="Upload New Photo" />
+
+                            {imgSrc=== null?
+                                <FormControlLabel value="current"  disabled control={<Radio onClick={handleModeChoosing}/>} label="Use Current Photo" />:
+                                <FormControlLabel value="current" control={<Radio onClick={handleModeChoosing}/>} label="Use Current Photo" />}
+
+                            <FormControlLabel value="new"  control={<Radio onClick={handleModeChoosing}/>} label="Upload New Photo" />
+
                         </RadioGroup>
                     </FormControl>
+
+                        {/*<RadioGroup*/}
+                        {/*    row*/}
+                        {/*    aria-labelledby="demo-form-control-label-placement"*/}
+                        {/*    name="position"*/}
+                        {/*    defaultValue="top"*/}
+                        {/*>*/}
+                        {/*    {imgSrc=== null?  null:*/}
+                        {/*        <FormControlLabel value="current" control={<Radio onChange={handleModeChoosing}/>} label="Use Current Photo" />}*/}
+                        {/*    <FormControlLabel value="new"   control={<Radio onChange={handleModeChoosing}/>} label="Upload New Photo" />*/}
+                        {/*</RadioGroup>*/}
+
                     <IconButton  onClick={() => {
                         if (editor) {
                             const canvas = editor.current.getImage()
-                            //压缩图片
-                            let canvas2 =document.createElement('canvas');
-                            let context = canvas2.getContext('2d');
-                            canvas2.width = 400;
-                            canvas2.height = 400;
-                            context.drawImage(canvas,0,0);
+
                             // If you want the image resized to the canvas size (also a HTMLCanvasElement)
                             //const canvasScaled = editor.current.getImageScaledToCanvas()
-                            //console.log(canvas)
                             //downloadImage(canvas.toDataURL('image/jpg'))
-                            // console.log(canvas.toDataURL('image/jpg'))
-                            console.log(canvas2.toDataURL('image/jpg'));
+                            //最终结果
+                            console.log("裁剪之后的结果")
+                            console.log(canvas.toDataURL('image/jpg'));
 
-                            //将压缩后的图片保存在redux
-                            store.dispatch(user_photo(canvas2.toDataURL('image/jpg')));
+                            //将图片保存在redux
+                            store.dispatch(user_photo(canvas.toDataURL('image/jpg')));
 
                             //将图片保存到JSON里面
-                            setUserPhotoInfo({email: store.getState().email,userPhoto:canvas2.toDataURL('image/jpg') })
+                            setUserPhotoInfo({email: store.getState().email,userPhoto:canvas.toDataURL('image/jpg') })
                             //将图片信息上传到服务器
 
                             //关闭窗口
@@ -361,7 +414,7 @@ export default function  PhotoProcessing(props){
 
                 </div>
                 <div id="ModeProcessing">
-                    {mode==="new"? UserPhotoUpload: mode==="crop"? ReactCrop:null}
+                    {mode==="new"? UserPhotoUpload: mode==="crop"? ReactCrop:ReactCrop}
 
 
                 </div>
