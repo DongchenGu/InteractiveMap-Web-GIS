@@ -14,7 +14,7 @@ import Input from '@mui/material/Input';
 import {useEffect, useState} from "react";
 import userPhoto from '../../images/2-26 PM.jpg';
 import store from "../Store";
-import {setWaitingFlag, user_email, user_name, user_password, user_token} from "../Store/actionCreater";
+import {setWaitingFlag, user_email, user_name, user_password, user_photo, user_token} from "../Store/actionCreater";
 import axios from "axios";
 import {setAxiosToken} from "../Auth/Auth";
 import {instance} from "../axios/request";
@@ -27,6 +27,7 @@ import ScreenShot from "js-web-screen-shot";
 import EditIcon from '@mui/icons-material/Edit';
 import PhotoProcessing from "../AlertDialog/PhotoProcessing";
 import {getTableSortLabelUtilityClass} from "@mui/material";
+import * as url from "url";
 
 
 
@@ -56,6 +57,9 @@ function CheckUserName(username){
 
 
 export default function MainProfile(props){
+    console.log(store.getState().user_photo)
+
+
     const theme = createTheme({
         status: {
             danger: '#e53e3e',
@@ -92,6 +96,7 @@ export default function MainProfile(props){
         store.dispatch(user_name(null));
         store.dispatch(user_password(null));
         store.dispatch(user_token(null));
+        store.dispatch(user_photo(null));
         //跳转回到home页面
         navigate("/home",{ state:{ }});
 
@@ -235,6 +240,12 @@ export default function MainProfile(props){
         // }
         setUserInfo({email:tempOB.user_email,username: tempOB.user_name, password: null})
         //axios.defaults.headers.common['token'] = tempOB.token ;
+        setTimeout(()=>{
+            if(store.getState().user_photo===null){
+                alert('Please upload your user Avatar!');
+            }
+        },2000)
+
 
     },[])
 
@@ -326,11 +337,8 @@ export default function MainProfile(props){
                 </div>
                 <div id="profile">
                     <div id="outSideUserPhoto">
-                        <div id="userPhotoFrame">
-                            {/*<div id="userPhoto">*/}
+                        <div id="userPhotoFrame" style={store.getState().user_photo=== null? {}:{background:`url(${store.getState().user_photo})center / cover`}}>
 
-                            {/*</div>*/}
-                            {/*<img src={userPhoto} id="image" alt="" onClick={handlePhotoClick}/>*/}
                         </div>
                         <div id="editUserPhoto">
                             <IconButton onClick={handlePhotoProcessing}>

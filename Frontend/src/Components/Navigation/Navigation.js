@@ -20,7 +20,7 @@ import Search from "./Search/Search";
 import {Link, useNavigate} from "react-router-dom";
 import {deleteAllText} from "../OriginMap/OriginMap"
 
-import {user_email, user_name, user_password, user_token} from "../Store/actionCreater";
+import {user_email, user_name, user_password, user_photo, user_token} from "../Store/actionCreater";
 import store from "../Store";
 import {setAxiosToken} from "../Auth/Auth";
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
@@ -42,6 +42,7 @@ export default  function  Navigation(props){
         store.dispatch(user_email(null));
         store.dispatch(user_password(null));
         store.dispatch(user_token(null));
+        store.dispatch(user_photo(null));
 
     };
     const handleLogIn =(e)=>{

@@ -85,6 +85,7 @@
     min-height: 150px;
 }
 #userPhotoFrame{
+    background: url("../../images/NA.png") center/cover;
     margin-bottom: 0;
     align-items: center;
     width: 19vw;
@@ -92,7 +93,6 @@
     min-width: 150px;
     min-height: 150px;
     border: 2px solid #000100;
-    background-color: #ffffff;
     border-radius: 50%;
     overflow: hidden;
 }

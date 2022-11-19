@@ -9,4 +9,5 @@ export const USER_EMAIL = "USER_EMAIL";
 export const USER_NAME = "USER_NAME";
 export const USER_PASSWORD = "USER_PASSWORD";
 export const USER_TOKEN = "USER_TOKEN";
+export const USER_PHOTO = "USER_PHOTO";
 export const WaitingFlag = "WaitingFlag";
