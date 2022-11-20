@@ -14,6 +14,7 @@
     flex-direction: row;
     align-items: center;
     height: 6vh;
+    min-height: 45px;
     /*max-height: 60px;*/
     width: 84%;
     position: absolute;
@@ -100,6 +101,8 @@
     background-color: white;
     width: 6vh;
     height: 6vh;
+    min-width: 30px;
+    min-height: 30px;
     position: absolute;
     right: 1vw;
     bottom: 2.5vw;
