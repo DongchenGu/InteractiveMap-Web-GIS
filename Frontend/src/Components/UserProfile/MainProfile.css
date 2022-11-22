@@ -86,7 +86,7 @@
     min-height: 150px;
 }
 #userPhotoFrame{
-    background: url("../../images/NA.png") center/cover;
+    background: url("../../images/loading.gif") center/cover;
     margin-bottom: 0;
     align-items: center;
     width: 19vw;
@@ -96,7 +96,35 @@
     border: 2px solid #000100;
     border-radius: 50%;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+.lr{}
+.loading {
+    width: 5px;
+    height:5px;
+    border-radius: 100%;                      /* 圆角 */
+    box-shadow: 0 -20px 0 1px #333,           /* 上, 1px 扩展 */
+    20px 0px #333,                /* 右 */
+    0 20px #333,                  /* 下 */
+    -20px 0 #333,                 /* 左 */
+
+    -14px -14px 0 1px #333,        /* 左上, 0.5px扩展 */
+    14px -14px 0 3px #333,        /* 右上, 1.5px扩展 */
+    14px 14px #333,                 /* 右下 */
+    -14px 14px #333;                /* 左下 */
+    animation: spin 1s steps(8) infinite;
+}
+
+@keyframes spin {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
+}
+
+
+
+
 #editUserPhoto {
     background-color: white;
     width: 6vh;

@@ -15,6 +15,10 @@ import store from "../Store";
 import {setWaitingFlag, user_photo} from "../Store/actionCreater";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
+import {instance} from "../axios/request";
+
+
+let UploadPhoto_URL='http://localhost:8080/updateUserPhoto'
 
 
 //阻止滚轮的滚动事件
@@ -24,6 +28,11 @@ var scrollFunction = function(e) {
 }
 
 let UserPhotoBase64 = null;
+let UserPhotoInfo ={
+    email:"",
+    userPhoto:""
+};
+
 export default function  PhotoProcessing(props){
     const [photoWidth, setPhotoWidth] = useState(0.26*window.innerWidth);
     const [photoHeight, setPhotoHeight] = useState(0.26*window.innerWidth);
@@ -32,10 +41,10 @@ export default function  PhotoProcessing(props){
     const [photoScale,setPhotoScale] = useState(1);
     const [success, setSuccess]= useState(false);
     const [ErrMsg, setErrMsg]=useState(null);
-    const [UserPhotoInfo,setUserPhotoInfo] = useState({
-        email:"",
-        userPhoto:""
-    })
+    // const [UserPhotoInfo,setUserPhotoInfo] = useState({
+    //     email:"",
+    //     userPhoto:""
+    // })
 
     const navigate = useNavigate();
 
@@ -63,12 +72,13 @@ export default function  PhotoProcessing(props){
     //刚挂载
     useEffect(()=>{
         setImgSrc(store.getState().user_photo);
+        axios.defaults.headers.token = store.getState().user_token ;
     },[])
 
     //撤销在根节点下创建的node
     useEffect(()=>{
         return () => {
-            console.log("这里已经执行")
+            console.log("已经unmount photoProcessing")
             //document.removeEventListener('DOMMouseScroll',scrollFunction,false);
             window.removeEventListener('mousewheel',scrollFunction,{ passive: false });
             dom.body.removeChild(node);
@@ -90,51 +100,46 @@ export default function  PhotoProcessing(props){
 
 
 
-    // const UploadUserPhoto=async (e) => {
-    //     try {
-    //         await axios.post(
-    //             Login_URL,
-    //             authInfo,
-    //             {headers: {'Content-Type': 'application/json'}}
-    //         ).then(response => {
-    //             if (response.data.hasOwnProperty("token")) {
-    //                 console.log("-----------------")
-    //                 console.log(response.data);
-    //                 localStorage.setItem("user", JSON.stringify(response.data.user));
-    //                 localStorage.setItem("user_token", response.data.token);
-    //                 //给axios设置token
-    //                 //setAxiosToken(response.data.token);
-    //                 setSuccess(true);
-    //             } else if (response.data.hasOwnProperty('errMsg')) {
-    //                 if (response.data.errMsg === 'wrong-password') {
-    //                     alert("Sorry Wrong Password!");
-    //                 } else if (response.data.errMsg === 'user-not-exist') {
-    //                     alert("User not exist! Please Sign Up!");
-    //                 }
-    //             }
-    //             //console.log(response);
-    //             // console.log(res.data);
-    //         });
-    //         //console.log(JSON.stringify(response?.data));
-    //     } catch (err) {
-    //         //关闭等待页面
-    //         store.dispatch(setWaitingFlag(false));
-    //         if (!err?.response) {
-    //             setErrMsg("no server response");
-    //         } else if (err.response?.status === 400) {
-    //             setErrMsg("missing username or password");
-    //         } else if (err.response?.status === 401) {
-    //             setErrMsg("Unauthorized");
-    //         } else {
-    //             setErrMsg("login Failed");
-    //         }
-    //     }
-    //     //console.log(authInfo)
-    // }
+    const UploadUserPhoto=async (e) => {
+        try {
+
+            await instance.post(
+                UploadPhoto_URL,
+                UserPhotoInfo,
+                {headers: {'Content-Type': 'application/json'}}
+            ).then(response => {
+                console.log(response)
+                if (response.data.hasOwnProperty("success")) {
+                    console.log("接收到成功数据----------------")
+                    console.log(response.data);
+                    //说明上传成功
+                    //setSuccess(true);
+                } else if (response.data.hasOwnProperty('errMsg')) {
+                        alert(response.data.errMsg);
+                }
+            });
+            //console.log(JSON.stringify(response?.data));
+        } catch (err) {
+            // //关闭等待页面
+            // store.dispatch(setWaitingFlag(false));
+            if (!err?.response) {
+                setErrMsg("no server response");
+            } else if (err.response?.status === 400) {
+                setErrMsg("error with user info");
+            } else if (err.response?.status === 401) {
+                setErrMsg("Unauthorized");
+            } else {
+                setErrMsg("Upload Failed");
+            }
+            alert("Upload Fail:"+ErrMsg);
+        }
+        //console.log(authInfo)
+    }
+
+
 
 
     const handlePhotoUpload=(e)=>{
-        console.log("click");
         //判断是否支持FileReader
         if(window.FileReader) {
             var reader = new FileReader();
@@ -208,6 +213,9 @@ export default function  PhotoProcessing(props){
 
 
     }
+
+
+
     //用来上传新图片
     const UserPhotoUpload=<div id="uploadModel">
         <div id="uploadBackground">
@@ -395,15 +403,22 @@ export default function  PhotoProcessing(props){
                             //const canvasScaled = editor.current.getImageScaledToCanvas()
                             //downloadImage(canvas.toDataURL('image/jpg'))
                             //最终结果
-                            console.log("裁剪之后的结果")
-                            console.log(canvas.toDataURL('image/jpg'));
+                            // console.log("裁剪之后的结果")
+                            // console.log(canvas.toDataURL('image/jpg'));
 
+                            //将图片保存到JSON里面
+                            UserPhotoInfo={email: store.getState().user_email,userPhoto:canvas.toDataURL('image/jpg') };
+
+                            store.dispatch(setWaitingFlag(false));
+                            console.log("这里是需要上传的信息")
+                            console.log(UserPhotoInfo);
                             //将图片保存在redux
                             store.dispatch(user_photo(canvas.toDataURL('image/jpg')));
 
-                            //将图片保存到JSON里面
-                            setUserPhotoInfo({email: store.getState().email,userPhoto:canvas.toDataURL('image/jpg') })
                             //将图片信息上传到服务器
+                            console.log("开始上传信息");
+                            UploadUserPhoto();
+                            console.log("上传结束")
 
                             //关闭窗口
                             hidePhotoProcessing();

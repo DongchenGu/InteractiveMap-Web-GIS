@@ -30,8 +30,11 @@ import {getTableSortLabelUtilityClass} from "@mui/material";
 import * as url from "url";
 
 
+//单独设置一个用来请求头像图片，因为成员变量不能实时修改
+let UserPhotoRequest;
 
 
+const DownloadUserPhoto_URL = 'http://localhost:8080/downloadUserPhoto'
 const UpdateProfile_URL = 'http://localhost:8080/updateProfile';
 const ariaLabel = { 'aria-label': 'description' };
 //用来标记修改的名字邮箱是否有效
@@ -57,6 +60,45 @@ function CheckUserName(username){
 
 
 export default function MainProfile(props){
+    //初始化的时候是“”， 头像默认为加载中，当请求完成发现用户没有头像时，会赋值为null;头像变成NA
+    const [UserPhoto,setUserPhoto] =useState({
+        email:"",
+        userPhoto:"1"
+    });
+
+
+    const DownloadUserPhoto=async (e) => {
+        try {
+            await instance.post(
+                DownloadUserPhoto_URL,
+                UserPhotoRequest,
+                {headers: {'Content-Type': 'application/json'}}
+            ).then(response => {
+                console.log(response)
+                if (response.data.hasOwnProperty("success")) {
+                    console.log("接收到成功数据----------------")
+                    console.log(response.data);
+                    // setUserPhoto({userPhoto:response.data.userPhoto })
+                    store.dispatch(user_photo(response.data.userPhoto));
+                    setUserPhoto({...UserPhoto,userPhoto: response.data.userPhoto});
+                } else if (response.data.hasOwnProperty('errMsg')) {
+                    alert(response.data.errMsg);
+                }
+            });
+            //console.log(JSON.stringify(response?.data));
+        } catch (err) {
+            // //关闭等待页面
+            // store.dispatch(setWaitingFlag(false));
+            if (!err?.response) {
+                setErrMsg("no server response");
+            } else if (err.response?.status === 400) {
+                setErrMsg("error with user info");
+            } else if (err.response?.status === 401) {
+                setErrMsg("Unauthorized");
+            }
+            alert("Fail to retrieve the UserPhoto:" + ErrMsg);
+        }
+    }
     //console.log(store.getState().user_photo)
 
 
@@ -154,6 +196,9 @@ export default function MainProfile(props){
     }
 
 
+
+
+
     //向服务器提交修改
     const handleSubmitEditting=async (e) => {
         //console.log(userInfo);
@@ -217,7 +262,7 @@ export default function MainProfile(props){
                 } else if (err.response?.status === 401) {
                     setErrMsg("Unauthorized");
                 } else {
-                    setErrMsg("login Failed");
+                    alert(ErrMsg);
                 }
             }
         }
@@ -230,18 +275,39 @@ export default function MainProfile(props){
     }
     //组件第一次加载时候需要做
     useEffect(()=>{
+        //监听redux中数据的改变，如果数据改变了，就更新UserPhoto，然后让组件刷新
+        store.subscribe(() => {
+            setUserPhoto({email: store.getState().user_email, userPhoto:store.getState().user_photo});
+        })
         let tempOB = store.getState();
         if(tempOB.user_email===null){
-            navigate("/home", {state : { }})
+            navigate("/home", { state: {  }})
+        }else{
+            setUserInfo({email:tempOB.user_email,username: tempOB.user_name, password: null})
+
+            //使用react之外的变量来控制是否下载，这样没有延迟
+            UserPhotoRequest={email: tempOB.user_email, userPhoto:tempOB.user_photo};
+            if(UserPhotoRequest.userPhoto===null){
+                DownloadUserPhoto();
+            }else{
+                setUserPhoto({...UserPhoto,userPhoto:tempOB.user_photo});
+            }
         }
         // let user_email =tempOB.user_name;
         // if(user_email===null){
         //     user_email = "set your name!";
         // }
-        setUserInfo({email:tempOB.user_email,username: tempOB.user_name, password: null})
-        //axios.defaults.headers.common['token'] = tempOB.token ;
 
+        //axios.defaults.headers.common['token'] = tempOB.token ;
+    },[]);
+
+    //unmount之前需要把域外的变量复原
+    useEffect(()=>{
+        return()=>{
+
+        }
     },[])
+
 
     //分两种情况，显示profile和修改profile
     const showProfile= <div >
@@ -331,7 +397,11 @@ export default function MainProfile(props){
                 </div>
                 <div id="profile">
                     <div id="outSideUserPhoto">
-                        <div id="userPhotoFrame" style={store.getState().user_photo=== null? {}:{background:`url(${store.getState().user_photo}) center/cover`}}>
+                        <div id="userPhotoFrame" style={UserPhoto.userPhoto=== null?
+                            {background: "url('../../images/NA.png') center/cover"}
+                            :{background:`url(${UserPhoto.userPhoto}) center/cover`}}>
+                            {UserPhoto.userPhoto=== "1"?
+                                <div className="loading"></div>: <div></div> }
 
                         </div>
                         <div id="editUserPhoto">
