@@ -28,23 +28,25 @@ import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import ScreenShot from "js-web-screen-shot";
 
 
+const handleLogOut=(e)=>{
+    //清除localStorage
+    localStorage.clear();
+    //清除redux中的用户信息
+    store.dispatch(user_name(null));
+    store.dispatch(user_email(null));
+    store.dispatch(user_password(null));
+    store.dispatch(user_token(null));
+    store.dispatch(user_photo(null));
+
+};
+
 export default  function  Navigation(props){
     const logo ="./Logo1.png";
     const [email,setEmail]= useState(null);
     const navigate = useNavigate();
     const {IsFull,checkFull,openProviderMenu,openToolMenu,openProperty,getCoord} =props;
 
-    const handleLogOut=(e)=>{
-        //清除localStorage
-        localStorage.clear();
-        //清除redux中的用户信息
-        store.dispatch(user_name(null));
-        store.dispatch(user_email(null));
-        store.dispatch(user_password(null));
-        store.dispatch(user_token(null));
-        store.dispatch(user_photo(null));
 
-    };
     const handleLogIn =(e)=>{
         navigate("/auth",{state: { }});
     };
@@ -146,5 +148,7 @@ export default  function  Navigation(props){
     )
 
 }
+
+export {handleLogOut};
 
 

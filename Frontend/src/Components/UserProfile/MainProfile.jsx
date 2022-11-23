@@ -19,6 +19,8 @@ import axios from "axios";
 import {setAxiosToken} from "../Auth/Auth";
 import {instance} from "../axios/request";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {handleLogOut} from '../Navigation/Navigation'
+
 
 
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
@@ -30,7 +32,7 @@ import {getTableSortLabelUtilityClass} from "@mui/material";
 import * as url from "url";
 
 
-//单独设置一个用来请求头像图片，因为成员变量不能实时修改
+//单独设置一个对象用来请求头像图片，因为成员变量不能实时修改
 let UserPhotoRequest;
 
 
@@ -60,7 +62,8 @@ function CheckUserName(username){
 
 
 export default function MainProfile(props){
-    //初始化的时候是“”， 头像默认为加载中，当请求完成发现用户没有头像时，会赋值为null;头像变成NA
+    //初始化的时候是“1”， 头像默认为加载中，当请求完成发现用户没有头像时，会赋值为null;头像变成NA
+    //当这里的userPhoto是“1”的时候会转圈
     const [UserPhoto,setUserPhoto] =useState({
         email:"",
         userPhoto:"1"
@@ -74,29 +77,44 @@ export default function MainProfile(props){
                 UserPhotoRequest,
                 {headers: {'Content-Type': 'application/json'}}
             ).then(response => {
-                console.log(response)
-                if (response.data.hasOwnProperty("success")) {
-                    console.log("接收到成功数据----------------")
-                    console.log(response.data);
+                //console.log(response)
+                if(response.data.credentialError==="token-expire"){
+                    handleLogOut();
+                    navigate("/home", { replace:true, state:{}});
+                    alert("token expire! please login again!");
+                }else if(response.data.credentialError==="UserInfo-not-match"){
+                    handleLogOut();
+                    navigate("/home", { replace:true,state:{}});
+                    alert("user info not correct! please login again!")
+                }else if(response.data.credentialError==="Error-no-token"){
+                    handleLogOut();
+                    navigate("/home", { replace:true,state:{}});
+                    alert("NO valid credentials, please login again!");
+                }else if (response.data.hasOwnProperty("success")) {
+                    // console.log("接收到成功数据----------------")
                     // setUserPhoto({userPhoto:response.data.userPhoto })
                     store.dispatch(user_photo(response.data.userPhoto));
                     setUserPhoto({...UserPhoto,userPhoto: response.data.userPhoto});
                 } else if (response.data.hasOwnProperty('errMsg')) {
+                    //在errMsg中存储业务逻辑，产生的错误，credentialError中存储token错误
                     alert(response.data.errMsg);
                 }
             });
             //console.log(JSON.stringify(response?.data));
         } catch (err) {
+            console.log(err);
             // //关闭等待页面
             // store.dispatch(setWaitingFlag(false));
             if (!err?.response) {
                 setErrMsg("no server response");
-            } else if (err.response?.status === 400) {
+            }else if (err.response?.status === 400) {
                 setErrMsg("error with user info");
-            } else if (err.response?.status === 401) {
+            }else if (err.response?.status === 401) {
                 setErrMsg("Unauthorized");
+            }else{
+                alert("Fail to retrieve the UserPhoto:" + ErrMsg);
             }
-            alert("Fail to retrieve the UserPhoto:" + ErrMsg);
+
         }
     }
     //console.log(store.getState().user_photo)
@@ -221,9 +239,21 @@ export default function MainProfile(props){
                     userInfo,
                     {headers: {'Content-Type': 'application/json'}}
                 ).then(response => {
-                    if (response.data.hasOwnProperty("success")) {
-                        console.log("已经收到服务器回复-----------------")
-                        console.log(response.data);
+                    if(response.data.credentialError==="token-expire"){
+                        handleLogOut();
+                        navigate("/home", {  state:{}});
+                        alert("token expire! please login again!");
+                    }else if(response.data.credentialError==="UserInfo-not-match"){
+                        handleLogOut();
+                        navigate("/home", { state:{}});
+                        alert("user info not correct! please login again!")
+                    }else if(response.data.credentialError==="Error-no-token"){
+                        handleLogOut();
+                        navigate("/home", { state:{}});
+                        alert("NO valid credentials, please login again!");
+                    }else if(response.data.hasOwnProperty("success")) {
+                        console.log("已经更新用户信息")
+                        //console.log(response.data);
                         //分情况讨论，看用户有没有更改密码，如果用户更改了密码，需要重新登录
                         if(response.data.user.relogin==="true"){
                             //退出当前登录用户，清除localStorage,跳转至登录页面
@@ -246,8 +276,6 @@ export default function MainProfile(props){
                     } else if (response.data.hasOwnProperty('errMsg')) {
                         if (response.data.errMsg === 'user-not-exist') {
                             alert("Sorry user-not-exist! Update Fail");
-                        }else if(response.data.errMsg === '未携带token信息'){
-                            alert("token is not set correctly");
                         }
                     }
                 });
@@ -395,29 +423,29 @@ export default function MainProfile(props){
                         </ThemeProvider>
                     </div>
                 </div>
-                <div id="profile">
-                    <div id="outSideUserPhoto">
-                        <div id="userPhotoFrame" style={UserPhoto.userPhoto=== null?
-                            {background: "url('../../images/NA.png') center/cover"}
-                            :{background:`url(${UserPhoto.userPhoto}) center/cover`}}>
-                            {UserPhoto.userPhoto=== "1"?
-                                <div className="loading"></div>: <div></div> }
+                    <div id="profile">
+                        <div id="outSideUserPhoto">
+                            <div id="userPhotoFrame" style={UserPhoto.userPhoto=== null?
+                                {background: "url('../../images/NA.png') center/cover"}
+                                :{background:`url(${UserPhoto.userPhoto}) center/cover`}}>
+                                {UserPhoto.userPhoto=== "1"?
+                                    <div className="loading"></div>: <div></div> }
 
+                            </div>
+                            <div id="editUserPhoto">
+                                <IconButton onClick={handlePhotoProcessing}>
+                                    <EditIcon />
+                                </IconButton>
+                            </div>
                         </div>
-                        <div id="editUserPhoto">
-                            <IconButton onClick={handlePhotoProcessing}>
-                                <EditIcon />
-                            </IconButton>
-                        </div>
+
+                        {PhotoProcessingVisible===true? <PhotoProcessing hidePhotoProcessing={hidePhotoProcessing}/>: null}
+                        {profileState === "show"? showProfile : editProfile}
                     </div>
 
-                    {PhotoProcessingVisible===true? <PhotoProcessing hidePhotoProcessing={hidePhotoProcessing}/>: null}
-                    {profileState === "show"? showProfile : editProfile}
-                </div>
+                    <div id="content">
 
-                <div id="content">
-
-                </div>
+                    </div>
 
             </div>
         </div>

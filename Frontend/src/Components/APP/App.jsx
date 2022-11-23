@@ -228,8 +228,7 @@ export  default function App(){
                 if(store.getState().user_token==null){
                     store.dispatch(user_token(token));
                 }
-                //设置axios的header
-                setAxiosToken(token);
+
                 //localStorage.clear();
             }else{
                 console.log("not login");
