@@ -21,16 +21,15 @@ Back End Part is based on SpringBoot and MongoDB.
 - Change User Avatar  
 ![Animation3](https://user-images.githubusercontent.com/53630148/203860991-d33c1b87-d6be-4ca2-a46e-14445fa1ac91.gif)  
 
-- Point Mark  
-put point marker on the map
-![point](https://user-images.githubusercontent.com/53630148/189499258-bc1cd8ba-1140-4582-89ad-6d7698b6ee3b.gif)
-
 - Edit Profile  
 ![Animation4](https://user-images.githubusercontent.com/53630148/203862184-3e4badba-29af-41c3-b40c-5a5538896fcd.gif)  
 
 - Take ScreenShots  
 ![Animation5](https://user-images.githubusercontent.com/53630148/203862353-0b8b91c2-9d90-472f-a390-7a219fef42dd.gif)  
 
+- Point Mark  
+put point marker on the map
+![point](https://user-images.githubusercontent.com/53630148/189499258-bc1cd8ba-1140-4582-89ad-6d7698b6ee3b.gif)
 
 - Polygon Mark  
 select the polygon tool and then click the key point on the map to draw the Polygon
