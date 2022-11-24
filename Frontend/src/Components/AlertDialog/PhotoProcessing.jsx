@@ -226,17 +226,7 @@ export default function  PhotoProcessing(props){
                     accept='image/jpeg,image/jpg,image/png,image/svg' onChange={handlePhotoUpload}/>
         </div>
     </div>
-
-
-
-
-
-
-
-
-
-
-
+    
 
 
     function dataURLToBlob(fileDataURL) {

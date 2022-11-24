@@ -2,10 +2,10 @@
     margin-left: 0;
     margin-right:0;
     margin-top: 0;
-    height: 110vh;
+    height: 160vh;
     display: flex;
     flex-direction: row;
-    background: url(../../images/mainProfile.jpg) center / cover transparent;
+    background: url(../../images/mainProfile2.jpg) center / cover transparent;
 }
 
 #navigationProfile{
@@ -173,4 +173,152 @@
     justify-content: center;
 
     overflow: hidden;
+}
+
+
+#RightContent{
+    margin-left: 2vw;
+    margin-top: 14vh;
+    padding: 0;
+
+    height: 80vh;
+    width: 65vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+}
+#workHistoryShow{
+    margin-left: 0;
+    margin-right: 0;
+
+    border-radius: 16px;
+
+    width: 100%;
+    height: 20vh;
+    background:rgba(255,255,255,0.7);
+
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+}
+#screenShots{
+    margin-top: 2vh;
+    margin-left: 0;
+    margin-right: 0;
+    border: 2px solid #ffffff;
+    border-radius: 16px;
+
+    width: 100%;
+    height: 60vh;
+    background:rgba(255,255,255,0.7);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+#workHistoryTitle{
+
+    margin-top: 10px;
+    margin-left: 10px;
+    width: 100%;
+    height: auto;
+}
+#workHistoryTitleName{
+    float: left;
+    height: 1vh;
+    line-height: 1vh;
+    font-size: medium;
+}
+#historyContentFrame{
+    width: 100%;
+    height: 100%;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+
+    padding-right: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-self: center;
+
+    overflow: auto;
+}
+#historyContent{
+    height: 100%;
+    background: #ffffff;
+    width: 200px;
+    min-width: 200px;
+    border: 2px solid white;
+    border-radius: 10px;
+    margin-right: 1vw;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+#closeHistoryButton{
+    height: 100%;
+    background:rgba(255,255,255,0.0);
+    width: 1.6vw;
+    min-width: 20px;
+    border: 0px solid white;
+    border-radius: 16px;
+    margin-right: 0.5vw;
+    font-size: xx-large;
+    color: white;
+}
+#closeHistoryButton:hover{
+    height: 100%;
+    background: rgba(217, 217, 217, 0.8);
+    width: 1.6vw;
+    min-width: 20px;
+    border: 0px solid white;
+    border-radius: 16px;
+    margin-right: 0.5vw;
+    font-size: xx-large;
+    color: white;
+}
+#historyOutButton{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+#workHistoryHide{
+    margin-left: 60vw;
+    width: 5vw;
+    height: 20vh;
+    min-height: 100px;
+    background:rgba(255,255,255,0.7);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+}
+#openHistoryButton{
+    height: 100%;
+    background:rgba(255,255,255,0.0);
+    width: 1.6vw;
+    min-width: 20px;
+    border: 0px solid white;
+    border-radius: 16px;
+    margin-right: 0.5vw;
+    font-size: xx-large;
+    color: white;
+}
+#openHistoryButton:hover{
+    height: 100%;
+    background: rgba(217, 217, 217, 0.8);
+    width: 1.6vw;
+    min-width: 20px;
+    border: 0px solid white;
+    border-radius: 16px;
+    margin-right: 0.5vw;
+    font-size: xx-large;
+    color: white;
 }

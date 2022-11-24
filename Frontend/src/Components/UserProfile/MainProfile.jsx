@@ -9,7 +9,7 @@ import Switch from "@mui/material/Switch";
 import OpenInFullIcon from "@mui/icons-material/OpenInFull";
 import AccountMenu from "../AccountMenu/AccountMenu";
 import NMenu from "../NMenu/NMenu";
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useNavigate, useResolvedPath} from "react-router-dom";
 import Input from '@mui/material/Input';
 import {useEffect, useState} from "react";
 import userPhoto from '../../images/2-26 PM.jpg';
@@ -62,6 +62,11 @@ function CheckUserName(username){
 
 
 export default function MainProfile(props){
+
+    const [showHistory,setShowHistory] =useState(false);
+    const handleShowHistory=()=>{
+        setShowHistory(!showHistory);
+    }
     //初始化的时候是“1”， 头像默认为加载中，当请求完成发现用户没有头像时，会赋值为null;头像变成NA
     //当这里的userPhoto是“1”的时候会转圈
     const [UserPhoto,setUserPhoto] =useState({
@@ -390,6 +395,37 @@ export default function MainProfile(props){
                              </div>
                       </div>
 
+    const historyShow=<di id="workHistoryShow">
+        <input type="button" id="closeHistoryButton" value=">" onClick={handleShowHistory}/>
+        <div id="historyOutButton">
+            {/*<div id="workHistoryTitle">*/}
+            {/*    <div id="workHistoryTitleName">History on the map</div>*/}
+            {/*</div>*/}
+            <div id="historyContentFrame">
+
+                <div id="historyContent">
+                    <div style={{marginLeft:"auto",marginRight:"auto"}}>
+                        reserved for the history module in development
+                    </div>
+
+                </div>
+                <div id="historyContent">
+
+                </div>
+                <div id="historyContent">
+
+                </div>
+            </div>
+        </div>
+
+    </di>
+    const historyHide=<div id="workHistoryHide">
+        <input type="button" id="openHistoryButton" value="<" onClick={handleShowHistory}/>
+        <div style={{writingMode:"vertical-rl"}}>
+            History
+        </div>
+    </div>
+
     return(
         <div>
 
@@ -443,8 +479,14 @@ export default function MainProfile(props){
                         {profileState === "show"? showProfile : editProfile}
                     </div>
 
-                    <div id="content">
+                    <div id="RightContent">
+                        {showHistory===true? historyShow : historyHide}
 
+                        <div id="screenShots">
+                            <div style={{marginLeft:"auto",marginRight:"auto"}}>
+                                Reserved for the ScreenShots, ScreenShots created will be shown here
+                            </div>
+                        </div>
                     </div>
 
             </div>
