@@ -12,8 +12,15 @@ Back End Part is based on SpringBoot and MongoDB.
 - All the tools, menu and maps are integrated by React framework, and use Redux to transfer the state between different Components.  
 
 # How to use  
+- HomePage
+![Animation1](https://user-images.githubusercontent.com/53630148/203860886-bb502c9c-5587-40cc-b7ae-a5f22083f5be.gif)  
+
 - Login  
-![Animation](https://user-images.githubusercontent.com/53630148/199585774-c3be35d7-97fb-4178-82c0-290faf9dc742.gif)  
+![Animation2](https://user-images.githubusercontent.com/53630148/203861058-6e7f022c-65f4-47f0-94c3-1d195627b96c.gif)  
+
+- Change User Avatar  
+![Animation3](https://user-images.githubusercontent.com/53630148/203860991-d33c1b87-d6be-4ca2-a46e-14445fa1ac91.gif)  
+
 - Point Mark  
 put point marker on the map
 ![point](https://user-images.githubusercontent.com/53630148/189499258-bc1cd8ba-1140-4582-89ad-6d7698b6ee3b.gif)
