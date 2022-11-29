@@ -18,7 +18,10 @@ import {useEffect,useState} from "react";
 import {useSelector} from "react-redux";
 
 import store from "../Store";
-
+import cursorPOINT from '../../images/CURSOR/CursorPOINT.png';
+import cursorTEXT from '../../images/CURSOR/cursorText.png';
+import cursorDeleteLayer from '../../images/CURSOR/cursorDeleteLayer.png';
+import cursorNormalPointer from '../../images/CURSOR/cursorPointer.png';
 
 
 let zoomScale =10;
@@ -26,6 +29,8 @@ let screenCenter=null;
 //from redux
 let color = null;
 
+//设置一个容器来保存之前的状态
+let preMapState=null;
 
 let CirclePop = null;
 let tempCircle =null;
@@ -265,7 +270,7 @@ function drawPolygon(){
     color =getHexColor(store.getState().color);
     mymap.doubleClickZoom.disable();
     lines = new L.polyline([],{color:color});
-    tempLines = new L.polyline([],{ dashArray: 5, color:color });
+    tempLines = new L.polyline([],{ Array: 5, color:color });
     points = [];
     geometry = [];
 
@@ -324,6 +329,7 @@ function drawPolygonOnDoubleClick(e) {
     })
 
     mymap.doubleClickZoom.enable();
+    mymap.off('mousemove', drawPolygonOnMove)
     //isInPolygon(marker);
 }
 
@@ -381,7 +387,7 @@ function drawRectangleOnMove(e) {
     }
     //添加临时矩形
     //tmprect =mymap.addLayer( L.rectangle(latlngs,{dashArray:5 ,fillOpacity: 0}));
-    tmprect = L.rectangle(latlngs,{dashArray:5,fillOpacity:0,color:color}).addTo(mymap);
+    tmprect = L.rectangle(latlngs,{Array:5,fillOpacity:0,color:color}).addTo(mymap);
     //tmprect=L.rectangle(latlngs,{dashArray:5,color:color}).addTo(mymap)
 }
 
@@ -521,7 +527,7 @@ drawTextOnClick=(e)=>{
 
 function drawText(){
     //text = store.getState().text;
-    mymap.once('click',drawTextOnClick );
+    mymap.on('click',drawTextOnClick );
 
 
     // mymap.on('zoomend', (e) => {
@@ -740,21 +746,39 @@ function drawLineOnDoubleClick(e){
 //------------------------------------------------------------------clear ALL Listener
 function clearAllToolListener(){
     //在每次状态更新的时候，必须清除之前未完成的绘图点击事件，否则会有多个点击事件叠加
-    mymap.off('click', pointClick);
-    mymap.off('mousedown', drawCircleOnMouseDown);
+    try {
+        if(preMapState==="point"){
+            //mymap.off('click', pointClick);
+            mymap.off('click');
+        }else if(preMapState==="circle"){
+            mymap.off('mousedown');
+            //mymap.off('mousedown', drawCircleOnMouseDown);
+        }else if(preMapState==="polygon"){
+            mymap.off('click');
+            mymap.off('dblclick');
+            // mymap.off('click', drawPolygonOnClick);    //click
+            // mymap.off('dblclick', drawPolygonOnDoubleClick);
+            // mymap.off('mousemove', drawPolygonOnMove)
+        }else if( preMapState==="rectangle"){
+            mymap.off('mousedown');
+            mymap.off('mouseup');
+            // mymap.off('mousedown', drawRectangleOnClick);
+            // mymap.off('mouseup',drawRectangleOnDoubleClick);
+        }else if(preMapState==="inputtext"){
+            mymap.off('click');
+            // mymap.off('click',drawTextOnClick);
+        }else if(preMapState==="lines"){
+            mymap.off('click');
+            mymap.off('dblclick');
+            // mymap.off('click', drawLineOnClick);    //点击地图
+            // mymap.off('dblclick', drawLineOnDoubleClick);
+        }
 
-    mymap.off('click', drawPolygonOnClick);    //click
-    mymap.off('dblclick', drawPolygonOnDoubleClick);
-    mymap.off('mousemove', drawPolygonOnMove)
+        //mymap.off('click dblclick mousedown mouseup');
+    }catch(e) {
+        console.log(e)
+    }
 
-    mymap.off('mousedown', drawRectangleOnClick);    //点击地图
-    mymap.off('mouseup',drawRectangleOnDoubleClick);
-
-    mymap.off('click',drawTextOnClick);
-
-
-    mymap.off('click', drawLineOnClick);    //点击地图
-    mymap.off('dblclick', drawLineOnDoubleClick);
 }
 
 
@@ -787,7 +811,7 @@ function clearAllToolListener(){
     //ComponentDidMount
     useEffect(() => {
         CurrentStateGlobal = CurrentState;
-        mymap = L.map("originMap").setView(nav, 10);
+        mymap = L.map("originMap",{preferCanvas: true}).setView(nav, 10);
         L.tileLayer(OSMUrl).addTo(mymap);
 
 
@@ -850,24 +874,36 @@ function clearAllToolListener(){
                 clearAllToolListener();
                 mymap.once('click', pointClick);
             }else { BackFlag =false;}
+            preMapState="point";
+            let cursorIMG = document.getElementById('originMap');
+            cursorIMG.style.cursor = `url(${cursorPOINT}), pointer`;
         } else if (CurrentState === "circle") {
             if(BackFlag===false){
                 clearAllToolListener();
                 drawCircle();
                 console.log("点击了圆形tool");
             }else { BackFlag =false;}
+            preMapState="circle";
+            let cursorIMG = document.getElementById('originMap');
+            cursorIMG.style.cursor = `url(${cursorNormalPointer}), pointer`;
         }else if(CurrentState === "polygon"){
             if(BackFlag===false){
                 clearAllToolListener();
                 drawPolygon();
                 console.log("点击了多边形工具");
             }else { BackFlag =false;}
+            preMapState="polygon";
+            let cursorIMG = document.getElementById('originMap');
+            cursorIMG.style.cursor = `url(${cursorNormalPointer}), pointer`;
         }else if(CurrentState === "rectangle"){
             if(BackFlag===false){
                 clearAllToolListener();
                 drawRectangle();
                 console.log("点击了矩形工具");
             }else { BackFlag =false;}
+            preMapState="rectangle";
+            let cursorIMG = document.getElementById('originMap');
+            cursorIMG.style.cursor = `url(${cursorNormalPointer}), pointer`;
         }else if(CurrentState === "inputtext"){
             if(BackFlag===false){
                 clearAllToolListener();
@@ -875,23 +911,33 @@ function clearAllToolListener(){
                 //drawText(); 这里没必要调用，因为点击事件会被tips弹窗截获
                 console.log("点击了文字工具");
             }else { BackFlag =false;}
+            preMapState="inputtext";
+            let cursorIMG = document.getElementById('originMap');
+            cursorIMG.style.cursor = `url(${cursorTEXT}), pointer`;
         }else if(CurrentState === "lines"){
             if(BackFlag===false){
                 clearAllToolListener();
                 drawLine();
                 console.log("点击了折线选项");
             }else { BackFlag =false;}
+            preMapState="lines";
+            let cursorIMG = document.getElementById('originMap');
+            cursorIMG.style.cursor = `url(${cursorNormalPointer}), pointer`;
         }else if(CurrentState === "paint"){
             if(BackFlag===false){
                 clearAllToolListener();
 
                 console.log("点击了绘图选项");
             }else { BackFlag =false;}
+            preMapState="paint";
         } else if(CurrentState === "deleteItems") {
             if(BackFlag===false){
                 clearAllToolListener();
                 console.log("点击了删除选项");
             }else { BackFlag =false;}
+            preMapState="deleteItems";
+            let cursorIMG = document.getElementById('originMap');
+            cursorIMG.style.cursor = `url(${cursorDeleteLayer}), pointer`;
         }
     });
 

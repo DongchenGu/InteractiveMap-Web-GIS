@@ -29,11 +29,11 @@ let token = null;
 
 
 export  default function App(){
-
+//http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}   https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}
     const manageFull=React.createRef();
     let timer = true;
     const [IsFull, setIsFull] = useState(false);
-    const [OSMUrl, setOSMUrl] = useState("https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}");
+    const [OSMUrl, setOSMUrl] = useState("https://tile.openstreetmap.org/{z}/{x}/{y}.png");
     const [MapProviderMenuOpen, setMapProviderMenuOpen] = useState(false);
     const [ToolMenuOpen, setToolMenuOpen] = useState(false);
     const [CurrentStateDialogOpen, setCurrentStateDialogOpen] = useState(false);
@@ -93,6 +93,8 @@ export  default function App(){
     }
     const closeProperty=()=>{
         setPropertyOpen(false);
+        //只要关闭参数菜单，就退出当前的画图状态
+        setCurrentState("IN/OUT/FullScreen")////////////////////////////////////////////////////////关闭菜单
     }
    const openToolMenu=()=>{
        setToolMenuOpen(true);
@@ -105,9 +107,11 @@ export  default function App(){
            setCurrentState(stateValue);
            setCurrentStateDialogOpen(true);
            setTipsOpen(true);
+           openProperty();
        }else{
            setCurrentState(stateValue);
            setCurrentStateDialogOpen(true);
+           openProperty();
        }
 
 
