@@ -22,7 +22,7 @@ import cursorPOINT from '../../images/CURSOR/CursorPOINT.png';
 import cursorTEXT from '../../images/CURSOR/cursorText.png';
 import cursorDeleteLayer from '../../images/CURSOR/cursorDeleteLayer.png';
 import cursorNormalPointer from '../../images/CURSOR/cursorPointer.png';
-
+import cursorPen from '../../images/CURSOR/cursorPen.png';
 
 let zoomScale =10;
 let screenCenter=null;
@@ -751,19 +751,22 @@ function clearAllToolListener(){
             //mymap.off('click', pointClick);
             mymap.off('click');
         }else if(preMapState==="circle"){
-            mymap.off('mousedown');
-            //mymap.off('mousedown', drawCircleOnMouseDown);
+            //因为之前绘图的时候会禁止地图拖动，现在要恢复
+            mymap.dragging.enable();
+            mymap.off('mousedown', drawCircleOnMouseDown);
         }else if(preMapState==="polygon"){
+            mymap.dragging.enable();
             mymap.off('click');
             mymap.off('dblclick');
             // mymap.off('click', drawPolygonOnClick);    //click
             // mymap.off('dblclick', drawPolygonOnDoubleClick);
             // mymap.off('mousemove', drawPolygonOnMove)
         }else if( preMapState==="rectangle"){
-            mymap.off('mousedown');
-            mymap.off('mouseup');
-            // mymap.off('mousedown', drawRectangleOnClick);
-            // mymap.off('mouseup',drawRectangleOnDoubleClick);
+            mymap.dragging.enable();
+            //mymap.off('mousedown');
+            //mymap.off('mouseup');
+             mymap.off('mousedown', drawRectangleOnClick);
+             mymap.off('mouseup',drawRectangleOnDoubleClick);
         }else if(preMapState==="inputtext"){
             mymap.off('click');
             // mymap.off('click',drawTextOnClick);
@@ -779,6 +782,15 @@ function clearAllToolListener(){
         console.log(e)
     }
 
+}
+
+//在外面写一个函数用来删除地图上所有的标记-------------开发中
+function clearAllMarks(){
+    pointStack.map((obj,index)=>{
+        obj.removeFrom(mymap);
+        pointStack.splice(index,1);
+
+    });
 }
 
 
@@ -835,7 +847,8 @@ function clearAllToolListener(){
         //         })
         //     }
         // }
-        let token1 = PubSub.subscribe("point", handleSubscribeTool);
+        //不需要监听 point的点击了，因为只要切换到point状态下，就可以一直点击
+        //let token1 = PubSub.subscribe("point", handleSubscribeTool);
         let token2 = PubSub.subscribe("deleteItems", handleSubscribeTool);
         let token3 = PubSub.subscribe("circle", handleSubscribeTool);
         let token4 = PubSub.subscribe("polygon", handleSubscribeTool);
@@ -872,7 +885,7 @@ function clearAllToolListener(){
         if (CurrentState === "point") {
             if(BackFlag===false){
                 clearAllToolListener();
-                mymap.once('click', pointClick);
+                mymap.on('click', pointClick);
             }else { BackFlag =false;}
             preMapState="point";
             let cursorIMG = document.getElementById('originMap');
@@ -930,6 +943,9 @@ function clearAllToolListener(){
                 console.log("点击了绘图选项");
             }else { BackFlag =false;}
             preMapState="paint";
+            let cursorIMG = document.getElementById('largeCanvas');//找到largeCanvas
+            cursorIMG.style.cursor = `url(${cursorPen}), pointer`;
+
         } else if(CurrentState === "deleteItems") {
             if(BackFlag===false){
                 clearAllToolListener();
@@ -948,5 +964,5 @@ function clearAllToolListener(){
     );
 }
 
-export {drawText};
+export {drawText,clearAllMarks};
 

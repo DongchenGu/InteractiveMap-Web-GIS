@@ -26,6 +26,8 @@ import {setAxiosToken} from "../Auth/Auth";
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 //导入截图
 import ScreenShot from "js-web-screen-shot";
+import clearAllMarks from '../OriginMap/OriginMap';
+
 
 
 const handleLogOut=(e)=>{

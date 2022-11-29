@@ -29,6 +29,7 @@ let token = null;
 
 
 export  default function App(){
+    //https://tile.openstreetmap.org/{z}/{x}/{y}.png
 //http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}   https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}
     const manageFull=React.createRef();
     let timer = true;
