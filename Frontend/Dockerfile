@@ -2,6 +2,7 @@
 FROM node
 WORKDIR /app
 COPY package*.json /app/
+RUN npm i --legacy-peer-deps
 RUN npm install
 COPY src /app
 RUN npm run build
