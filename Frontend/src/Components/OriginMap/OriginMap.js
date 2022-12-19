@@ -889,7 +889,7 @@ function clearAllMarks(){
             }else { BackFlag =false;}
             preMapState="point";
             let cursorIMG = document.getElementById('originMap');
-            cursorIMG.style.cursor = `url(${cursorPOINT}), pointer`;
+            cursorIMG.style.cursor = `url(${cursorPOINT})  17 46, auto`;
         } else if (CurrentState === "circle") {
             if(BackFlag===false){
                 clearAllToolListener();
@@ -898,7 +898,7 @@ function clearAllMarks(){
             }else { BackFlag =false;}
             preMapState="circle";
             let cursorIMG = document.getElementById('originMap');
-            cursorIMG.style.cursor = `url(${cursorNormalPointer}), pointer`;
+            cursorIMG.style.cursor = `url(${cursorNormalPointer}) 4 4, pointer`;
         }else if(CurrentState === "polygon"){
             if(BackFlag===false){
                 clearAllToolListener();
@@ -907,7 +907,7 @@ function clearAllMarks(){
             }else { BackFlag =false;}
             preMapState="polygon";
             let cursorIMG = document.getElementById('originMap');
-            cursorIMG.style.cursor = `url(${cursorNormalPointer}), pointer`;
+            cursorIMG.style.cursor = `url(${cursorNormalPointer}) 4 4, pointer`;
         }else if(CurrentState === "rectangle"){
             if(BackFlag===false){
                 clearAllToolListener();
@@ -916,7 +916,7 @@ function clearAllMarks(){
             }else { BackFlag =false;}
             preMapState="rectangle";
             let cursorIMG = document.getElementById('originMap');
-            cursorIMG.style.cursor = `url(${cursorNormalPointer}), pointer`;
+            cursorIMG.style.cursor = `url(${cursorNormalPointer}) 4 4, pointer`;
         }else if(CurrentState === "inputtext"){
             if(BackFlag===false){
                 clearAllToolListener();
@@ -926,7 +926,7 @@ function clearAllMarks(){
             }else { BackFlag =false;}
             preMapState="inputtext";
             let cursorIMG = document.getElementById('originMap');
-            cursorIMG.style.cursor = `url(${cursorTEXT}), pointer`;
+            cursorIMG.style.cursor = `url(${cursorTEXT}) 42 2, pointer`;
         }else if(CurrentState === "lines"){
             if(BackFlag===false){
                 clearAllToolListener();
@@ -935,7 +935,7 @@ function clearAllMarks(){
             }else { BackFlag =false;}
             preMapState="lines";
             let cursorIMG = document.getElementById('originMap');
-            cursorIMG.style.cursor = `url(${cursorNormalPointer}), pointer`;
+            cursorIMG.style.cursor = `url(${cursorNormalPointer}) 4 4, pointer`;
         }else if(CurrentState === "paint"){
             if(BackFlag===false){
                 clearAllToolListener();
