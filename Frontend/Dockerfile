@@ -3,7 +3,7 @@ FROM node
 WORKDIR /app
 COPY package*.json /app/
 RUN npm install
-COPY . /app
+COPY src /app
 RUN npm run build
 
 FROM nginx
