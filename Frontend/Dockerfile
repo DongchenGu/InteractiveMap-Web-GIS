@@ -1,14 +1,15 @@
-FROM node:15-alpine as builder
+FROM node:16-alpine as builder
 
-WORKDIR /create-react-app
-ADD . /create-react-app
-ADD package.json package-lock.json  /create-react-app
-RUN npm install --legact-peer-deps
+WORKDIR /create-react-app/
+ADD . /create-react-app/
+ADD package.json package-lock.json  /create-react-app/
+
+RUN npm -g install npm@6.x
 RUN npm ci
 RUN  npm run build
 
 FROM nginx:alpine
-COPY --from=builder /create-react-app/build /usr/share/ngnix/html
+COPY --from=builder /create-react-app/build /usr/share/nginx/html
 
 
 
