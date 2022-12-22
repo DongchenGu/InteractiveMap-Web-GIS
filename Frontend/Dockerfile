@@ -12,7 +12,7 @@ FROM nginx:alpine
 COPY --from=builder /create-react-app/build /usr/share/nginx/html
 RUN rm /etc/nginx/conf.d/default.conf
 
-COPY  /create-react-app/nginx.conf  /etc/nginx/conf.d/default.conf
+COPY  nginx.conf  /etc/nginx/conf.d/default.conf
 
 
 
