@@ -11,7 +11,8 @@ RUN  npm run build
 FROM nginx:alpine
 COPY --from=builder /create-react-app/build /usr/share/nginx/html
 RUN rm /etc/nginx/conf.d/default.conf
-
+COPY  /home/private.key  /etc/ssl/private.key
+COPY  /home/mapmarker.net.crt  /etc/ssl/certificate.crt
 COPY  nginx.conf  /etc/nginx/conf.d/default.conf
 
 
