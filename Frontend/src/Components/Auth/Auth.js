@@ -14,8 +14,8 @@ import {createTheme,ThemeProvider} from "@mui/material/styles";
 
 
 
-const Register_URL='http://localhost:8080/register';
-const Login_URL = 'http://localhost:8080/login';
+const Register_URL='http://172.93.44.146:8080/register';
+const Login_URL = 'http://172.93.44.146:8080/login';
 let isQualified = false;
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{5,24}$/;
