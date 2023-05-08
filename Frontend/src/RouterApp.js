@@ -31,6 +31,7 @@ function RouterApp(){
     const element = useRoutes(routes);
     const [waitingFlag,setWaitingFlag] = useState(false);
 
+
     useEffect(()=>{
         store.subscribe(()=>{
             setWaitingFlag(store.getState().waiting_flag);
@@ -43,7 +44,8 @@ function RouterApp(){
                     <ThemeProvider theme={theme} >
                         {waitingFlag ===true?     <Waiting/> : <div></div>}
                             {element}
-                        <Footer/>
+
+
                     </ThemeProvider>
         </div>
     )

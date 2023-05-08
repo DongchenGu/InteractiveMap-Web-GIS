@@ -294,6 +294,7 @@ export  default function App(){
             <div id="App">
                 {Index}
                 {/* <Footer/>*/}
+                <Footer/>
             </div>
         );
 

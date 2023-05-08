@@ -3,28 +3,41 @@ import "./auth.css"
 import Input from "./Input/Input"
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import ReactCSSTransitionGroup from 'react-transition-group'; // ES6
+
 import axios from "axios";
 import {  useNavigate } from "react-router-dom";
-import Qs from 'qs';
+
 import store from "../Store";
 import {setWaitingFlag} from "../Store/actionCreater";
-import {createTheme,ThemeProvider} from "@mui/material/styles";
+import {createTheme, styled, ThemeProvider} from "@mui/material/styles";
+import {TextField} from "@material-ui/core";
 
 
 
 
-const Register_URL='http://172.93.44.146:8080/register';
-const Login_URL = 'http://172.93.44.146:8080/login';
+
+// const Register_URL='https://mapmarker.net:8080/register';
+// const Login_URL = 'https://mapmarker.net:8080/login';
+const Register_URL='http://localhost:8080/register';
+const Login_URL = 'http://localhost:8080/login';
 let isQualified = false;
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{5,24}$/;
 
-function CheckMail(emailAddress){
-
-    var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");
-    var bChk=reg.test(emailAddress);
+function checkMail(emailAddress){
+    let reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");
+    let bChk=reg.test(emailAddress);
     return bChk; }
+function checkUserName(userName){
+    return  USER_REGEX.test(userName);
+}
+function checkPassword(password){
+    return password!=="" && PWD_REGEX.test(password);
+}
+function checkConfirmPassword( authInfo){
+    return authInfo.confirm_password!== "" && authInfo.password === authInfo.confirm_password;
+}
+
 
 const setAxiosToken =(token)=>{
     if(token){
@@ -50,6 +63,15 @@ const Auth = () => {
         password:"",
         confirm_password:""
     })
+    //判断用户是否 正在 输入 登录的信息
+    const isLogInInPutting =()=>{
+        if(authInfo.email !== '' || authInfo.password !==''){
+            return true;
+        }else{
+            return false;
+        }
+    };
+
 
     const theme = createTheme({
         status: {
@@ -65,17 +87,21 @@ const Auth = () => {
                 contrastText: '#fff',
             },
         },
+        font:{
+            fontsize:"10px",
+
+        }
     });
 
 
 
     const handleSubmit = async (e)=>{
         if(islogging===false){
-            const nameResult = USER_REGEX.test(authInfo.username);
-            const passwordResult = PWD_REGEX.test(authInfo.password);
-            const emailResult = CheckMail(authInfo.email);
+            const nameResult = checkUserName(authInfo.username);
+            const passwordResult = checkPassword(authInfo.password);
+            const emailResult = checkMail(authInfo.email);
             if(!emailResult){
-             alert("Please input the valid emial Address!");
+             alert("Please input the valid email Address!");
             }else if(authInfo.password!== authInfo.confirm_password){
                 alert("The password does not match, please re-enter!");
                 return;
@@ -84,7 +110,6 @@ const Auth = () => {
                 return;
             }else{
                 isQualified = true;
-
                 //设置进入等待页面
                 store.dispatch(setWaitingFlag(true));
             }
@@ -118,7 +143,7 @@ const Auth = () => {
 
         }else{
             //从这里开始是登录
-            const emailResult = CheckMail(authInfo.email);
+            const emailResult = checkMail(authInfo.email);
             if(emailResult===false){
                 alert("Please input the valid Email Address!");
                 return;
@@ -147,8 +172,6 @@ const Auth = () => {
                                 alert("User not exist! Please Sign Up!");
                             }
                         }
-                    //console.log(response);
-                   // console.log(res.data);
                 });
                 //console.log(JSON.stringify(response?.data));
             }catch (err){
@@ -168,7 +191,7 @@ const Auth = () => {
         }
     }
 
-    const handleClick = ()=>{
+    const handleSignUpClick_or_goBackToLogIn = ()=>{
         setLogging(!islogging);
         //setLogin(!login);
         setAuthInfo({
@@ -177,8 +200,23 @@ const Auth = () => {
         password:"",
         confirm_password:""
     })
-
     }
+    //
+    //我们需要在 AuthInfo 数据更新之后 再调用 handleSubmit
+    function logInWithTestAccount(){
+        setAuthInfo({
+            email:"test@gmail.com",
+            username:"Norbert",
+            password:"passwordD1",
+            confirm_password:"passwordD1"
+        },);
+    }
+    //监控状态 authInfo是否已经异步修改了
+    useEffect(()=>{
+        if(authInfo.email==="test@gmail.com" && authInfo.password==="passwordD1"){
+            handleSubmit();
+        }
+    },[authInfo])
 
 
 
@@ -204,32 +242,56 @@ const Auth = () => {
            <div className={"authBorder anime"}>
                <h1 className="welcome">Welcome</h1>
 
+                  <div style={{width: "100%"}} className={"slide-top"}>
+                       <Input type={"text"} placeholder={"email"} authInfo={authInfo} setAuthInfo={setAuthInfo} isValid={checkMail(authInfo.email)}/>
+                       {islogging? <div/>:(<Input type={"text"} placeholder={"username"} authInfo={authInfo} setAuthInfo={setAuthInfo} isValid={checkUserName(authInfo.username)}/> )}
+                       <Input type={"password"} placeholder={"password"} authInfo={authInfo} setAuthInfo={setAuthInfo} isValid={checkPassword(authInfo.password)}/>
+                       {islogging? <div/>:(<Input type={"password"} placeholder={"confirm_password"} authInfo={authInfo} setAuthInfo={setAuthInfo} isValid={checkConfirmPassword(authInfo)}/>)}
 
-                    <div style={{width: "95%"}} className={"slide-top"}>
-                   <Input type={"text"} placeholder={"email"} authInfo={authInfo} setAuthInfo={setAuthInfo}/>
-                   {islogging? <div/>:(<Input type={"text"} placeholder={"username"} authInfo={authInfo} setAuthInfo={setAuthInfo}/>)}
-                   <Input type={"password"} placeholder={"password"} authInfo={authInfo} setAuthInfo={setAuthInfo}/>
-                   {islogging? <div/>:(<Input type={"password"} placeholder={"confirm_password"} authInfo={authInfo} setAuthInfo={setAuthInfo}/>)}
-                   <Typography align='center' >
-                       <ThemeProvider theme={theme}>
-                          <Button onClick={handleSubmit}
-                            color='white'
-                            size='large'
-                            type='submit'
-                            variant='outlined'
-                           >
-                              {islogging? "Log in":"Sign Up"}
-                          </Button>
-                           </ThemeProvider>
-                    </Typography>
+                      {/*这里是登录或注册用户 的 表单  提交按钮*/}
+                       {isLogInInPutting()?
+                           <Typography align='center' >
+                                <ThemeProvider theme={theme}>
+                                    <Button onClick={handleSubmit}
+                                            color='white'
+                                            size='large'
+                                            type='submit'
+                                            variant='outlined'
+                                            className="ButtonForAuth"
+                                    >
+                                        {islogging? "Log in":"Sign Up"}
+                                    </Button>
+                                </ThemeProvider>
+                            </Typography> : <div/>}
+
 
                 </div>
 
+               {/*没有账户的人 注册 或 使用测试账户*/}
+               <div id="PeopleWithOutAccount">
+                   <div >
+                       <span className="Tip_Text">{islogging?" First Time here? ":"Already have an account?"}</span>
+                       <span className="SignUpLine" onClick={handleSignUpClick_or_goBackToLogIn}>{islogging? " Sign Up Now! ":" Log in"}</span>
 
+                       {/*{islogging?" First Tiem here? Sign Up!":"Already have an account? Log in"}*/}
+                   </div>
+                       {islogging?
+                           <div>
+                               <span className="Tip_Text">or</span>
+                               <span>&nbsp;&nbsp;</span>
+                               <span className="SignUpLine" onClick={logInWithTestAccount}> Use Test Account</span>
+                           </div>
+                           :<div/>
+                       }
+                       <div style={{width:'100%', height:'4px'}}></div>
+                       <div>
+                           <span className="Tip_Text">or</span>
+                           <span>&nbsp;&nbsp;</span>
+                           <span id="BackToHome" className="Tip_Text"  style={{cursor:"pointer"}} onClick={BackToHome}> Back To Home</span>
+                       </div>
 
-               <Typography onClick={handleClick} sx={{textDecoration:"underline", cursor:"pointer", marginTop:"5px"}}>
-                   {islogging?" Don't have an account? Sign Up":"Already have an account? Log in"}
-               </Typography>
+               </div>
+
            </div>
        </div>
    );
@@ -237,4 +299,4 @@ const Auth = () => {
 }
 
 export default Auth;
-export {CheckMail};
+export {checkMail};

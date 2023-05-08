@@ -3,9 +3,9 @@
   /*padding: 12px 20px;*/
   /*display: inline-block;*/
   /*color: white;*/
-  width: 95%;
-  margin-top: 1vh;
-  margin-bottom: 1vh;
+  width: 100%;
+  margin-top: 6px;
+  margin-bottom: 10px;
 
 }
 
@@ -22,6 +22,17 @@
   size: 0.12rem;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 8px;
   letter-spacing:2px;
-  color: white;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline{
+
+  border-color: green !important;
+  border-width: 1px !important;
+}
+.MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline{
+  border-color: red !important;
+  border-width: 1px !important;
 }

@@ -8,10 +8,14 @@
 .ct{
     font-family: 'Raleway', sans-serif;
     /*background-color: #3580ee;*/
-    background-image: url("./img_1.png");
-    background-size: 100vw;
+    background: url("./logInBackground.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+
     display: flex;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: start;
     align-items: center;
     width: 100vw;
     height: 100vh;
@@ -19,10 +23,9 @@
 }
 
 .authBorder{
-
     height: 80vh;
-    width: 30vw;
-    min-width: 300px;
+    width: 360px;
+
     background:rgba(255,255,255,0.15);
     box-shadow: 0 8px 32px 0 darkgray;
     backdrop-filter: blur(3.5px);
@@ -31,7 +34,15 @@
     color: white;
     display: flex;
     flex-direction: column;
+    justify-content: start;
     align-items: center;
+    padding-top: 40px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-left: 8vw;
+
+    font-size: 15px;
+    font-family: "Arial", sans-serif;
     /*display: flex;*/
     /*flex-direction: column;*/
     /*justify-content: space-between;*/
@@ -44,13 +55,42 @@
     color: white;
 }
 
-.inputContainer{
-    /*display: flex;*/
-    /*flex-direction: column;*/
-    /*justify-content: space-around;*/
-    /*align-items: center;*/
-    /*height: auto;*/
-    /*width: 100%;*/
+.ButtonForAuth{
+    width: 100%;
+    height: auto;
+    margin-top: 10px;
+    margin-bottom: 8px;
+    font-weight: normal;
+}
+#PeopleWithOutAccount{
+    width: 100%;
+    height: auto;
+    align-self: flex-end;
+
+    margin-top: auto;
+    margin-bottom: 40px;
+}
+.Tip_Text{
+    width: auto;
+    height: auto;
+    text-align: left;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.4);
+}
+#BackToHome:hover{
+    text-decoration: underline;
+}
+.SignUpLine{
+    cursor: pointer;
+    width: auto;
+    height: auto;
+    text-align: left;
+    letter-spacing: 1px;
+    color: rgb(255, 255, 255);
+}
+.SignUpLine:hover{
+    text-decoration: underline;
+    color: white;
 }
 
 @keyframes fadeInLeft {
@@ -72,4 +112,6 @@
     animation-name: fadeInLeft;
 }
 
-.slide-top{-webkit-animation:slide-top .5s cubic-bezier(.25,.46,.45,.94) both;animation:slide-top .5s cubic-bezier(.25,.46,.45,.94) both}
+.slide-top{-webkit-animation:slide-top .5s
+            cubic-bezier(.25,.46,.45,.94) both;
+            animation:slide-top .5s cubic-bezier(.25,.46,.45,.94) both}
