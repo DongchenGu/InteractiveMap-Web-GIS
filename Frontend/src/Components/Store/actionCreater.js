@@ -1,6 +1,6 @@
 // 引入需要使用的 常量
 import {CHANGE_COLOR, CHANGE_TEXT, CHANGE_FONTSIZE, CHANGE_FONTFAMILY,
-    CHANGE_LINEWIDTH,USER_EMAIL,USER_NAME,USER_PASSWORD,USER_TOKEN,WaitingFlag,USER_PHOTO} from "./constant.js";
+    CHANGE_LINEWIDTH,USER_EMAIL,USER_NAME,USER_PASSWORD,USER_TOKEN,WaitingFlag,USER_PHOTO,SET_SIDEBAR_OPEN} from "./constant.js";
 
 export const setWaitingFlag = (flag) => {
     return {
@@ -76,3 +76,8 @@ export const changeLineWidth = (lineWidth)=>{
         payload:lineWidth,
     }
 };
+
+export const setSidebarOpen = (flag) => ({
+    type: SET_SIDEBAR_OPEN,
+    payload: flag,
+});

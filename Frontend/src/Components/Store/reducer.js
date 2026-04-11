@@ -1,6 +1,6 @@
 // 引入需要使用的常量
 import {CHANGE_COLOR, CHANGE_TEXT, CHANGE_FONTSIZE, CHANGE_FONTFAMILY,CHANGE_LINEWIDTH,
-    USER_EMAIL,USER_NAME,USER_PASSWORD,USER_TOKEN,WaitingFlag,USER_PHOTO} from "./constant.js";
+    USER_EMAIL,USER_NAME,USER_PASSWORD,USER_TOKEN,WaitingFlag,USER_PHOTO,SET_SIDEBAR_OPEN} from "./constant.js";
 
 
 const defaultState ={
@@ -19,6 +19,7 @@ const defaultState ={
     user_token:null,
     user_photo:null,
     waiting_flag:false,
+    sidebar_open: false,
 };
 
 function reducer(state = defaultState, action) {
@@ -80,6 +81,12 @@ function reducer(state = defaultState, action) {
             return {
                 ...state,
                 lineWidth: action.payload
+            };
+
+        case SET_SIDEBAR_OPEN:
+            return {
+                ...state,
+                sidebar_open: action.payload
             };
 
         default: return state;

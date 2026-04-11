@@ -11,3 +11,4 @@ export const USER_PASSWORD = "USER_PASSWORD";
 export const USER_TOKEN = "USER_TOKEN";
 export const USER_PHOTO = "USER_PHOTO";
 export const WaitingFlag = "WaitingFlag";
+export const SET_SIDEBAR_OPEN = "SET_SIDEBAR_OPEN";

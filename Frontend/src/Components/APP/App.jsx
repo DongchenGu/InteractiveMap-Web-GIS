@@ -7,6 +7,7 @@ import ReactDOM from 'react-dom';
 import Footer from '../Footer/Footer'
 import MapProviderMenu from '../MapProviderMenu/MapProviderMenu'
 import ToolMenu from "../ToolMenu/ToolMenu";
+import SideMenu from '../SideMenu/SideMenu';
 import CurrentStateDialog from '../CurrentStateDialog/CurrentStateDialog'
 import Property from '../Property/Property'
 //import { FullScreen, useFullScreenHandle } from "react-full-screen"
@@ -36,7 +37,7 @@ export  default function App(){
     const [IsFull, setIsFull] = useState(false);
     const [OSMUrl, setOSMUrl] = useState("https://tile.openstreetmap.org/{z}/{x}/{y}.png");
     const [MapProviderMenuOpen, setMapProviderMenuOpen] = useState(false);
-    const [ToolMenuOpen, setToolMenuOpen] = useState(false);
+    // ToolMenuOpen replaced by SideMenu (sidebar_open in redux)
     const [CurrentStateDialogOpen, setCurrentStateDialogOpen] = useState(false);
     const [CurrentState, setCurrentState] = useState("outFullScreen");
     const [PropertyOpen, setPropertyOpen] = useState(true);
@@ -97,12 +98,7 @@ export  default function App(){
         //只要关闭参数菜单，就退出当前的画图状态
         setCurrentState("IN/OUT/FullScreen")////////////////////////////////////////////////////////关闭菜单
     }
-   const openToolMenu=()=>{
-       setToolMenuOpen(true);
-    }
-    const closeToolMenu=()=>{
-        setToolMenuOpen(false);
-    }
+    // openToolMenu/closeToolMenu replaced by SideMenu toggle in NavigationBar
     const changeCurrentState=(stateValue)=>{
        if(stateValue==="inputtext"){
            setCurrentState(stateValue);
@@ -157,14 +153,7 @@ export  default function App(){
         if(MapProviderMenuOpen===true){
             MapProvider=<MapProviderMenu changeProvider={changeProvider} closeProviderMenu={closeProviderMenu}/>
         }
-        if(ToolMenuOpen===true){
-            Tool=<ToolMenu  closeToolMenu={closeToolMenu}
-                            changeCurrentState={changeCurrentState}
-                            CurrentState={CurrentState}
-                            setTimerToCloseDialog={setTimerToCloseDialog}
-                            clearTimerAboutStateDialog={clearTimerAboutStateDialog}
-                            openTips={openTips}/>
-        }
+        // Tool panel replaced by SideMenu component
         if(CurrentStateDialogOpen===true){
             CurrentStateDialogComponent=<CurrentStateDialog
                                     CurrentState={CurrentState}
@@ -187,7 +176,7 @@ export  default function App(){
         //让导航条根据用户是否登录来显示不同按钮
         //通过检测redux中是否用用户信息来检测用户是否已经登录
         Index = <div>
-            {Tool}
+            <SideMenu CurrentState={CurrentState} changeCurrentState={changeCurrentState} />
             {MapProvider}
             {PropertyDialog}
             {TipsDialog}
@@ -196,7 +185,6 @@ export  default function App(){
                 <Navigation  checkFull={fullScreenSwitch}
                              IsFull={IsFull}
                              openProviderMenu={openProviderMenu}
-                             openToolMenu={openToolMenu}
                              openProperty={openProperty}
                              getCoord={getCoord}
                 />

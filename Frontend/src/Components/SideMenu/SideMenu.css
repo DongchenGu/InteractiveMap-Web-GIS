@@ -1,0 +1,160 @@
+.SideMenu_frame {
+    position: fixed;
+    top: 48px;
+    left: 0;
+    width: 260px;
+    height: calc(100vh - 48px);
+    background-color: rgb(24, 31, 59);
+    border-top: solid 1px rgb(74, 78, 95);
+    border-right: solid 1px rgb(74, 78, 95);
+    z-index: 500;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    overflow: hidden;
+}
+
+.SideMenu_scroll_area {
+    width: 100%;
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-bottom: 8px;
+}
+
+.SideMenu_scroll_area::-webkit-scrollbar {
+    display: none;
+}
+
+.SideMenu_section_header {
+    width: 100%;
+    height: 32px;
+    line-height: 32px;
+    color: rgba(198, 219, 224, 0.45);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    padding-left: 16px;
+    border-bottom: 1px solid rgba(198, 219, 224, 0.1);
+    margin-top: 4px;
+    box-sizing: border-box;
+}
+
+.SideMenu_tool_item {
+    width: 100%;
+    height: 42px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 20px;
+    color: rgba(198, 219, 224, 0.65);
+    font-size: 14px;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: background 0.12s;
+    border-left: 3px solid transparent;
+}
+
+.SideMenu_tool_item:hover {
+    background-color: rgba(198, 219, 224, 0.1);
+    color: white;
+}
+
+.SideMenu_tool_active {
+    background-color: rgba(62, 127, 159, 0.25);
+    color: white;
+    border-left: 3px solid #3e7f9f;
+}
+
+.SideMenu_layer_item {
+    color: rgba(198, 219, 224, 0.45);
+    font-size: 13px;
+}
+
+/* Slide animations */
+.hangout_left {
+    transform: translate3d(-100%, 0, 0);
+}
+
+@keyframes fadeInLeft {
+    from { transform: translate3d(-100%, 0, 0); opacity: 1; }
+    to   { transform: none; opacity: 1; }
+}
+
+@keyframes fadeOutLeft {
+    from { transform: none; opacity: 1; }
+    to   { transform: translate3d(-100%, 0, 0); opacity: 1; }
+}
+
+.anime_fadeInLeft {
+    animation-timing-function: linear;
+    animation-duration: 0.2s;
+    animation-fill-mode: both;
+    animation-name: fadeInLeft;
+}
+
+.anime_fadeOutLeft {
+    animation-timing-function: linear;
+    animation-duration: 0.2s;
+    animation-fill-mode: both;
+    animation-name: fadeOutLeft;
+}
+
+/* Bottom section */
+.SideMenu_bottom_buttons {
+    width: 100%;
+    padding: 10px 16px;
+    display: grid;
+    grid-template-columns: repeat(2, 108px);
+    grid-gap: 10px;
+    box-sizing: border-box;
+}
+
+.SideMenu_bottom_btn {
+    height: 54px;
+    background-color: rgba(198, 219, 224, 0.12);
+    border: solid 1px rgba(198, 219, 224, 0.2);
+    font-size: 12px;
+    color: white;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    padding: 4px 6px;
+    cursor: pointer;
+    transition: background 0.12s;
+}
+
+.SideMenu_bottom_btn:hover {
+    background-color: rgba(198, 219, 224, 0.28);
+}
+
+.SideMenu_btn_arrow {
+    position: absolute;
+    top: 3px;
+    right: 5px;
+    color: rgba(198, 219, 224, 0.7);
+}
+
+.SideMenu_bottom_text {
+    width: 100%;
+    color: rgba(198, 219, 224, 0.28);
+    font-size: 10px;
+    padding-left: 16px;
+    margin-bottom: 3px;
+    box-sizing: border-box;
+    word-break: break-all;
+}
+
+.SideMenu_bottom_text_last {
+    width: 100%;
+    color: rgba(198, 219, 224, 0.28);
+    font-size: 10px;
+    padding-left: 16px;
+    margin-bottom: 12px;
+    box-sizing: border-box;
+}
