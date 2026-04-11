@@ -1,5 +1,6 @@
 import "./Property.css"
 import React, {useState, useEffect, useRef} from "react";
+import ReactDOM from "react-dom";
 import ClearIcon from "@mui/icons-material/Clear";
 import IconButton from "@mui/material/IconButton";
 import TextField from '@mui/material/TextField';
@@ -569,10 +570,9 @@ const paintProperty = <div id ="largeProperty" ref={nodeRef}>
 
 
 
-        return (
-            <div>
-                {index}
-            </div>
+        return ReactDOM.createPortal(
+            <div>{index}</div>,
+            document.body
         );
 }
 

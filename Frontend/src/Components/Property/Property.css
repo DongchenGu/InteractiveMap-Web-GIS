@@ -1,107 +1,169 @@
-#largeProperty{
+#largeProperty {
     display: flex;
     flex-direction: column;
-    margin-top: 75vh;
-    margin-left: 10%;
-    float:right;
+    position: fixed;
+    top: 80px;
+    right: 20px;
     height: fit-content;
-    width: fit-content;
-    z-index: 1050;
-    border-radius: 10px 10px;
-    color: #01194b;
-    background-color: #faf8f8;
-    opacity: 75%;
-    position: absolute;
-
+    width: 320px;
+    z-index: 2000;
+    border-radius: 6px;
+    background-color: rgb(24, 31, 59);
+    border: 1px solid rgba(198, 219, 224, 0.4);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
+    color: rgba(198, 219, 224, 0.9);
     padding: 0;
+    opacity: 1;
 }
 
-#firstLine{
-    font:bold 15px/20px Verdana, Geneva, sans-serif;
+#firstLine {
+    font: bold 14px/20px Verdana, Geneva, sans-serif;
     display: flex;
     flex-direction: row;
-    width:100% ;
-    height: 5vh;
-    margin-top: 0;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 42px;
+    padding-left: 14px;
+    padding-right: 6px;
+    border-bottom: 1px solid rgba(198, 219, 224, 0.2);
+    cursor: grab;
+    background-color: rgba(62, 127, 159, 0.2);
+    border-radius: 6px 6px 0 0;
+    box-sizing: border-box;
+    color: white;
 }
-#toolName{
-    -ms-flex-align: start;
+#firstLine:active {
+    cursor: grabbing;
+}
+
+#toolName {
     height: fit-content;
-    line-height: 5vh;
     text-align: left;
     width: 90%;
-
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: white;
 }
-#closeIcon{
-    -ms-flex-align: end;
+
+#closeIcon {
     margin-top: 0;
+    color: rgba(198, 219, 224, 0.7);
+}
+#closeIcon .MuiIconButton-root {
+    color: rgba(198, 219, 224, 0.7) !important;
+}
+#closeIcon .MuiIconButton-root:hover {
+    color: white !important;
+    background-color: rgba(198, 219, 224, 0.1) !important;
 }
 
-#thirdLine{
-    font:bold 12px/16px Verdana, Geneva, sans-serif;
+#secondLine {
+    font: 12px/16px Verdana, Geneva, sans-serif;
     display: flex;
     flex-direction: row;
-    align-items: center;
-    width:fit-content ;
-    height: 4vh;
+    width: 100%;
+    height: auto;
+    min-height: 36px;
     margin-top: 0;
-    padding: 1vh;
+    padding: 8px 14px;
+    box-sizing: border-box;
+    color: rgba(198, 219, 224, 0.75);
 }
 
-#secondLine{
-    font:bold 12px/16px Verdana, Geneva, sans-serif;
-    display: flex;
-    flex-direction: row;
-    width:100% ;
-    height: 3vh;
-    margin-top: 0;
-    padding: 1vh;
-}
-#toolAttributes{
-    -ms-flex-align: start;
+#toolAttributes {
     height: fit-content;
     text-align: left;
     width: fit-content;
+    font-size: 12px;
 }
 
-.inputAttributes{
-    font: 15px/18px Verdana, Geneva, sans-serif;
+#thirdLine {
+    font: bold 12px/16px Verdana, Geneva, sans-serif;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    min-height: 40px;
+    margin-top: 0;
+    padding: 8px 14px;
+    box-sizing: border-box;
+    color: rgba(198, 219, 224, 0.75);
+}
+
+.inputAttributes {
+    font: 12px/16px Verdana, Geneva, sans-serif;
     display: flex;
     flex-direction: row;
     width: fit-content;
-    height: 3vh;
+    height: auto;
+    min-height: 28px;
     align-items: center;
     justify-content: start;
-    margin-top: 0.5vh;
-    margin-bottom: 0.5vh;
-    padding-left: 0.5vw;
-    padding-right: 1vw;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    padding-left: 14px;
+    padding-right: 14px;
+    box-sizing: border-box;
+    color: rgba(198, 219, 224, 0.75);
 }
 
-
-#colorPicker{
-    width: 12vw;
-    height: auto;
-
+/* Table inside property panel */
+#largeProperty table {
+    width: 100%;
+    padding: 0 8px 8px 8px;
+    box-sizing: border-box;
 }
-#inputText{
-    color: black !important;
-    width: 20%;
-    height: 5vh;
-}
-/*.MuiInputBase-root{*/
-/*    color: black !important;*/
-/*}*/
-/*.MuiFormLabel-root.Mui-focused{*/
-/*    color:#000000 !important;*/
-/*}*/
-
-#FontSizeExplain{
-    font-size: x-small;
-    padding-left: 0.5vw;
-    padding-right: 1vw;
+#largeProperty td {
+    padding: 4px 6px;
+    vertical-align: middle;
+    color: rgba(198, 219, 224, 0.75);
+    font-size: 12px;
 }
 
-#ColorPicker{
+/* MUI overrides for dark theme inside property panel */
+#largeProperty .MuiInputBase-root {
+    color: rgba(198, 219, 224, 0.9) !important;
+}
+#largeProperty .MuiInputBase-root::before {
+    border-bottom-color: rgba(198, 219, 224, 0.4) !important;
+}
+#largeProperty .MuiInputBase-root::after {
+    border-bottom-color: #3e7f9f !important;
+}
+#largeProperty .MuiFormLabel-root {
+    color: rgba(198, 219, 224, 0.5) !important;
+}
+#largeProperty .MuiFormLabel-root.Mui-focused {
+    color: #3e7f9f !important;
+}
+#largeProperty .MuiOutlinedInput-notchedOutline {
+    border-color: rgba(198, 219, 224, 0.3) !important;
+}
+#largeProperty .MuiSelect-icon {
+    color: rgba(198, 219, 224, 0.6) !important;
+}
+#largeProperty .MuiIconButton-root {
+    color: rgba(198, 219, 224, 0.7) !important;
+}
+#largeProperty .MuiIconButton-root:hover {
+    color: white !important;
+    background-color: rgba(198, 219, 224, 0.1) !important;
+}
+#largeProperty .MuiSlider-root {
+    color: #3e7f9f !important;
+}
+
+#FontSizeExplain {
+    font-size: 10px;
+    padding-left: 14px;
+    padding-right: 14px;
+    color: rgba(198, 219, 224, 0.5);
+    width: 160px;
+}
+
+#ColorPicker {
     width: 8vw;
 }

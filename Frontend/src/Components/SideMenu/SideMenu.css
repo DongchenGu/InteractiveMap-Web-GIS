@@ -1,9 +1,9 @@
 .SideMenu_frame {
     position: fixed;
-    top: 48px;
+    top: 0;
     left: 0;
     width: 260px;
-    height: calc(100vh - 48px);
+    height: 100vh;
     background-color: rgb(24, 31, 59);
     border-top: solid 1px rgb(74, 78, 95);
     border-right: solid 1px rgb(74, 78, 95);
