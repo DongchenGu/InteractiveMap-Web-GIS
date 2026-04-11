@@ -98,9 +98,6 @@ export default function SideMenu({ CurrentState, changeCurrentState }) {
                     Leaflet Docs
                 </div>
             </div>
-            <div className="SideMenu_bottom_text">
-                github.com/NorbertFeltchenheimer/InteractiveMap-Web-GIS
-            </div>
             <div className="SideMenu_bottom_text">Copyright © 2024.</div>
             <div className="SideMenu_bottom_text_last">Interactive Map GIS. Open Source.</div>
         </div>

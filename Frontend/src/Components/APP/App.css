@@ -1,108 +1,92 @@
-#App {
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  justify-content: center;
-  position: relative;
-  /*overflow-x: hidden;*/
-  margin-left: 0;
-}
-::-webkit-scrollbar {
-  display: none;
+/* ============================================================
+   Root layout: sidebar (left) + main content (right)
+   ============================================================ */
+#App_root {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
 }
 
+/* Sidebar wrapper — transitions width so main content slides right */
+#App_sidebar {
+    flex-shrink: 0;
+    overflow: hidden;
+    transition: width 0.2s linear;
+    /* height handled by SideMenu's own fixed positioning inside */
+}
+#App_sidebar.sidebar_open {
+    width: 260px;
+}
+#App_sidebar.sidebar_closed {
+    width: 0px;
+}
+
+/* Right-side content area */
+#App_main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* ============================================================
+   Content sections
+   ============================================================ */
 #Describe {
-  min-height: 80vh;
-  width: 100%;
-  background: url(../../images/BackGround.jpg) center / cover transparent;
-
-  overflow: hidden;
-
+    min-height: 80vh;
+    width: 100%;
+    background: url(../../images/BackGround.jpg) center / cover transparent;
+    overflow: hidden;
 }
-
-
 
 #canvas {
-  background: url("../../images/backGround2.jpg") center/cover;
-  height: 90vh;
-  width: 100%;
-  padding-top: 4vh;
-  padding-bottom: 4vh;
-  padding-left: 12%;
-  padding-right: 12%;
+    background: url("../../images/backGround2.jpg") center/cover;
+    height: 90vh;
+    width: 100%;
+    padding-top: 4vh;
+    padding-bottom: 4vh;
+    padding-left: 0;
+    padding-right: 0;
+    box-sizing: border-box;
 }
 
-#fullScreenMap{
-  width: 100%;
-  height: 100vh;
-
-}
-#test1{
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  background: url("../../images/backGround2.jpg") center/cover;
-  height: 90vh;
-  width: 100%;
-}
-#test2{
-  width: 100%;
-  height: 90vh;
-  margin-right: -20vw;
+#fullScreenMap {
+    width: 100%;
+    height: 100vh;
 }
 
-
-
-#endMenu{
-  margin-top: 0px;
-  width: 100%;
-  height: 60vh;
-  background-color: #131313;
+#stateDialog {
+    position: fixed;
+    z-index: 100;
+    top: 60px;
+    left: 10px;
 }
 
+/* ============================================================
+   Hide scrollbars globally
+   ============================================================ */
+::-webkit-scrollbar {
+    display: none;
+}
 
-
-
+/* ============================================================
+   Misc legacy
+   ============================================================ */
 .App-logo {
-  height: 40vmin;
-  pointer-events: none;
+    height: 40vmin;
+    pointer-events: none;
 }
-
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+    .App-logo {
+        animation: App-logo-spin infinite 20s linear;
+    }
 }
-
-.App-header {
-  background-color: #313131;
-  height: 60px;
-  display: flex;
-  flex-direction: row;
-
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-body{
-  background-color: aquamarine;
-  display: block;
-  flex-direction: column;
-  justify-content: center;
-}
-
-
-
-.App-link {
-  color: #61dafb;
-}
-
 @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
 }
