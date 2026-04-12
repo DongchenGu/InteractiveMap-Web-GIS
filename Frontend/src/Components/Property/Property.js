@@ -5,9 +5,8 @@ import ClearIcon from "@mui/icons-material/Clear";
 import IconButton from "@mui/material/IconButton";
 import TextField from '@mui/material/TextField';
 import PubSub from "pubsub-js";
-import { HuePicker,SketchPicker} from 'react-color';
 import Draggable from 'react-draggable';
-import ColorPicker from "../ColorPicker/ColorPicker"; // The default
+import ColorPicker from "../ColorPicker/ColorPicker";
 
 //redux
 import store from "../Store";
@@ -18,561 +17,296 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Input from '@mui/material/Input';
 import Slider from '@mui/material/Slider';
-import {CHANGE_FAMILY} from "../Store/constant";
-import {canvasUndo,canvasRedo,resetCanvas} from "../Canvas/Canvas"
+import {canvasUndo, canvasRedo, resetCanvas} from "../Canvas/Canvas"
 import SpellcheckIcon from "@mui/icons-material/Spellcheck";
 
 import UndoIcon from '@mui/icons-material/Undo';
 import RedoIcon from '@mui/icons-material/Redo';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
-
 const ariaLabel = { 'aria-label': 'description' };
 
+/* ── reusable sub-components ─────────────────────────────── */
 
-
-let color="#000000";
-function setColor(){
-
+function PropHeader({ title, onClose, nodeRef }) {
+    return (
+        <div id="firstLine">
+            <div id="toolName">{title}</div>
+            <div id="closeIcon">
+                <IconButton onClick={onClose} size="small">
+                    <ClearIcon fontSize="small" />
+                </IconButton>
+            </div>
+        </div>
+    );
 }
 
-export  default function Property (props){
-    //状态提升后提上来的
-    const [displayColorPicker,setDisplayColorPicker] = useState(false);
-    const [color, setColor] = useState({
-        r: 0,
-        g: 0,
-        b: 0,
-        a: 1,
-    },);
-    const [text,setText]= useState("N/A")
-    const [size, setSize] = React.useState(10);
-   // let size =4;
-    const [fontFamily, setFontFamily] = React.useState("Arial");
+function PropRow({ label, hint, children }) {
+    return (
+        <div className="prop_row">
+            <div className="prop_row_label">
+                <span>{label}</span>
+                {hint && <span className="prop_row_hint">{hint}</span>}
+            </div>
+            <div className="prop_row_control">{children}</div>
+        </div>
+    );
+}
 
-    const [LL, setLL]= useState("N/A");
-    const [CC,setCC] = useState("N/A"); //center of circle
+/* ── main component ──────────────────────────────────────── */
+
+export default function Property(props) {
+    const [displayColorPicker, setDisplayColorPicker] = useState(false);
+    const [color, setColor] = useState({ r: 0, g: 0, b: 0, a: 1 });
+    const [text, setText] = useState("N/A");
+    const [size, setSize] = useState(10);
+    const [fontFamily, setFontFamily] = useState("Arial");
+    const [LL, setLL] = useState("N/A");
+    const [CC, setCC] = useState("N/A");
     const [CR, setCR] = useState("N/A");
+    const [lineWidth, setLineWidth] = useState(5);
     const nodeRef = React.useRef(null);
+    const textRef = React.createRef();
 
-    const [lineWidth, setLineWidth] = useState(5)
+    const { CurrentState, closeProperty: closeProperty } = props;
 
-    const setPickedColor=(co)=>{
+    const handleCloseToolMenu = () => props.closeProperty();
+
+    const setPickedColor = (co) => {
         setColor(co);
-        // console.log("设置");
-        // console.log(co);
-        store.dispatch(changeColor(color));
-    }
+        store.dispatch(changeColor(co));
+    };
 
-    const handleCloseToolMenu=()=>{
-        props.closeProperty();
-    }
-    const handleSubscribeProperty=(msg,data)=>{
-        if(msg==='pointProperty'){
-            setLL(data.LL);
-        }else if(msg==='circleProperty'){
-            setCC(data.CC);
-            setCR(data.CR);
-           // console.log("此处一致性")
-        }
-    }
+    const handleSubscribeProperty = (msg, data) => {
+        if (msg === 'pointProperty') setLL(data.LL);
+        else if (msg === 'circleProperty') { setCC(data.CC); setCR(data.CR); }
+    };
 
-
-    useEffect(()=>{
-        PubSub.subscribe('pointProperty',handleSubscribeProperty);
-        PubSub.subscribe('circleProperty',handleSubscribeProperty);
-
-    },[])
-    useEffect(()=>{
+    useEffect(() => {
+        PubSub.subscribe('pointProperty', handleSubscribeProperty);
+        PubSub.subscribe('circleProperty', handleSubscribeProperty);
         return () => {
             PubSub.unsubscribe('pointProperty');
             PubSub.unsubscribe('circleProperty');
-        }
-    },[])
+        };
+    }, []);
 
-    let index=null;
-    let line1
-    const {CurrentState} = props;
-
-
-
-    const pointProperty =<div id ="largeProperty" ref={nodeRef}>
-                            <div id="firstLine">
-                                <div id="toolName">
-                                    {CurrentState}
-                                </div>
-                                <div id="closeIcon">
-                                    <IconButton onClick={handleCloseToolMenu}>
-                                        <ClearIcon  fontSize="small" style={{marginTop:"auto"}}/>
-                                    </IconButton>
-                                </div>
-                            </div>
-                            <div id="secondLine">
-                                    Longitude/latitude:
-                                    { (LL ==="N/A" )?  "You have not chose a POINT": LL.lng.toFixed(5)+","+LL.lat.toFixed(5)
-                                    }
-                            </div>
-                        </div>
-
-    const circleProperty=<div id ="largeProperty" ref={nodeRef}>
-                            <div id="firstLine">
-                                <div id="toolName">
-                                    {CurrentState}
-                                </div>
-                                <div id="closeIcon">
-                                    <IconButton onClick={handleCloseToolMenu}>
-                                        <ClearIcon  fontSize="small" style={{marginTop:"auto"}}/>
-                                    </IconButton>
-                                </div>
-                            </div>
-                            <div id="secondLine">
-                                <div id="toolAttributes">
-                                    Center of the choosen Circle:&nbsp;{CC==="N/A"? "Not choose": CC.lng.toFixed(3)+"/"+CC.lat.toFixed(3)}
-                                </div>
-                            </div>
-                            <div id="secondLine">
-                                <div id="toolAttributes">
-                                    Radius of the choosen Circle:&nbsp;{CR==="N/A"? "Not choose" : CR.toFixed(3)}
-                                </div>
-                            </div>
-
-                            <div  id="thirdLine">
-                                Choose color that will use: &nbsp;
-                                <div id="ColorPicker">
-                                    <ColorPicker setDisplayColorPicker={setDisplayColorPicker}
-                                                 setPickedColor={setPickedColor}
-                                                 displayColorPicker={displayColorPicker}
-                                                 color={color}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
-    const polygonProperty=<div id ="largeProperty" ref={nodeRef}>
-                            <div id="firstLine">
-                                <div id="toolName">
-                                    {CurrentState}
-                                </div>
-                                <div id="closeIcon">
-                                    <IconButton onClick={handleCloseToolMenu}>
-                                        <ClearIcon  fontSize="small" style={{marginTop:"auto"}}/>
-                                    </IconButton>
-                                </div>
-                            </div>
-                            <div id="secondLine">
-                                <div id="toolAttributes">
-                                     Property of a polygon: &nbsp;
-                                </div>
-                            </div>
-                            {/*<div id="secondLine">*/}
-                            {/*    <div id="toolAttributes">*/}
-                            {/*        Radius of the choosen Circle:&nbsp;{CR==="N/A"? "Not choose" : CR.toFixed(3)}*/}
-                            {/*    </div>*/}
-                            {/*</div>*/}
-                            <div  id="thirdLine">
-                                Choose color that will use: &nbsp;
-                                <div id="ColorPicker">
-                                    <ColorPicker setDisplayColorPicker={setDisplayColorPicker}
-                                                 setPickedColor={setPickedColor}
-                                                 displayColorPicker={displayColorPicker}
-                                                 color={color}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
-
-    const rectangleProperty=<div id ="largeProperty" ref={nodeRef}>
-                                <div id="firstLine">
-                                    <div id="toolName">
-                                        {CurrentState}
-                                    </div>
-                                    <div id="closeIcon">
-                                        <IconButton onClick={handleCloseToolMenu}>
-                                            <ClearIcon  fontSize="small" style={{marginTop:"auto"}}/>
-                                        </IconButton>
-                                    </div>
-                                </div>
-                                <div id="secondLine">
-                                    <div id="toolAttributes">
-                                        Property of a rectangle: &nbsp;
-                                    </div>
-                                </div>
-
-                                <div  id="thirdLine">
-                                    Choose color that will use: &nbsp;
-                                    <div id="ColorPicker">
-                                        <ColorPicker setDisplayColorPicker={setDisplayColorPicker}
-                                                     setPickedColor={setPickedColor}
-                                                     displayColorPicker={displayColorPicker}
-                                                     color={color}
-                                        />
-                                    </div>
-
-                                </div>
-                            </div>
-
-
-    const LinesProperty=<div id ="largeProperty" ref={nodeRef}>
-                            <div id="firstLine">
-                                <div id="toolName">
-                                    {CurrentState}
-                                </div>
-                                <div id="closeIcon">
-                                    <IconButton onClick={handleCloseToolMenu}>
-                                        <ClearIcon  fontSize="small" style={{marginTop:"auto"}}/>
-                                    </IconButton>
-                                </div>
-                            </div>
-                            <div id="secondLine">
-                                <div id="toolAttributes">
-                                    property of drawing Lines:
-                                </div>
-                            </div>
-
-                            <div  id="thirdLine">
-                                Choose color that will use: &nbsp;
-
-                                <div id="ColorPicker">
-                                    <ColorPicker setDisplayColorPicker={setDisplayColorPicker}
-                                                 setPickedColor={setPickedColor}
-                                                 displayColorPicker={displayColorPicker}
-                                                 color={color}
-                                    />
-                                </div>
-
-                            </div>
-                        </div>
-
-    //----------------------------------------------------------------used for text input
-    const textRef = React.createRef();
-
-    const handleTextChange = ()=>{
-        //console.log(textRef.current.children[0].value)
+    const handleTextChange = () => {
         setText(textRef.current.children[0].value);
-       // console.log(text)这里changeText里面不能直接用text，因为setText是异步的
         store.dispatch(changeText(textRef.current.children[0].value));
     };
 
-
     const handleSizeChange = (event) => {
-        //console.log("size "+event.target.value);
-        if(event.target.value===200){
-            setSize(400);
-        }else {
-            setSize(event.target.value);
-        }
-        //转换一下大小，数越大，结果越小，换成scale，用户更直观一些
-        store.dispatch(changeFontSize(size));
+        const val = event.target.value === 200 ? 400 : event.target.value;
+        setSize(val);
+        store.dispatch(changeFontSize(val));
     };
-
 
     const handleFontFamilyChange = (event) => {
-        console.log(event.target.value);
         store.dispatch(changeFamily(event.target.value));
         setFontFamily(event.target.value);
-
     };
-    const inputtextProperty=<div id ="largeProperty" ref={nodeRef}>
-                                <div id="firstLine">
-                                    <div id="toolName">
-                                        TEXT
-                                    </div>
-                                    <div id="closeIcon">
-                                        <IconButton onClick={handleCloseToolMenu}>
-                                            <ClearIcon  fontSize="small" style={{marginTop:"auto"}}/>
-                                        </IconButton>
-                                    </div>
-                                </div>
-                                <div className="inputAttributes">
-                                    intput the Text and the attributes: &nbsp;
-                                </div>
-
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <div className="inputAttributes">
-                                                    input your text: &nbsp;
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="inputAttributes">
-                                                <Input placeholder="Your Text" inputProps={ariaLabel}
-                                                       ref={textRef}
-                                                       onChange={handleTextChange}
-                                                        id="text"/>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div className="inputAttributes">
-                                                    <div>choose your Font Size(zoom level): &nbsp;</div>
-                                                </div>
-                                                <div id="FontSizeExplain">if you zoom the map in high level, you need to choose the large number: &nbsp;</div>
-                                            </td>
-                                            <td>
-                                                <div id="FontSizeExplain">
-                                                    <Slider
-                                                        value={size}
-                                                        onChange={handleSizeChange}
-                                                        size="small"
-                                                        defaultValue={10}
-                                                        aria-label="Small"
-                                                        valueLabelDisplay="auto"
-                                                        min={0.5}
-                                                        max={200}
-                                                    />
-                                                </div>
-                                                {/*     <FormControl sx={{ m: 1, minWidth: 120 }} size="small">*/}
-                                                {/*    <InputLabel id="demo-select-small">size</InputLabel>*/}
-                                                {/*    <Select*/}
-                                                {/*        labelId="demo-select-small"*/}
-                                                {/*        id="demo-select-small"*/}
-                                                {/*        value={size}*/}
-                                                {/*        label="size"*/}
-                                                {/*        onChange={handleSizeChange}*/}
-                                                {/*    >*/}
-                                                {/*        /!*<MenuItem value="">*!/*/}
-                                                {/*        /!*    <em>None</em>*!/*/}
-                                                {/*        /!*</MenuItem>*!/*/}
-                                                {/*        <MenuItem value={0.5}>0.5</MenuItem>*/}
-                                                {/*        <MenuItem value={1}>1</MenuItem>*/}
-                                                {/*        <MenuItem value={2}>2</MenuItem>*/}
-
-
-                                                {/*    </Select>*/}
-                                                {/*</FormControl>*/}
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>
-                                                <div className="inputAttributes">
-                                                    choose your Font Family: &nbsp;
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                                                    <InputLabel id="demo-select-small">FontFamily</InputLabel>
-                                                    <Select
-                                                        labelId="demo-select-small"
-                                                        id="demo-select-small"
-                                                        value={fontFamily}
-                                                        label="fontFamily"
-                                                        onChange={handleFontFamilyChange}
-                                                    >
-                                                        {/*<MenuItem value="">*/}
-                                                        {/*    <em>None</em>*/}
-                                                        {/*</MenuItem>*/}
-                                                        <MenuItem value={"Arial"}>Arial</MenuItem>
-                                                        <MenuItem value={"Verdana"}>Verdana</MenuItem>
-                                                        <MenuItem value={"Arial Black"}>Arial Black</MenuItem>
-                                                        <MenuItem value={"Trebuchet MS "}>Trebuchet MS </MenuItem>
-                                                        <MenuItem value={"Impact"}>Impact</MenuItem>
-                                                        <MenuItem value={"Times New Roman"}>Times New Roman</MenuItem>
-                                                        <MenuItem value={"Georgia"}>Georgia</MenuItem>
-                                                        <MenuItem value={"American Typewriter"}>American Typewriter</MenuItem>
-                                                        <MenuItem value={"Monaco"}>Monaco</MenuItem>
-                                                        <MenuItem value={"Bradley Hand"}>Bradley Hand</MenuItem>
-                                                        <MenuItem value={"Luminari "}>Luminari </MenuItem>
-                                                    </Select>
-                                                </FormControl>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>
-                                                <div className="inputAttributes">
-                                                    Choose the Font Color you use: &nbsp;
-                                                </div>
-                                            </td>
-                                            <td id="FontSizeExplain">
-                                                <ColorPicker setDisplayColorPicker={setDisplayColorPicker}
-                                                             setPickedColor={setPickedColor}
-                                                             displayColorPicker={displayColorPicker}
-                                                             color={color}
-                                                />
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-
-
-
-
-                                <div  id="thirdLine">
-
-
-                                </div>
-                            </div>
-
-//-------------------------------------------------------------------------------used for paint property
 
     const handleLineWidthChange = (event) => {
         store.dispatch(changeLineWidth(event.target.value));
         setLineWidth(event.target.value);
     };
 
+    const fontFamilyOptions = [
+        "Arial", "Verdana", "Arial Black", "Trebuchet MS", "Impact",
+        "Times New Roman", "Georgia", "American Typewriter", "Monaco",
+        "Bradley Hand", "Luminari",
+    ];
 
+    /* ── simple panels (point / circle / polygon / rectangle / lines) ── */
 
+    const colorRow = (
+        <PropRow label="Color">
+            <ColorPicker
+                setDisplayColorPicker={setDisplayColorPicker}
+                setPickedColor={setPickedColor}
+                displayColorPicker={displayColorPicker}
+                color={color}
+            />
+        </PropRow>
+    );
 
-const paintProperty = <div id ="largeProperty" ref={nodeRef}>
-                            <div id="firstLine">
-                                <div id="toolName">
-                                    Paint
-                                </div>
-                                <div id="closeIcon">
-                                    <IconButton onClick={handleCloseToolMenu}>
-                                        <ClearIcon  fontSize="small" style={{marginTop:"auto"}}/>
-                                    </IconButton>
-                                </div>
-                            </div>
-                            <div className="inputAttributes">
-                                intput the Text and the attributes: &nbsp;
-                            </div>
+    const pointPanel = (
+        <div id="largeProperty" ref={nodeRef}>
+            <PropHeader title="Point" onClose={handleCloseToolMenu} />
+            <PropRow label="Coordinates">
+                <span className="prop_value">
+                    {LL === "N/A" ? "Click the map to place a point" : `${LL.lng.toFixed(5)}, ${LL.lat.toFixed(5)}`}
+                </span>
+            </PropRow>
+        </div>
+    );
 
-                            <table>
-                                <tbody>
-                                <tr>
-                                    <td>
-                                        <div className="inputAttributes">
-                                            <div>choose your Pen Point Size(zoom level): &nbsp;</div>
-                                        </div>
-                                        <div id="FontSizeExplain">if you zoom the map in high level, you need to choose the large number: &nbsp;</div>
-                                    </td>
-                                    <td>
-                                        <div id="FontSizeExplain">
-                                            <Slider
-                                                value={lineWidth}
-                                                onChange={handleLineWidthChange}
-                                                size="small"
-                                                defaultValue={5}
-                                                aria-label="Small"
-                                                valueLabelDisplay="auto"
-                                                min={1}
-                                                max={20}
-                                            />
-                                        </div>
-                                    </td>
-                                </tr>
+    const circlePanel = (
+        <div id="largeProperty" ref={nodeRef}>
+            <PropHeader title="Circle" onClose={handleCloseToolMenu} />
+            <PropRow label="Center">
+                <span className="prop_value">
+                    {CC === "N/A" ? "Not chosen" : `${CC.lng.toFixed(3)} / ${CC.lat.toFixed(3)}`}
+                </span>
+            </PropRow>
+            <PropRow label="Radius">
+                <span className="prop_value">{CR === "N/A" ? "Not chosen" : CR.toFixed(3)}</span>
+            </PropRow>
+            {colorRow}
+        </div>
+    );
 
-                                <tr>
-                                    <td>
-                                        <div className="inputAttributes">
-                                            choose your Pen Style: &nbsp;
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                                            <InputLabel id="demo-select-small">FontFamily</InputLabel>
-                                            <Select
-                                                labelId="demo-select-small"
-                                                id="demo-select-small"
-                                                value={fontFamily}
-                                                label="fontFamily"
-                                                onChange={handleFontFamilyChange}
-                                            >
-                                                {/*<MenuItem value="">*/}
-                                                {/*    <em>None</em>*/}
-                                                {/*</MenuItem>*/}
-                                                <MenuItem value={"Arial"}>Arial</MenuItem>
-                                                <MenuItem value={"Verdana"}>Verdana</MenuItem>
-                                                <MenuItem value={"Arial Black"}>Arial Black</MenuItem>
-                                                <MenuItem value={"Trebuchet MS "}>Trebuchet MS </MenuItem>
-                                                <MenuItem value={"Impact"}>Impact</MenuItem>
-                                                <MenuItem value={"Times New Roman"}>Times New Roman</MenuItem>
-                                                <MenuItem value={"Georgia"}>Georgia</MenuItem>
-                                                <MenuItem value={"American Typewriter"}>American Typewriter</MenuItem>
-                                                <MenuItem value={"Monaco"}>Monaco</MenuItem>
-                                                <MenuItem value={"Bradley Hand"}>Bradley Hand</MenuItem>
-                                                <MenuItem value={"Luminari "}>Luminari </MenuItem>
-                                            </Select>
-                                        </FormControl>
-                                    </td>
-                                </tr>
+    const polygonPanel = (
+        <div id="largeProperty" ref={nodeRef}>
+            <PropHeader title="Polygon" onClose={handleCloseToolMenu} />
+            <PropRow label="Info"><span className="prop_value">Click map to draw vertices</span></PropRow>
+            {colorRow}
+        </div>
+    );
 
-                                <tr>
-                                    <td>
-                                        <div className="inputAttributes">
-                                            Choose the Pen Color: &nbsp;
-                                        </div>
-                                    </td>
-                                    <td id="FontSizeExplain">
-                                        <ColorPicker setDisplayColorPicker={setDisplayColorPicker}
-                                                     setPickedColor={setPickedColor}
-                                                     displayColorPicker={displayColorPicker}
-                                                     color={color}
-                                        />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
+    const rectanglePanel = (
+        <div id="largeProperty" ref={nodeRef}>
+            <PropHeader title="Rectangle" onClose={handleCloseToolMenu} />
+            <PropRow label="Info"><span className="prop_value">Click and drag to draw</span></PropRow>
+            {colorRow}
+        </div>
+    );
 
-                                    </td>
-                                    <td>
-                                        <IconButton onClick={canvasUndo}>
-                                            <UndoIcon fontSize="medium"></UndoIcon>
-                                        </IconButton>
-                                        <IconButton onClick={canvasRedo}>
-                                            <RedoIcon fontSize="medium"></RedoIcon>
-                                        </IconButton>
+    const linesPanel = (
+        <div id="largeProperty" ref={nodeRef}>
+            <PropHeader title="Lines" onClose={handleCloseToolMenu} />
+            <PropRow label="Info"><span className="prop_value">Click map to draw line segments</span></PropRow>
+            {colorRow}
+        </div>
+    );
 
-                                        <IconButton onClick={resetCanvas}>
-                                            <DeleteOutlineIcon fontSize="medium"></DeleteOutlineIcon>
-                                        </IconButton>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                    </div>
+    /* ── text panel ─────────────────────────────────────────── */
 
+    const textPanel = (
+        <div id="largeProperty" ref={nodeRef}>
+            <PropHeader title="Text" onClose={handleCloseToolMenu} />
 
-//----------------------------------------------------------------------used to Switch to different property
-    if(CurrentState==="circle"){
-            index= <Draggable nodeRef={nodeRef} handle='#firstLine'>
-                         {circleProperty}
-                     </Draggable>
+            <PropRow label="Text">
+                <Input
+                    placeholder="Your text here"
+                    inputProps={ariaLabel}
+                    ref={textRef}
+                    onChange={handleTextChange}
+                    id="text"
+                    sx={{ width: '140px' }}
+                />
+            </PropRow>
 
-        }
-    if(CurrentState==="point"){
-        index=<Draggable nodeRef={nodeRef} handle='#firstLine'>
-                    {pointProperty}
-            </Draggable>
-    }
-    if(CurrentState==="polygon"){
-        index=<Draggable nodeRef={nodeRef} handle='#firstLine'>
-                {polygonProperty}
-                </Draggable>
-    }
-    if(CurrentState==="rectangle"){
-        index=<Draggable nodeRef={nodeRef} handle='#firstLine'>
-            {rectangleProperty}
-        </Draggable>
-    }
-    if(CurrentState==="inputtext"){
-        index=<Draggable nodeRef={nodeRef} handle='#firstLine'>
-            {inputtextProperty}
-        </Draggable>
-    }
-    if(CurrentState==="paint"){
-        index=<Draggable nodeRef={nodeRef} handle='#firstLine'>
-            {paintProperty}
-        </Draggable>
-    }
-    if(CurrentState==="lines"){
-        index=<Draggable nodeRef={nodeRef} handle='#firstLine'>
-            {LinesProperty}
-        </Draggable>
-    }
+            <PropRow
+                label="Font Size"
+                hint="Higher zoom level → larger value"
+            >
+                <Slider
+                    value={size}
+                    onChange={handleSizeChange}
+                    size="small"
+                    defaultValue={10}
+                    aria-label="Font size"
+                    valueLabelDisplay="auto"
+                    min={0.5}
+                    max={200}
+                    sx={{ width: '120px', color: '#3e7f9f' }}
+                />
+            </PropRow>
 
+            <PropRow label="Font Family">
+                <FormControl size="small" sx={{ minWidth: 140 }}>
+                    <InputLabel id="ff-label">Family</InputLabel>
+                    <Select
+                        labelId="ff-label"
+                        value={fontFamily}
+                        label="Family"
+                        onChange={handleFontFamilyChange}
+                    >
+                        {fontFamilyOptions.map(f => (
+                            <MenuItem key={f} value={f}>{f}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+            </PropRow>
 
+            <PropRow label="Color">
+                <ColorPicker
+                    setDisplayColorPicker={setDisplayColorPicker}
+                    setPickedColor={setPickedColor}
+                    displayColorPicker={displayColorPicker}
+                    color={color}
+                />
+            </PropRow>
+        </div>
+    );
 
+    /* ── paint panel ────────────────────────────────────────── */
 
-        return ReactDOM.createPortal(
-            <div>{index}</div>,
-            document.body
-        );
+    const paintPanel = (
+        <div id="largeProperty" ref={nodeRef}>
+            <PropHeader title="Paint" onClose={handleCloseToolMenu} />
+
+            <PropRow
+                label="Pen Size"
+                hint="Higher zoom level → larger value"
+            >
+                <Slider
+                    value={lineWidth}
+                    onChange={handleLineWidthChange}
+                    size="small"
+                    defaultValue={5}
+                    aria-label="Pen size"
+                    valueLabelDisplay="auto"
+                    min={1}
+                    max={20}
+                    sx={{ width: '120px', color: '#3e7f9f' }}
+                />
+            </PropRow>
+
+            <PropRow label="Color">
+                <ColorPicker
+                    setDisplayColorPicker={setDisplayColorPicker}
+                    setPickedColor={setPickedColor}
+                    displayColorPicker={displayColorPicker}
+                    color={color}
+                />
+            </PropRow>
+
+            <div className="prop_action_row">
+                <IconButton onClick={canvasUndo} title="Undo" size="small">
+                    <UndoIcon fontSize="small" />
+                </IconButton>
+                <IconButton onClick={canvasRedo} title="Redo" size="small">
+                    <RedoIcon fontSize="small" />
+                </IconButton>
+                <IconButton onClick={resetCanvas} title="Clear canvas" size="small">
+                    <DeleteOutlineIcon fontSize="small" />
+                </IconButton>
+            </div>
+        </div>
+    );
+
+    /* ── switch ──────────────────────────────────────────────── */
+
+    const panelMap = {
+        point:     pointPanel,
+        circle:    circlePanel,
+        polygon:   polygonPanel,
+        rectangle: rectanglePanel,
+        lines:     linesPanel,
+        inputtext: textPanel,
+        paint:     paintPanel,
+    };
+
+    const panel = panelMap[CurrentState];
+    if (!panel) return ReactDOM.createPortal(<div />, document.body);
+
+    return ReactDOM.createPortal(
+        <Draggable nodeRef={nodeRef} handle="#firstLine">
+            {panel}
+        </Draggable>,
+        document.body
+    );
 }
-

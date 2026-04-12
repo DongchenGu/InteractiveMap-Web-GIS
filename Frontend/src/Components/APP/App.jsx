@@ -92,7 +92,7 @@ export default function App() {
         <div id="App_root">
             {/* Sidebar panel — takes real layout space when open */}
             <div id="App_sidebar" className={sidebarOpen ? 'sidebar_open' : 'sidebar_closed'}>
-                <SideMenu CurrentState={CurrentState} changeCurrentState={changeCurrentState} />
+                <SideMenu CurrentState={CurrentState} changeCurrentState={changeCurrentState} changeProvider={changeProvider} />
             </div>
 
             {/* Right panel: nav + map + footer, fills viewport exactly */}

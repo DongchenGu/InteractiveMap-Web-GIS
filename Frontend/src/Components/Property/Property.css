@@ -167,3 +167,63 @@
 #ColorPicker {
     width: 8vw;
 }
+
+/* ── new flexbox prop rows ────────────────────────────────── */
+
+.prop_row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 44px;
+    padding: 8px 14px;
+    box-sizing: border-box;
+    border-bottom: 1px solid rgba(198, 219, 224, 0.07);
+    gap: 10px;
+}
+.prop_row:last-of-type {
+    border-bottom: none;
+}
+
+.prop_row_label {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex-shrink: 0;
+    max-width: 48%;
+    font-size: 12px;
+    color: rgba(198, 219, 224, 0.75);
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+.prop_row_hint {
+    font-size: 10px;
+    color: rgba(198, 219, 224, 0.4);
+    line-height: 1.4;
+}
+
+.prop_row_control {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 1;
+    min-width: 0;
+}
+
+.prop_value {
+    font-size: 12px;
+    color: rgba(198, 219, 224, 0.6);
+    font-family: Verdana, Geneva, sans-serif;
+    text-align: right;
+    word-break: break-all;
+}
+
+.prop_action_row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 6px 10px 10px 10px;
+    gap: 4px;
+}

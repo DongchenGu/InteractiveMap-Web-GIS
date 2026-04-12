@@ -14,6 +14,24 @@ import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutl
 import LayersClearTwoToneIcon from '@mui/icons-material/LayersClearTwoTone';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 
+const layers = [
+    {
+        id: 'osm',
+        label: 'OpenStreetMap',
+        url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+    },
+    {
+        id: 'satellite',
+        label: 'Satellite',
+        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    },
+    {
+        id: 'terrain',
+        label: 'Terrain',
+        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
+    },
+];
+
 const tools = [
     { id: 'point',              label: 'Point Marker',  Icon: PlaceTwoToneIcon },
     { id: 'circle',             label: 'Circle',        Icon: PanoramaFishEyeIcon },
@@ -26,9 +44,10 @@ const tools = [
     { id: 'deleteItems',        label: 'Clear All',     Icon: LayersClearTwoToneIcon },
 ];
 
-export default function SideMenu({ CurrentState, changeCurrentState }) {
+export default function SideMenu({ CurrentState, changeCurrentState, changeProvider }) {
     const [isOpen, setIsOpen] = useState(false);
     const [isFirstLoad, setIsFirstLoad] = useState(true);
+    const [activeLayer, setActiveLayer] = useState('osm');
 
     useEffect(() => {
         const unsub = store.subscribe(() => {
@@ -73,15 +92,18 @@ export default function SideMenu({ CurrentState, changeCurrentState }) {
                 ))}
 
                 <div className="SideMenu_section_header" style={{ marginTop: '16px' }}>Map Layers</div>
-                <div className="SideMenu_tool_item SideMenu_layer_item">
-                    <span>OpenStreetMap</span>
-                </div>
-                <div className="SideMenu_tool_item SideMenu_layer_item">
-                    <span>Satellite</span>
-                </div>
-                <div className="SideMenu_tool_item SideMenu_layer_item">
-                    <span>Terrain</span>
-                </div>
+                {layers.map(({ id, label, url }) => (
+                    <div
+                        key={id}
+                        className={`SideMenu_tool_item SideMenu_layer_item${activeLayer === id ? ' SideMenu_tool_active' : ''}`}
+                        onClick={() => {
+                            setActiveLayer(id);
+                            if (changeProvider) changeProvider(url);
+                        }}
+                    >
+                        <span>{label}</span>
+                    </div>
+                ))}
             </div>
 
             <div className="SideMenu_bottom_buttons">
