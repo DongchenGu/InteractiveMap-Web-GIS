@@ -48,14 +48,14 @@ function setCanvasBg(color) {
 function autoSetSize(){
     canvasSetSize();
     function canvasSetSize(){
-        // 把变化之前的画布内容copy一份，然后重新画到画布上
-        let imgData = context.getImageData(0,0,canvas.width,canvas.height);
-        let pageWidth = document.documentElement.clientWidth;
-        let pageHeight = document.documentElement.clientHeight;
-
-        canvas.width = pageWidth;
-        canvas.height = pageHeight;
-        context.putImageData(imgData,0,0);
+        // Size the canvas to its actual rendered area (not the full viewport)
+        // so that mouse coordinates align correctly even when sidebar/navbar offset the canvas.
+        const rect = canvas.getBoundingClientRect();
+        let imgData = null;
+        try { imgData = context.getImageData(0, 0, canvas.width, canvas.height); } catch(e) {}
+        canvas.width  = rect.width  || document.documentElement.clientWidth;
+        canvas.height = rect.height || document.documentElement.clientHeight;
+        if (imgData) { try { context.putImageData(imgData, 0, 0); } catch(e) {} }
     }
 
     window.onresize = function(){
@@ -73,8 +73,9 @@ function listenToUser() {
             getColor();
             getLinWidth();
             painting = true;
-            let x1 = e.touches[0].clientX;
-            let y1 = e.touches[0].clientY;
+            const rect = canvas.getBoundingClientRect();
+            let x1 = e.touches[0].clientX - rect.left;
+            let y1 = e.touches[0].clientY - rect.top;
             if(eraserEnabled){//要使用eraser
                 context.save();
                 context.globalCompositeOperation = "destination-out";
@@ -92,8 +93,9 @@ function listenToUser() {
         canvas.ontouchmove = function (e) {
             let x1 = lastPoint['x'];
             let y1 = lastPoint['y'];
-            let x2 = e.touches[0].clientX;
-            let y2 = e.touches[0].clientY;
+            const rect = canvas.getBoundingClientRect();
+            let x2 = e.touches[0].clientX - rect.left;
+            let y2 = e.touches[0].clientY - rect.top;
             if(!painting){return}
             if(eraserEnabled){
                 moveHandler(x1,y1,x2,y2);
@@ -117,8 +119,9 @@ function listenToUser() {
             getColor();
             getLinWidth();
             painting = true;
-            let x1 = e.clientX;
-            let y1 = e.clientY;
+            const rect = canvas.getBoundingClientRect();
+            let x1 = e.clientX - rect.left;
+            let y1 = e.clientY - rect.top;
             if(eraserEnabled){//要使用eraser
                 //鼠标第一次点下的时候擦除一个圆形区域，同时记录第一个坐标点
                 context.save();
@@ -139,8 +142,9 @@ function listenToUser() {
         canvas.onmousemove = function(e){
             let x1 = lastPoint['x'];
             let y1 = lastPoint['y'];
-            let x2 = e.clientX;
-            let y2 = e.clientY;
+            const rect = canvas.getBoundingClientRect();
+            let x2 = e.clientX - rect.left;
+            let y2 = e.clientY - rect.top;
             if(!painting){return}
             if(eraserEnabled){
                 moveHandler(x1,y1,x2,y2);
