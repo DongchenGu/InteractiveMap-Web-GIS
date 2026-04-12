@@ -85,13 +85,13 @@ export default function SideMenu({ CurrentState, changeCurrentState }) {
             </div>
 
             <div className="SideMenu_bottom_buttons">
-                <div className="SideMenu_bottom_btn">
+                <div className="SideMenu_bottom_btn" onClick={() => window.open('https://github.com/DongchenGu/InteractiveMap-Web-GIS', '_blank')}>
                     <div className="SideMenu_btn_arrow">
                         <ArrowOutwardIcon sx={{ fontSize: 14 }} />
                     </div>
                     GitHub
                 </div>
-                <div className="SideMenu_bottom_btn">
+                <div className="SideMenu_bottom_btn" onClick={() => window.open('https://leafletjs.com', '_blank')}>
                     <div className="SideMenu_btn_arrow">
                         <ArrowOutwardIcon sx={{ fontSize: 14 }} />
                     </div>

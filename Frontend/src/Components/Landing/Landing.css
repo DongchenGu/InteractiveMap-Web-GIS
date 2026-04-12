@@ -127,6 +127,17 @@
     color: white;
 }
 
+/* New workspace card — dashed outline variant */
+.Landing_card_new {
+    border-style: dashed;
+    border-color: rgba(62, 127, 159, 0.4);
+    background-color: rgba(24, 31, 59, 0.6);
+}
+.Landing_card_new:hover {
+    border-color: #3e7f9f;
+    background-color: rgb(24, 31, 59);
+}
+
 /* Footer strip */
 .Landing_footer {
     width: 100%;

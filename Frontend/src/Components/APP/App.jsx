@@ -104,8 +104,6 @@ export default function App() {
 
                 {/* Sticky navbar */}
                 <Navigation
-                    checkFull={() => {}}
-                    IsFull={false}
                     openProviderMenu={openProviderMenu}
                     openProperty={openProperty}
                     getCoord={getCoord}

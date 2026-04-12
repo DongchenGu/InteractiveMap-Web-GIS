@@ -1,46 +1,45 @@
-import React from 'react'
+import React from 'react';
+import ReactDOM from 'react-dom';
 import IconButton from "@mui/material/IconButton";
 import ClearIcon from "@mui/icons-material/Clear";
-import './Tips.css'
+import Draggable from 'react-draggable';
+import './Tips.css';
 
-export default function Tips(props){
-    let index =null;
-    const {CurrentState,closeTips} = props;
+export default function Tips(props) {
+    const { CurrentState, closeTips } = props;
+    const nodeRef = React.useRef(null);
 
+    if (CurrentState !== "inputtext") return null;
 
-
-    const textTips=<div id="largeTextTips" >
-                        <div id="firstLine">
-                            <div id="toolName">
-                                TIPS:) how to input Text onto the Map
-                            </div>
-                            <div id="closeIcon">
-                                <IconButton onClick={closeTips}>
-                                    <ClearIcon  fontSize="small" style={{marginTop:"auto"}}/>
-                                </IconButton>
-                            </div>
-                        </div>
-                        <div className="attributesLine">
-                            1. Fist, input your text into the property Menu.
-
-                        </div>
-                        <div className="attributesLine">
-                            2. Second, choose the color and other attributes in the Menu.
-                        </div>
-                        <div className="attributesLine">
-                            3. third, click the location on the Map to set your Text!
-                        </div>
-                    </div>
-
-
-     if(CurrentState==="inputtext"){
-         index=textTips;
-     }
-    return(
-        <div className={CurrentState==="inputtext" ? "cover" : ""}>
-            {textTips}
+    const panel = (
+        <div id="largeTipsPanel" ref={nodeRef}>
+            <div id="tipsTitleBar">
+                <div id="tipsTitleText">Text Tool — Quick Guide</div>
+                <IconButton onClick={closeTips} size="small">
+                    <ClearIcon fontSize="small" sx={{ color: 'rgba(198,219,224,0.8)' }} />
+                </IconButton>
+            </div>
+            <div className="tipsSection">
+                <div className="tipsStep">
+                    <div className="tipsStepNum">1</div>
+                    <div className="tipsStepText">Type your text in the <strong>Properties</strong> panel on the right.</div>
+                </div>
+                <div className="tipsStep">
+                    <div className="tipsStepNum">2</div>
+                    <div className="tipsStepText">Choose <strong>font size</strong>, <strong>font family</strong>, and <strong>color</strong>.</div>
+                </div>
+                <div className="tipsStep">
+                    <div className="tipsStepNum">3</div>
+                    <div className="tipsStepText">Click anywhere on the map to <strong>place</strong> the text.</div>
+                </div>
+            </div>
         </div>
     );
+
+    return ReactDOM.createPortal(
+        <Draggable nodeRef={nodeRef} handle="#tipsTitleBar">
+            {panel}
+        </Draggable>,
+        document.body
+    );
 }
-
-

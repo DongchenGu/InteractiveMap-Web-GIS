@@ -5,6 +5,7 @@ import MapIcon from '@mui/icons-material/Map';
 import ExploreIcon from '@mui/icons-material/Explore';
 import LayersIcon from '@mui/icons-material/Layers';
 import PushPinIcon from '@mui/icons-material/PushPin';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 const workspaces = [
     {
@@ -44,8 +45,8 @@ export default function Landing() {
         <div className="Landing_root">
             {/* Top bar */}
             <div className="Landing_navbar">
-                <div className="Landing_brand_main">Interactive Map</div>
-                <div className="Landing_brand_sub">GIS</div>
+                <div className="Landing_brand_main" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>Interactive Map</div>
+                <div className="Landing_brand_sub" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>GIS</div>
             </div>
 
             {/* Hero */}
@@ -73,6 +74,20 @@ export default function Landing() {
                         <div className="Landing_card_enter">Open →</div>
                     </div>
                 ))}
+
+                {/* Create new workspace card */}
+                <div
+                    className="Landing_card Landing_card_new"
+                    onClick={() => alert('Create a new workspace — coming soon!')}
+                >
+                    <div className="Landing_card_icon_wrap">
+                        <AddCircleOutlineIcon sx={{ fontSize: 38, color: '#3e7f9f' }} />
+                    </div>
+                    <div className="Landing_card_title">Create a New Workspace</div>
+                    <div className="Landing_card_subtitle">New Project</div>
+                    <div className="Landing_card_desc">Start fresh with a blank map workspace. Customize it to fit your project.</div>
+                    <div className="Landing_card_enter">Create →</div>
+                </div>
             </div>
 
             {/* Footer strip */}
