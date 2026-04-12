@@ -1,12 +1,11 @@
 .originMap{
-    height: calc(100% - 8vh);
+    height: 100%;
     width: 100%;
     z-index: 0;
 }
 .originMapFull{
-    height: 90vh;
+    height: 100%;
     width: 100%;
-
 }
 
 .leaflet-pane.leaflet-map-pane{

@@ -1,25 +1,31 @@
 import React from "react";
-import App from'../APP/App.jsx'
+import App from '../APP/App.jsx'
 import Auth from "../Auth/Auth";
 import { Navigate } from "react-router-dom"
 import MainProfile from "../UserProfile/MainProfile"
+import Landing from "../Landing/Landing"
 
-
-export  default [
+const routes = [
     {
-        path:'/home',
-        element: <App/>
+        path: '/',
+        element: <Landing />
     },
     {
-        path:'/auth',
-        element: <Auth/>
+        path: '/workspace/:workspaceId',
+        element: <App />
     },
     {
-        path:'/',
-        element: <Navigate to="/home"/>
+        path: '/auth',
+        element: <Auth />
     },
     {
-        path:'/mainProfile',
-        element: <MainProfile/>
+        path: '/home',
+        element: <Navigate to="/" />
+    },
+    {
+        path: '/mainProfile',
+        element: <MainProfile />
     }
-]
+];
+
+export default routes;
